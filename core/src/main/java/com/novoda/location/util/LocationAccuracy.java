@@ -37,28 +37,27 @@ public class LocationAccuracy {
 		return !isBetterLocation(location, currentBestLocation);
 	}
 	
-	public boolean isBetterLocation(Location location, Location currentBestLocation) {
-	    if (currentBestLocation == null) {
+	public boolean isBetterLocation(Location newLocation, Location currentLocation) {
+	    if (currentLocation == null) {
 	        return true;
 	    }
-	    long timeDelta = location.getTime() - currentBestLocation.getTime();
+	    long timeDelta = newLocation.getTime() - currentLocation.getTime();
 	    long updatesInterval = settings.getUpdatesInterval();
         boolean isSignificantlyNewer = timeDelta > updatesInterval;
 	    boolean isSignificantlyOlder = timeDelta < -updatesInterval;
-	    boolean isNewer = timeDelta > 0;
 	    if (isSignificantlyNewer) {
-	        return true;
-	    } else if (isSignificantlyOlder) {
-	        return false;
-	    }
-	    int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
-	    boolean isLessAccurate = accuracyDelta > 0;
-	    boolean isMoreAccurate = accuracyDelta < 0;
-	    boolean isSignificantlyLessAccurate = accuracyDelta > 200;
-	    boolean isFromSameProvider = isSameProvider(location.getProvider(),
-	            currentBestLocation.getProvider());
-	    if (isMoreAccurate) {
-	        return true;
+            return true;
+        } else if (isSignificantlyOlder) {
+            return false;
+        }
+        int accuracyDelta = (int) (newLocation.getAccuracy() - currentLocation.getAccuracy());
+        boolean isLessAccurate = accuracyDelta > 0;
+        boolean isMoreAccurate = accuracyDelta < 0;
+        boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+        boolean isFromSameProvider = isSameProvider(newLocation.getProvider(),currentLocation.getProvider());
+        boolean isNewer = timeDelta > 0;
+        if (isMoreAccurate) {
+            return true;
 	    } else if (isNewer && !isLessAccurate) {
 	        return true;
 	    } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
