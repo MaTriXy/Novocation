@@ -14,3 +14,5 @@ project.properties
 *.idea/
 *.iml
 *classes/
+gen/
+tmp/
