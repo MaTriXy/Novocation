@@ -31,6 +31,7 @@ public class LocationDemo extends RoboApplication {
     //==================================================
     // TODO
     private static Locator locator;
+    public static final String LOG_TAG = "NovocationDemo";
     //==================================================
     
     @Override

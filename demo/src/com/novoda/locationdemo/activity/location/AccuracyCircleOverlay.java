@@ -6,11 +6,13 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
 
+import android.util.Log;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
-import com.novoda.location.util.Log;
+
+import static com.novoda.locationdemo.LocationDemo.LOG_TAG;
 
 public class AccuracyCircleOverlay extends Overlay {
 
@@ -26,14 +28,14 @@ public class AccuracyCircleOverlay extends Overlay {
 	public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 		Projection projection = mapView.getProjection();
 		if (shadow && projection == null) {
-			Log.v("drawing not done because shadow and projection are null");
+			Log.v(LOG_TAG,"drawing not done because shadow and projection are null");
 			return;
 		}
 		Point pt = new Point();
 		projection.toPixels(geoPoint, pt);
 		float circleRadius = metersToRadius(accuracy, projection, geoPoint.getLatitudeE6());
 		
-		Log.v("Circle Radius : " + circleRadius);
+		Log.v(LOG_TAG, "Circle Radius : " + circleRadius);
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		paint.setColor(0x186666ff);
 		paint.setStyle(Style.FILL_AND_STROKE);

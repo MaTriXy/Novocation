@@ -19,6 +19,7 @@ package com.novoda.locationdemo.activity;
 import java.util.Date;
 import java.util.List;
 
+import android.util.Log;
 import roboguice.activity.RoboMapActivity;
 import roboguice.inject.InjectView;
 import android.app.AlertDialog;
@@ -45,11 +46,12 @@ import com.google.android.maps.Overlay;
 import com.novoda.location.Locator;
 import com.novoda.location.LocatorSettings;
 import com.novoda.location.exception.NoProviderAvailable;
-import com.novoda.location.util.Log;
 import com.novoda.locationdemo.LocationDemo;
 import com.novoda.locationdemo.R;
 import com.novoda.locationdemo.activity.location.AccuracyCircleOverlay;
 import com.novoda.locationdemo.analytics.Analytics;
+
+import static com.novoda.locationdemo.LocationDemo.*;
 
 public class LocationUpdateList extends RoboMapActivity {
 
@@ -105,7 +107,7 @@ public class LocationUpdateList extends RoboMapActivity {
         // TODO
         // Register broadcast receiver and start location updates.
         IntentFilter f = new IntentFilter();
-        f.addAction(LocationDemo.LOCATION_UPDATE_ACTION);
+        f.addAction(LOCATION_UPDATE_ACTION);
         registerReceiver(freshLocationReceiver, f);
         
         try {
@@ -206,8 +208,8 @@ public class LocationUpdateList extends RoboMapActivity {
     }
 
     private void displayNewLocation(final Location location) {
-    	Log.v("Getting <accuracy,latitude,longitude>: " + location.getAccuracy() + " " + location.getLatitude() +
-    			" " + location.getLongitude());
+    	Log.v(LOG_TAG, "Getting <accuracy,latitude,longitude>: " + location.getAccuracy() + " " + location.getLatitude() +
+                " " + location.getLongitude());
         View block = getLayoutInflater().inflate(R.layout.location_view, null);
 
         TextView time = (TextView) block.findViewById(R.id.val_time);
