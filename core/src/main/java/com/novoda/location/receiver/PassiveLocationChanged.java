@@ -37,7 +37,6 @@ public class PassiveLocationChanged extends BroadcastReceiver {
         if (intent.hasExtra(key)) {
             location = (Location) intent.getExtras().get(key);
             updateLocation(location);
-            return;
         } else {
             // This update came from a recurring alarm. We need to determine if
             // there has been a more recent Location received than the last
@@ -59,8 +58,6 @@ public class PassiveLocationChanged extends BroadcastReceiver {
             // data transfers).
             verifyAndUpdateLocation(location, locationUpdateDistanceDiff, delta);
         }
-        
-        
     }
 
 	private void verifyAndUpdateLocation(Location location, int locationUpdateDistanceDiff, long delta) {

@@ -24,14 +24,11 @@ import android.location.Criteria;
 
 public interface LocationUpdateRequester {
 
-	void requestActiveLocationUpdates(long minTime, long minDistance,
-			Criteria criteria, PendingIntent pendingIntent) throws NoProviderAvailable;
+    void requestActiveLocationUpdates(long minTime, long minDistance, Criteria criteria, PendingIntent pendingIntent) throws NoProviderAvailable;
 
-	void requestPassiveLocationUpdates(Context context,
-			PendingIntent pendingIntent);
+    void requestPassiveLocationUpdates(Context context, PendingIntent pendingIntent);
 
-	void requestPassiveLocationUpdates(LocatorSettings settings,
-			PendingIntent pendingIntent);
-	
-	void removeLocationUpdates(PendingIntent pendingIntent);
+    void requestPassiveLocationUpdates(LocatorSettings settings, PendingIntent pendingIntent);
+
+    void removeLocationUpdates(PendingIntent pendingIntent);
 }
