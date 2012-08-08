@@ -41,30 +41,41 @@ public class LocationAccuracy {
     public boolean isBetterLocation(Location newLocation, Location currentLocation) {
         if (currentLocation == null) {
             return true;
-        }
-        long timeDelta = newLocation.getTime() - currentLocation.getTime();
-        long updatesInterval = settings.getUpdatesInterval();
-        boolean isSignificantlyNewer = timeDelta > updatesInterval;
-        boolean isSignificantlyOlder = timeDelta < -updatesInterval;
-        if (isSignificantlyNewer) {
-            return true;
-        } else if (isSignificantlyOlder) {
-            return false;
-        }
-        int accuracyDelta = (int) (newLocation.getAccuracy() - currentLocation.getAccuracy());
-        boolean isLessAccurate = accuracyDelta > 0;
-        boolean isMoreAccurate = accuracyDelta < 0;
-        boolean isSignificantlyLessAccurate = accuracyDelta > BAD_ACCURACY_THRESHOLD;
-        boolean isFromSameProvider = isSameProvider(newLocation.getProvider(), currentLocation.getProvider());
-        boolean isNewer = timeDelta > 0;
-        if (isMoreAccurate) {
-            return true;
-        } else if (isNewer && !isLessAccurate) {
-            return true;
-        } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
-            return true;
+        } else {
+            long timeDelta = newLocation.getTime() - currentLocation.getTime();
+            int accuracyDelta = (int) (newLocation.getAccuracy() - currentLocation.getAccuracy());
+
+            if (isSignificantlyNewer(timeDelta)) {
+                return true;
+            } else if (isSignificantlyOlder(timeDelta)) {
+                return false;
+            } else if (isMoreAccurate(accuracyDelta)) {
+                return true;
+            } else if (isABadButAcceptableLocation(timeDelta, accuracyDelta, newLocation, currentLocation)) {
+                return true;
+            }
         }
         return false;
+    }
+
+    private boolean isABadButAcceptableLocation(long timeDelta, int accuracyDelta, Location newLocation, Location currentLocation) {
+        boolean isNewer = timeDelta > 0;
+        boolean isBellowBadAccuracyThreshold = accuracyDelta < BAD_ACCURACY_THRESHOLD;
+        boolean isFromSameProvider = isSameProvider(newLocation.getProvider(), currentLocation.getProvider());
+
+        return isNewer && isBellowBadAccuracyThreshold && isFromSameProvider;
+    }
+
+    private boolean isMoreAccurate(int accuracyDelta) {
+        return accuracyDelta < 0;
+    }
+
+    private boolean isSignificantlyNewer(long timeDelta) {
+        return timeDelta > settings.getUpdatesInterval();
+    }
+
+    private boolean isSignificantlyOlder(long timeDelta) {
+        return timeDelta < -settings.getUpdatesInterval();
     }
 
     private boolean isSameProvider(String provider1, String provider2) {

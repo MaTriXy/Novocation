@@ -8,13 +8,14 @@ import robolectricsetup.NovocationTestRunner;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 @RunWith(NovocationTestRunner.class)
 public class LocationAccuracyShould {
 
     private static final String NOT_IMPORTANT = "";
-    private static final String NOT_IMPORTANT_PROVIDER = null;
     private static final Location INVALID_LOCATION = null;
+    private static final String INVALID_PROVIDER = null;
     private static final int BETTER_ACCURACY = 50;
     private static final long ACCURACY_BELOW_THRESHOLD = LocationAccuracy.BAD_ACCURACY_THRESHOLD - 1;
     private static final int WORST_ACCURACY = 600;
@@ -22,23 +23,23 @@ public class LocationAccuracyShould {
     private static final long LOCATION_EXPIRY_TIME = ONE_SECOND * 60 * 4;
     private static final long NOW = System.currentTimeMillis();
     private static final long ONE_SECOND_AGO = NOW - ONE_SECOND;
-    private static final long OUTDATED = NOW - ( LOCATION_EXPIRY_TIME + 1L );
+    private static final long OUTDATED = NOW - (LOCATION_EXPIRY_TIME + 1L);
 
     LocatorSettings settings = new LocatorSettings(NOT_IMPORTANT, NOT_IMPORTANT);
     LocationAccuracy locationAccuracy = new LocationAccuracy(settings);
-    Location newLocation = new Location(NOT_IMPORTANT_PROVIDER);
-    Location currentLocation = new Location(NOT_IMPORTANT_PROVIDER);
+    Location newLocation = new Location(NOT_IMPORTANT);
+    Location currentLocation = new Location(NOT_IMPORTANT);
 
     @Test
     public void be_better_if_the_current_location_is_invalid() {
         currentLocation = INVALID_LOCATION;
-        assertThat(locationIsBetter(), is(true));
+        assertThat(newLocationIsBetter(), is(true));
     }
 
     @Test
-    public void not_be_better_if_the_current_location_is_the_same_as_the_new_one() {
+    public void not_be_better_if_both_locations_are_the_same() {
         currentLocation = newLocation;
-        assertThat(locationIsBetter(), is(false));
+        assertThat(newLocationIsBetter(), is(false));
     }
 
     @Test
@@ -46,7 +47,7 @@ public class LocationAccuracyShould {
         settings.setUpdatesInterval(LOCATION_EXPIRY_TIME);
         currentLocation.setTime(OUTDATED);
         newLocation.setTime(NOW);
-        assertThat(locationIsBetter(), is(true));
+        assertThat(newLocationIsBetter(), is(true));
     }
 
     @Test
@@ -54,21 +55,14 @@ public class LocationAccuracyShould {
         settings.setUpdatesInterval(LOCATION_EXPIRY_TIME);
         currentLocation.setTime(NOW);
         newLocation.setTime(OUTDATED);
-        assertThat(locationIsBetter(), is(false));
+        assertThat(newLocationIsBetter(), is(false));
     }
 
     @Test
-    public void be_better_if_the_new_location_accuracy_value_is_better() {
+    public void be_better_if_the_new_location_is_more_recent_and_more_accurate() {
+        newLocationIsMoreRecent();
         newLocationIsMoreAccurate();
-        assertThat(locationIsBetter(), is(true));
-    }
-
-    @Test
-    public void not_be_better_if_the_new_location_is_less_accurate_and_from_the_same_time() {
-        newLocationIsLessAccurate();
-        newLocation.setTime(NOW);
-        currentLocation.setTime(NOW);
-        assertThat(locationIsBetter(), is(false));
+        assertThat(newLocationIsBetter(), is(true));
     }
 
     @Test
@@ -76,7 +70,21 @@ public class LocationAccuracyShould {
         newLocationIsMoreAccurate();
         newLocation.setTime(ONE_SECOND_AGO);
         currentLocation.setTime(NOW);
-        assertThat(locationIsBetter(), is(true));
+        assertThat(newLocationIsBetter(), is(true));
+    }
+
+    @Test
+    public void be_better_if_the_new_location_is_more_accurate_and_both_locations_are_from_the_same_time() {
+        newLocationIsMoreAccurate();
+        setBothLocationsTimeToBeTheSame();
+        assertThat(newLocationIsBetter(), is(true));
+    }
+
+    @Test
+    public void not_be_better_if_the_new_location_is_less_accurate_and_both_locations_are_from_the_same_time() {
+        newLocationIsLessAccurate();
+        setBothLocationsTimeToBeTheSame();
+        assertThat(newLocationIsBetter(), is(false));
     }
 
     @Test
@@ -84,21 +92,21 @@ public class LocationAccuracyShould {
         newLocationIsMoreRecent();
         newLocation.setAccuracy(BETTER_ACCURACY);
         currentLocation.setAccuracy(BETTER_ACCURACY);
-        assertThat(locationIsBetter(), is(true));
+        assertThat(newLocationIsBetter(), is(true));
     }
 
     @Test
     public void not_be_better_if_the_new_location_is_more_recent_but_less_accurate() {
         newLocationIsMoreRecent();
         newLocationIsLessAccurate();
-        assertThat(locationIsBetter(), is(false));
+        assertThat(newLocationIsBetter(), is(false));
     }
 
     @Test
     public void be_better_if_the_new_location_is_more_recent_and_less_accurate_but_below_a_minimum_accuracy_threshold() {
         newLocationIsMoreRecent();
         newLocationIsLessAccurateButBelowThreshold();
-        assertThat(locationIsBetter(), is(true));
+        assertThat(newLocationIsBetter(), is(true));
     }
 
     @Test
@@ -106,7 +114,28 @@ public class LocationAccuracyShould {
         newLocationIsMoreRecent();
         newLocationIsLessAccurateButBelowThreshold();
         newLocation.setProvider("different provider");
-        assertThat(locationIsBetter(), is(false));
+        assertThat(newLocationIsBetter(), is(false));
+    }
+
+    @Test
+    public void handle_a_location_having_an_invalid_provider() {
+        newLocation.setProvider(INVALID_PROVIDER);
+        try {
+            newLocationIsBetter();
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void handle_both_locations_having_an_invalid_providers() {
+        newLocation.setProvider(INVALID_PROVIDER);
+        currentLocation.setProvider(INVALID_PROVIDER);
+        try {
+            newLocationIsBetter();
+        } catch (Exception e) {
+            fail();
+        }
     }
 
     private void newLocationIsMoreRecent() {
@@ -129,7 +158,12 @@ public class LocationAccuracyShould {
         currentLocation.setAccuracy(BETTER_ACCURACY);
     }
 
-    private boolean locationIsBetter() {
+    private void setBothLocationsTimeToBeTheSame() {
+        newLocation.setTime(NOW);
+        currentLocation.setTime(NOW);
+    }
+
+    private boolean newLocationIsBetter() {
         return locationAccuracy.isBetterLocation(newLocation, currentLocation);
     }
 
