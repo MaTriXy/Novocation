@@ -50,7 +50,7 @@ public class LegacyLastLocationFinder implements LastLocationFinder {
 	public Location getLastBestLocation(int minDistance, long minTime) {
 		Location bestResult = null;
 		float bestAccuracy = Float.MAX_VALUE;
-		long bestTime = Long.MAX_VALUE;
+		long bestTime = Long.MIN_VALUE;
 
 		// Iterate through all the providers on the system, keeping
 		// note of the most accurate result within the acceptable time limit.
@@ -61,12 +61,12 @@ public class LegacyLastLocationFinder implements LastLocationFinder {
 			if (location != null) {
 				float accuracy = location.getAccuracy();
 				long time = location.getTime();
-				if (time < minTime && accuracy < bestAccuracy) {
+				if (time > minTime && accuracy < bestAccuracy) {
 					bestResult = location;
 					bestAccuracy = accuracy;
 					bestTime = time;
-				} else if (time > minTime && bestAccuracy == Float.MAX_VALUE
-						&& time < bestTime) {
+				} else if (time < minTime && bestAccuracy == Float.MAX_VALUE
+						&& time > bestTime) {
 					bestResult = location;
 					bestTime = time;
 				}

@@ -46,7 +46,7 @@ public class GingerbreadLastLocationFinder implements LastLocationFinder {
 	public GingerbreadLastLocationFinder(LocationManager locationManager, Context context) {
 		this.context = context;
 		this.locationManager = locationManager;
-		criteria.setAccuracy(Criteria.ACCURACY_LOW);
+		criteria.setAccuracy(Criteria.ACCURACY_COARSE);
 		Intent updateIntent = new Intent(SINGLE_LOCATION_UPDATE_ACTION);
 		singleUpatePI = PendingIntent.getBroadcast(context, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
