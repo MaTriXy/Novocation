@@ -26,26 +26,27 @@ import com.novoda.location.LocatorSettings;
  * http://developer.android.com/guide/topics/location/obtaining-user-location.html
  */
 public class LocationAccuracy {
-	
-	private final LocatorSettings settings;
+
+    static final int BAD_ACCURACY_THRESHOLD = 200;
+    private final LocatorSettings settings;
 
     public LocationAccuracy(LocatorSettings settings) {
-	    this.settings = settings;
+        this.settings = settings;
     }
 
     public boolean isWorseLocation(Location location, Location currentBestLocation) {
-		return !isBetterLocation(location, currentBestLocation);
-	}
-	
-	public boolean isBetterLocation(Location newLocation, Location currentLocation) {
-	    if (currentLocation == null) {
-	        return true;
-	    }
-	    long timeDelta = newLocation.getTime() - currentLocation.getTime();
-	    long updatesInterval = settings.getUpdatesInterval();
+        return !isBetterLocation(location, currentBestLocation);
+    }
+
+    public boolean isBetterLocation(Location newLocation, Location currentLocation) {
+        if (currentLocation == null) {
+            return true;
+        }
+        long timeDelta = newLocation.getTime() - currentLocation.getTime();
+        long updatesInterval = settings.getUpdatesInterval();
         boolean isSignificantlyNewer = timeDelta > updatesInterval;
-	    boolean isSignificantlyOlder = timeDelta < -updatesInterval;
-	    if (isSignificantlyNewer) {
+        boolean isSignificantlyOlder = timeDelta < -updatesInterval;
+        if (isSignificantlyNewer) {
             return true;
         } else if (isSignificantlyOlder) {
             return false;
@@ -53,24 +54,24 @@ public class LocationAccuracy {
         int accuracyDelta = (int) (newLocation.getAccuracy() - currentLocation.getAccuracy());
         boolean isLessAccurate = accuracyDelta > 0;
         boolean isMoreAccurate = accuracyDelta < 0;
-        boolean isSignificantlyLessAccurate = accuracyDelta > 200;
-        boolean isFromSameProvider = isSameProvider(newLocation.getProvider(),currentLocation.getProvider());
+        boolean isSignificantlyLessAccurate = accuracyDelta > BAD_ACCURACY_THRESHOLD;
+        boolean isFromSameProvider = isSameProvider(newLocation.getProvider(), currentLocation.getProvider());
         boolean isNewer = timeDelta > 0;
         if (isMoreAccurate) {
             return true;
-	    } else if (isNewer && !isLessAccurate) {
-	        return true;
-	    } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
-	        return true;
-	    }
-	    return false;
-	}
-	
-	private boolean isSameProvider(String provider1, String provider2) {
-	    if (provider1 == null) {
-	      return provider2 == null;
-	    }
-	    return provider1.equals(provider2);
-	}
-	
+        } else if (isNewer && !isLessAccurate) {
+            return true;
+        } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isSameProvider(String provider1, String provider2) {
+        if (provider1 == null) {
+            return provider2 == null;
+        }
+        return provider1.equals(provider2);
+    }
+
 }
