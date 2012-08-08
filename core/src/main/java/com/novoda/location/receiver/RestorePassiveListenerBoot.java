@@ -50,7 +50,7 @@ public class RestorePassiveListenerBoot extends BroadcastReceiver {
 
 	private PendingIntent createPendingIntent(Context context) {
 		Intent passiveIntent = new Intent(context, PassiveLocationChanged.class);
-        PendingIntent locationListenerPassivePendingIntent = PendingIntent.getActivity(context, 0,
+        PendingIntent locationListenerPassivePendingIntent = PendingIntent.getBroadcast(context, 0,
                 passiveIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		return locationListenerPassivePendingIntent;
 	}
