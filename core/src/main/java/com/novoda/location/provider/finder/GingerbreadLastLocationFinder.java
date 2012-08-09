@@ -70,8 +70,7 @@ public class GingerbreadLastLocationFinder implements LastLocationFinder {
 					bestResult = location;
 					bestAccuracy = accuracy;
 					bestTime = time;
-				} else if (time < minTime && bestAccuracy == Float.MAX_VALUE
-						&& time > bestTime) {
+				} else if (time < minTime && bestAccuracy == Float.MAX_VALUE && time > bestTime) {
 					bestResult = location;
 					bestTime = time;
 				}
