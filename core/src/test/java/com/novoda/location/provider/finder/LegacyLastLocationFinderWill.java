@@ -1,21 +1,26 @@
 package com.novoda.location.provider.finder;
 
 import android.content.Context;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Looper;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.stubbing.OngoingStubbing;
 import robolectricsetup.NovocationTestRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.location.LocationManager.*;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Mockito.*;
 
 @RunWith(NovocationTestRunner.class)
 public class LegacyLastLocationFinderWill {
@@ -28,16 +33,16 @@ public class LegacyLastLocationFinderWill {
 
     static final Location INVALID_LOCATION = null;
     static final float INVALID_ACCURACY = Float.MAX_VALUE;
+    static final String INVALID_VALUE = null;
 
     static final String PROVIDER_ONE = "provider one";
     static final String PROVIDER_TWO = "provider two";
 
     final Context context = mock(Context.class);
     final LocationManager locationManager = mock(LocationManager.class);
-    final Location networkLocation = new Location(NETWORK_PROVIDER);
-    final Location gpsLocation = new Location(GPS_PROVIDER);
     final List<String> providers = new ArrayList<String>();
     final LegacyLastLocationFinder lastLocationFinder = new LegacyLastLocationFinder(locationManager, context);
+
 
     @Before
     public void setUp() throws Exception {
@@ -129,4 +134,65 @@ public class LegacyLastLocationFinderWill {
         Location lastBestLocation = getLastBestLocation();
         assertThat(lastBestLocation, is(secondLocation));
     }
+
+    @Test
+    public void request_location_updates_if_the_best_location_time_is_below_the_minimum_time() throws Exception {
+        addLocationListener();
+        addLocationToManager(LESS_RECENT_TIME, MIN_ACCURACY, PROVIDER_ONE);
+        addBestProviderForCriteria(PROVIDER_ONE);
+
+        getLastBestLocation();
+
+        verify(locationManager).requestLocationUpdates(anyString(), anyLong(), anyLong(), any(LocationListener.class), any(Looper.class));
+    }
+
+    @Test
+    public void request_location_updates_if_the_best_location_accuracy_is_worst_than_the_minimum_required() throws Exception {
+        addLocationListener();
+        addLocationToManager(RECENT_TIME, MIN_ACCURACY * 2, PROVIDER_ONE);
+        addBestProviderForCriteria(PROVIDER_ONE);
+
+        getLastBestLocation();
+
+        verify(locationManager).requestLocationUpdates(anyString(), anyLong(), anyLong(), any(LocationListener.class), any(Looper.class));
+    }
+
+    @Test
+    public void not_request_location_updates_if_no_provider_matches_the_required_criteria() throws Exception {
+        addLocationListener();
+        addBestProviderForCriteria(INVALID_VALUE);
+
+        getLastBestLocation();
+
+        verify(locationManager, never()).requestLocationUpdates(anyString(), anyLong(), anyLong(), any(LocationListener.class), any(Looper.class));
+    }
+
+    @Test
+    public void not_request_location_updates_if_a_location_matching_the_criteria_is_found() throws Exception {
+        addLocationListener();
+        addLocationToManager(RECENT_TIME, MIN_ACCURACY / 2, PROVIDER_ONE);
+        addBestProviderForCriteria(INVALID_VALUE);
+
+        getLastBestLocation();
+
+        verify(locationManager, never()).requestLocationUpdates(anyString(), anyLong(), anyLong(), any(LocationListener.class), any(Looper.class));
+    }
+
+    private void addLocationListener() {
+        LocationListener locationListener = mock(LocationListener.class);
+        lastLocationFinder.setChangedLocationListener(locationListener);
+    }
+
+    private void addBestProviderForCriteria(String provider) {
+        when(locationManager.getBestProvider(any(Criteria.class), anyBoolean())).thenReturn(provider);
+    }
+
+
+    @Test
+    public void stop_location_updates_when_asked_to() throws Exception {
+        lastLocationFinder.cancel();
+
+        verify(locationManager).removeUpdates(any(LocationListener.class));
+    }
+
 }
