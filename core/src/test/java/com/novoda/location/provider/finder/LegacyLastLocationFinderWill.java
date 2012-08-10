@@ -7,10 +7,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Looper;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.stubbing.OngoingStubbing;
 import robolectricsetup.NovocationTestRunner;
 
 import java.util.ArrayList;
@@ -143,7 +141,7 @@ public class LegacyLastLocationFinderWill {
 
         getLastBestLocation();
 
-        verify(locationManager).requestLocationUpdates(anyString(), anyLong(), anyLong(), any(LocationListener.class), any(Looper.class));
+        verifyLocationUpdatesAreRequestedFor(PROVIDER_ONE);
     }
 
     @Test
@@ -154,7 +152,7 @@ public class LegacyLastLocationFinderWill {
 
         getLastBestLocation();
 
-        verify(locationManager).requestLocationUpdates(anyString(), anyLong(), anyLong(), any(LocationListener.class), any(Looper.class));
+        verifyLocationUpdatesAreRequestedFor(PROVIDER_ONE);
     }
 
     @Test
@@ -164,7 +162,7 @@ public class LegacyLastLocationFinderWill {
 
         getLastBestLocation();
 
-        verify(locationManager, never()).requestLocationUpdates(anyString(), anyLong(), anyLong(), any(LocationListener.class), any(Looper.class));
+        verifyLocationUpdatesAre_NOT_Requested();
     }
 
     @Test
@@ -175,7 +173,7 @@ public class LegacyLastLocationFinderWill {
 
         getLastBestLocation();
 
-        verify(locationManager, never()).requestLocationUpdates(anyString(), anyLong(), anyLong(), any(LocationListener.class), any(Looper.class));
+        verifyLocationUpdatesAre_NOT_Requested();
     }
 
     private void addLocationListener() {
@@ -187,6 +185,13 @@ public class LegacyLastLocationFinderWill {
         when(locationManager.getBestProvider(any(Criteria.class), anyBoolean())).thenReturn(provider);
     }
 
+    private void verifyLocationUpdatesAreRequestedFor(String provider) {
+        verify(locationManager).requestLocationUpdates(eq(provider), anyLong(), anyLong(), any(LocationListener.class), any(Looper.class));
+    }
+
+    private void verifyLocationUpdatesAre_NOT_Requested() {
+        verify(locationManager, never()).requestLocationUpdates(anyString(), anyLong(), anyLong(), any(LocationListener.class), any(Looper.class));
+    }
 
     @Test
     public void stop_location_updates_when_asked_to() throws Exception {

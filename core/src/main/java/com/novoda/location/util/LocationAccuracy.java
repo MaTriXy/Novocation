@@ -19,14 +19,9 @@ import android.location.Location;
 
 import com.novoda.location.LocatorSettings;
 
-/*
- * This code is copied from
- * TODO add some sort of google license
- * 
- * http://developer.android.com/guide/topics/location/obtaining-user-location.html
- */
 public class LocationAccuracy {
 
+    //TODO this should be part of the settings
     static final int BAD_ACCURACY_THRESHOLD = 200;
     private final LocatorSettings settings;
 
