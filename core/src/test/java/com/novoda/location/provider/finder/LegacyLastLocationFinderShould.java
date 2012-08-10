@@ -6,22 +6,27 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Looper;
+import com.novoda.location.provider.LastLocationFinder;
+import com.xtremelabs.robolectric.Robolectric;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.stubbing.Answer;
 import robolectricsetup.NovocationTestRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.*;
 
 @RunWith(NovocationTestRunner.class)
-public class LegacyLastLocationFinderWill {
+public class LegacyLastLocationFinderShould {
 
     static final int MIN_ACCURACY = 100;
     static final long MIN_TIME = System.currentTimeMillis() - (1000 * 60 * 4);
@@ -39,7 +44,7 @@ public class LegacyLastLocationFinderWill {
     final Context context = mock(Context.class);
     final LocationManager locationManager = mock(LocationManager.class);
     final List<String> providers = new ArrayList<String>();
-    final LegacyLastLocationFinder lastLocationFinder = new LegacyLastLocationFinder(locationManager, context);
+    final LastLocationFinder lastLocationFinder = new LegacyLastLocationFinder(locationManager, context);
 
 
     @Before
@@ -166,7 +171,7 @@ public class LegacyLastLocationFinderWill {
     }
 
     @Test
-    public void not_request_location_updates_if_a_location_matching_the_criteria_is_found() throws Exception {
+    public void not_request_location_updates_if_a_location_satisfying_the_time_and_distance_requirements_is_found() throws Exception {
         addLocationListener();
         addLocationToManager(RECENT_TIME, MIN_ACCURACY / 2, PROVIDER_ONE);
         addBestProviderForCriteria(INVALID_VALUE);
