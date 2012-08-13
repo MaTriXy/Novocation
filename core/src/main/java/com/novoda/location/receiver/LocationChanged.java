@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * Code modified by Novoda Ltd, 2011.
  */
 package com.novoda.location.receiver;
@@ -30,28 +30,28 @@ public class LocationChanged extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent i) {
-    	if(i == null) {
-    		return;
-    	}
-    	if(providerStatusHasChanged(i)){
-    	    broadcastProviderStatusHasChanged(context, i);
-    	}
-    	
+        if (i == null) {
+            return;
+        }
+        if (providerStatusHasChanged(i)) {
+            broadcastProviderStatusHasChanged(context, i);
+        }
+
         if (locationHasChanged(i)) {
-            LocatorFactory.setLocation(getLocation(i));
+            updateLocation(i);
         }
     }
-    
+
     private boolean providerStatusHasChanged(Intent i) {
         return i.hasExtra(LocationManager.KEY_PROVIDER_ENABLED);
     }
 
     private void broadcastProviderStatusHasChanged(Context context, Intent i) {
         Intent providerStatusChanged;
-        if(providerHasBeenEnabled(i)){
+        if (providerHasBeenEnabled(i)) {
             providerStatusChanged = new Intent(Constants.ACTIVE_LOCATION_UPDATE_PROVIDER_ENABLED_ACTION);
-        }else{
-            providerStatusChanged = new Intent(Constants.ACTIVE_LOCATION_UPDATE_PROVIDER_DISABLED_ACTION);    
+        } else {
+            providerStatusChanged = new Intent(Constants.ACTIVE_LOCATION_UPDATE_PROVIDER_DISABLED_ACTION);
         }
         context.sendBroadcast(providerStatusChanged);
     }
@@ -59,12 +59,16 @@ public class LocationChanged extends BroadcastReceiver {
     private boolean providerHasBeenEnabled(Intent i) {
         return i.getBooleanExtra(LocationManager.KEY_PROVIDER_ENABLED, false);
     }
-    
+
     private boolean locationHasChanged(Intent intent) {
-    	return intent.hasExtra(LocationManager.KEY_LOCATION_CHANGED);
+        return intent.hasExtra(LocationManager.KEY_LOCATION_CHANGED);
     }
-    
+
+    protected void updateLocation(Intent i) {
+        LocatorFactory.setLocation(getLocation(i));
+    }
+
     private Location getLocation(Intent intent) {
-    	return (Location) intent.getExtras().get(LocationManager.KEY_LOCATION_CHANGED);
+        return (Location) intent.getExtras().get(LocationManager.KEY_LOCATION_CHANGED);
     }
 }
