@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * Code modified by Novoda Ltd, 2011.
  */
 package com.novoda.location.receiver;
@@ -24,10 +24,12 @@ import android.location.Location;
 import android.location.LocationManager;
 
 import com.novoda.location.LocatorFactory;
+import com.novoda.location.provider.LastLocationFinder;
 import com.novoda.location.provider.LocationProviderFactory;
 import com.novoda.location.provider.finder.LegacyLastLocationFinder;
 import com.novoda.location.provider.store.SettingsDao;
 
+//TODO this logic needs to be extracted to a java object with the dependencies injected through the constructor
 public class PassiveLocationChanged extends BroadcastReceiver {
 
     @Override
@@ -41,15 +43,17 @@ public class PassiveLocationChanged extends BroadcastReceiver {
             // This update came from a recurring alarm. We need to determine if
             // there has been a more recent Location received than the last
             // location we used.
-        	SettingsDao settings = new LocationProviderFactory().getSettingsDao();
+
+            //TODO this shouldn't be using the settingsDAO but the LocatorSettings
+            SettingsDao settings = new LocationProviderFactory().getSettingsDao();
             long locationUpdateInterval = settings.getPassiveLocationInterval(context);
             int locationUpdateDistanceDiff = settings.getPassiveLocationDistance(context);
+
             // Get the best last location detected from the providers.
-            
             long delta = System.currentTimeMillis() - locationUpdateInterval;
-            
+
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            LegacyLastLocationFinder lastLocationFinder = new LegacyLastLocationFinder(locationManager, context);
+            LastLocationFinder lastLocationFinder = getLastLocationFinder(context, locationManager);
             location = lastLocationFinder.getLastBestLocation(locationUpdateDistanceDiff, delta);
             // Check if the last location detected from the providers is either
             // too soon, or too close to the last value we used. If it is within
@@ -60,19 +64,24 @@ public class PassiveLocationChanged extends BroadcastReceiver {
         }
     }
 
-	private void verifyAndUpdateLocation(Location location, int locationUpdateDistanceDiff, long delta) {
-		Location currentLocation = LocatorFactory.getLocation();
-		if ((currentLocation != null && currentLocation.getTime() > delta)
-		        || (currentLocation.distanceTo(location) < locationUpdateDistanceDiff)) {
-			return;
-		}
-		updateLocation(location);
-	}
+    protected LastLocationFinder getLastLocationFinder(Context context, LocationManager locationManager) {
+        //TODO the LocationFinder should be built by the factory
+        return new LegacyLastLocationFinder(locationManager, context);
+    }
 
-	private void updateLocation(Location location) {
-		if (location == null) {
-			return;
-		}
-		LocatorFactory.setLocation(location);
-	}
+    private void verifyAndUpdateLocation(Location location, int locationUpdateDistanceDiff, long delta) {
+        Location currentLocation = LocatorFactory.getLocation();
+        if (location != null && currentLocation != null) {
+            if (currentLocation.getTime() <= delta && currentLocation.distanceTo(location) >= locationUpdateDistanceDiff) {
+                updateLocation(location);
+            }
+        }
+    }
+
+    private void updateLocation(Location location) {
+        if (location == null) {
+            return;
+        }
+        LocatorFactory.setLocation(location);
+    }
 }

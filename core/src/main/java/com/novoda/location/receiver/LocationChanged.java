@@ -26,6 +26,7 @@ import android.location.LocationManager;
 import com.novoda.location.Constants;
 import com.novoda.location.LocatorFactory;
 
+//TODO this behaviour needs to be extracted to a separate class that doesn't extend BroadcastReceiver
 public class LocationChanged extends BroadcastReceiver {
 
     @Override

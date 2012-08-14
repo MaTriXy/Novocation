@@ -38,4 +38,17 @@ public class LocatorFactory {
 		return getInstance().getLocation();
 	}
 
+    /**
+     *
+     * This is here only for testing - this will be replaced and should not be used
+     *
+     * TODO refactor the rest of the library to not depend on the LocatorFactory statically. Only then can this be removed
+     *
+     * @param locator
+     */
+    @Deprecated
+    public static void setLocator(Locator locator) {
+        instance = locator;
+    }
+
 }
