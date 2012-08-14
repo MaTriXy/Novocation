@@ -21,6 +21,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
+//TODO rename this class
+//TODO should the LocationChanged and PassiveLocation listeners be registered / unregistered as well?
+
 public class UnregisterPassiveListenerOnLowBattery extends BroadcastReceiver {
     
     @Override
@@ -39,6 +42,7 @@ public class UnregisterPassiveListenerOnLowBattery extends BroadcastReceiver {
 		return Intent.ACTION_BATTERY_LOW.equals(intent.getAction());
 	}
 
+    //TODO extract this to a separate class
 	private void changeStateToComponent(Context c, int state) {
 		PackageManager pm = c.getPackageManager();
 		ComponentName cr = new ComponentName(c, PassiveLocationChanged.class);

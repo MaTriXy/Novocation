@@ -27,6 +27,7 @@ import com.novoda.location.provider.LocationProviderFactory;
 import com.novoda.location.provider.LocationUpdateRequester;
 import com.novoda.location.provider.store.SettingsDao;
 
+//TODO extract the logic out of this receiver
 public class RestorePassiveListenerBoot extends BroadcastReceiver {
 
     @Override

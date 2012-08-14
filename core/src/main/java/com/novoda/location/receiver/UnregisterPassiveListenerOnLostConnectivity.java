@@ -25,6 +25,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+//TODO rename this class - its misleading. Its enabling, not unregistering and its not only the Passive Listener
 public class UnregisterPassiveListenerOnLostConnectivity extends BroadcastReceiver {
 	
     @Override
