@@ -27,7 +27,7 @@ public interface SettingsDao {
 
 	void persistSettingsToPreferences(Context context, LocatorSettings settings);
 
-	boolean isRunOnce(Context context);
+	boolean hasApplicationRunOnce(Context context);
 
 	boolean isPassiveLocationChanges(Context context);
 

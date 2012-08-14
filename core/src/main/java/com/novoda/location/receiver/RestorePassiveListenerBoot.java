@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * Code modified by Novoda Ltd, 2011.
  */
 package com.novoda.location.receiver;
@@ -31,27 +31,22 @@ public class RestorePassiveListenerBoot extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context c, Intent intent) {
-    	SettingsDao settingsDao = new LocationProviderFactory().getSettingsDao();
-        if (!settingsDao.isRunOnce(c)) {
-        	return;
+        SettingsDao settingsDao = new LocationProviderFactory().getSettingsDao();
+        if (settingsDao.hasApplicationRunOnce(c) && settingsDao.isPassiveLocationChanges(c)) {
+            requestPassiveLocationUpdates(c);
         }
-        if (!settingsDao.isPassiveLocationChanges(c)) {
-        	return;
-        }
-        requestPassiveLocationUpdates(c);
     }
-    
-	private void requestPassiveLocationUpdates(Context context) {
-		LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+    private void requestPassiveLocationUpdates(Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         LocationProviderFactory factory = new LocationProviderFactory();
         LocationUpdateRequester lur = factory.getLocationUpdateRequester(lm);
         lur.requestPassiveLocationUpdates(context, createPendingIntent(context));
-	}
+    }
 
-	private PendingIntent createPendingIntent(Context context) {
-		Intent passiveIntent = new Intent(context, PassiveLocationChanged.class);
-        PendingIntent locationListenerPassivePendingIntent = PendingIntent.getBroadcast(context, 0,
-                passiveIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		return locationListenerPassivePendingIntent;
-	}
+    private PendingIntent createPendingIntent(Context context) {
+        Intent passiveIntent = new Intent(context, PassiveLocationChanged.class);
+        PendingIntent locationListenerPassivePendingIntent = PendingIntent.getBroadcast(context, 0, passiveIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return locationListenerPassivePendingIntent;
+    }
 }

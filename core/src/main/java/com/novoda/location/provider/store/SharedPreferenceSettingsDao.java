@@ -58,7 +58,7 @@ public class SharedPreferenceSettingsDao implements SettingsDao {
 	}
 
     @Override
-	public boolean isRunOnce(Context context) {
+	public boolean hasApplicationRunOnce(Context context) {
 		return getSharedPrefs(context).getBoolean(SP_KEY_RUN_ONCE, false);
 	}
     
