@@ -25,7 +25,8 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-//TODO rename this class - its misleading. Its enabling, not unregistering and its not only the Passive Listener
+//TODO rename this class - its misleading. Its enabling, not unregistering, only when connectivity changes to conneced, and its not only the Passive Listener
+//TODO should this disable on lost connectivity?
 public class UnregisterPassiveListenerOnLostConnectivity extends BroadcastReceiver {
 	
     @Override
@@ -33,17 +34,12 @@ public class UnregisterPassiveListenerOnLostConnectivity extends BroadcastReceiv
         if (isNotConnected(c)) {
         	return;
         }
+
+        //TODO is there a point in enabling itself?
         changeStateToComponent(c, UnregisterPassiveListenerOnLostConnectivity.class);
         changeStateToComponent(c, LocationChanged.class);
         changeStateToComponent(c, PassiveLocationChanged.class);
     }
-
-	private void changeStateToComponent(Context context, Class<? extends BroadcastReceiver> clazz) {
-		PackageManager pm = context.getPackageManager();
-		ComponentName cr = new ComponentName(context, clazz);
-        pm.setComponentEnabledSetting(cr, PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
-                PackageManager.DONT_KILL_APP);
-	}
 
 	private boolean isNotConnected(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -56,4 +52,11 @@ public class UnregisterPassiveListenerOnLostConnectivity extends BroadcastReceiv
 		}
 		return true;
 	}
+
+    private void changeStateToComponent(Context context, Class<? extends BroadcastReceiver> clazz) {
+        PackageManager pm = context.getPackageManager();
+        ComponentName cr = new ComponentName(context, clazz);
+        pm.setComponentEnabledSetting(cr, PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
+                PackageManager.DONT_KILL_APP);
+    }
 }
