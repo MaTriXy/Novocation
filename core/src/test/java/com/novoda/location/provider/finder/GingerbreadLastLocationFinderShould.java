@@ -36,7 +36,6 @@ public class GingerbreadLastLocationFinderShould {
 
     static final Location INVALID_LOCATION = null;
     static final float INVALID_ACCURACY = Float.MAX_VALUE;
-    static final String INVALID_VALUE = null;
 
     static final String PROVIDER_ONE = "provider one";
     static final String PROVIDER_TWO = "provider two";

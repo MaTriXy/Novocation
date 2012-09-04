@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import robolectricsetup.NovocationTestRunner;
 
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -25,16 +26,16 @@ public class SingleUpdateListenerShould {
 
     @Test
     public void unregister_itself_from_the_location_manager() throws Exception {
-        lastLocationFinder.singeUpdateListener.onLocationChanged(null);
+        lastLocationFinder.singleUpdateListener.onLocationChanged(null);
 
-        verify(locationManager).removeUpdates(eq(lastLocationFinder.singeUpdateListener));
+        verify(locationManager).removeUpdates(eq(lastLocationFinder.singleUpdateListener));
     }
 
     @Test
     public void not_call_the_location_listener_if_the_location_is_invalid() throws Exception {
         lastLocationFinder.setChangedLocationListener(locationListener);
 
-        lastLocationFinder.singeUpdateListener.onLocationChanged(INVALID_LOCATION);
+        lastLocationFinder.singleUpdateListener.onLocationChanged(INVALID_LOCATION);
 
         verify(locationListener, never()).onLocationChanged(any(Location.class));
     }
@@ -44,7 +45,7 @@ public class SingleUpdateListenerShould {
         lastLocationFinder.setChangedLocationListener(locationListener);
         Location location = mock(Location.class);
 
-        lastLocationFinder.singeUpdateListener.onLocationChanged(location);
+        lastLocationFinder.singleUpdateListener.onLocationChanged(location);
 
         verify(locationListener).onLocationChanged(eq(location));
     }

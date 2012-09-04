@@ -81,19 +81,19 @@ public class LegacyLastLocationFinder implements LastLocationFinder {
         if (locationListener != null && (bestTime < minTime || bestAccuracy > minDistance)) {
             String provider = locationManager.getBestProvider(criteria, true);
             if (provider != null) {
-                locationManager.requestLocationUpdates(provider, 0, 0, singeUpdateListener, context.getMainLooper());
+                locationManager.requestLocationUpdates(provider, 0, 0, singleUpdateListener, context.getMainLooper());
             }
         }
         return bestResult;
     }
 
-    protected LocationListener singeUpdateListener = new LocationListener() {
+    protected LocationListener singleUpdateListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             if (locationListener != null && location != null) {
                 locationListener.onLocationChanged(location);
             }
-            locationManager.removeUpdates(singeUpdateListener);
+            locationManager.removeUpdates(singleUpdateListener);
         }
 
         @Override
@@ -116,7 +116,7 @@ public class LegacyLastLocationFinder implements LastLocationFinder {
 
     @Override
     public void cancel() {
-        locationManager.removeUpdates(singeUpdateListener);
+        locationManager.removeUpdates(singleUpdateListener);
     }
 
 }
