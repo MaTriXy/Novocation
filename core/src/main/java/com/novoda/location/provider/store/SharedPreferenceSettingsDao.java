@@ -36,7 +36,7 @@ public class SharedPreferenceSettingsDao implements SettingsDao {
     public void persistSettingsToPreferences(Context context, LocatorSettings settings) {
         Editor editor = getSharedPrefs(context).edit();
         editor.putBoolean(SP_KEY_PASSIVE_LOCATION_CHANGES, settings.shouldEnablePassiveUpdates());
-        editor.putInt(SP_KEY_PASSIVE_LOCATION_UPDATES_DISTANCE_DIFF, settings.getPassiveUpdatesDistance());
+        editor.putFloat(SP_KEY_PASSIVE_LOCATION_UPDATES_DISTANCE_DIFF, settings.getPassiveUpdatesDistance());
         editor.putLong(SP_KEY_PASSIVE_LOCATION_UPDATES_INTERVAL, settings.getPassiveUpdatesInterval());
         editor.putBoolean(SP_KEY_RUN_ONCE, true);
         editor.commit();
@@ -48,8 +48,8 @@ public class SharedPreferenceSettingsDao implements SettingsDao {
     }
 
     @Override
-    public int getPassiveLocationDistance(Context context) {
-        return getSharedPrefs(context).getInt(SP_KEY_PASSIVE_LOCATION_UPDATES_DISTANCE_DIFF, Constants.UPDATES_MAX_DISTANCE);
+    public float getPassiveLocationDistance(Context context) {
+        return getSharedPrefs(context).getFloat(SP_KEY_PASSIVE_LOCATION_UPDATES_DISTANCE_DIFF, Constants.UPDATES_MAX_DISTANCE);
     }
     
     @Override

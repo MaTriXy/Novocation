@@ -23,7 +23,7 @@ public interface SettingsDao {
 
 	long getPassiveLocationInterval(Context context);
 
-	int getPassiveLocationDistance(Context context);
+	float getPassiveLocationDistance(Context context);
 
 	void persistSettingsToPreferences(Context context, LocatorSettings settings);
 

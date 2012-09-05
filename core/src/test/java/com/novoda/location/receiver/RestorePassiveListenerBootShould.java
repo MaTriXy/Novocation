@@ -3,10 +3,13 @@ package com.novoda.location.receiver;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.location.LocationManager;
+import com.novoda.location.LocatorFactory;
 import com.novoda.location.LocatorSettings;
+import com.novoda.location.locator.DefaultLocator;
 import com.novoda.location.provider.LocationProviderFactory;
 import com.novoda.location.provider.store.SettingsDao;
 import com.xtremelabs.robolectric.Robolectric;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +32,15 @@ public class RestorePassiveListenerBootShould {
     @Before
     public void setUp() throws Exception {
         doReturn(locationManager).when(context).getSystemService(eq(Context.LOCATION_SERVICE));
+
+        DefaultLocator locator = new DefaultLocator();
+        locator.prepare(context, settings);
+        LocatorFactory.setLocator(locator);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        LocatorFactory.setLocator(null);
     }
 
     @Test

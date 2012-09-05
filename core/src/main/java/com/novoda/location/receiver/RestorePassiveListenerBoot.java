@@ -23,6 +23,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 
+import com.novoda.location.LocatorFactory;
+import com.novoda.location.LocatorSettings;
 import com.novoda.location.provider.LocationProviderFactory;
 import com.novoda.location.provider.LocationUpdateRequester;
 import com.novoda.location.provider.store.SettingsDao;
@@ -42,7 +44,8 @@ public class RestorePassiveListenerBoot extends BroadcastReceiver {
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         LocationProviderFactory factory = new LocationProviderFactory();
         LocationUpdateRequester lur = factory.getLocationUpdateRequester(lm);
-        lur.requestPassiveLocationUpdates(context, createPendingIntent(context));
+        LocatorSettings settings = LocatorFactory.getInstance().getSettings();
+        lur.requestPassiveLocationUpdates(settings, createPendingIntent(context));
     }
 
     private PendingIntent createPendingIntent(Context context) {

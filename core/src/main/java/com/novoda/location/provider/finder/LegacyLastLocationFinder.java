@@ -47,7 +47,7 @@ public class LegacyLastLocationFinder implements LastLocationFinder {
     }
 
     @Override
-    public Location getLastBestLocation(int minDistance, long minTime) {
+    public Location getLastBestLocation(float minDistance, long minTime) {
         Location bestResult = null;
         float bestAccuracy = Float.MAX_VALUE;
         long bestTime = Long.MIN_VALUE;

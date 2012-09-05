@@ -47,7 +47,7 @@ public class PassiveLocationChanged extends BroadcastReceiver {
             //TODO this shouldn't be using the settingsDAO but the LocatorSettings
             SettingsDao settings = new LocationProviderFactory().getSettingsDao();
             long locationUpdateInterval = settings.getPassiveLocationInterval(context);
-            int locationUpdateDistanceDiff = settings.getPassiveLocationDistance(context);
+            float locationUpdateDistanceDiff = settings.getPassiveLocationDistance(context);
 
             // Get the best last location detected from the providers.
             long delta = System.currentTimeMillis() - locationUpdateInterval;
@@ -69,7 +69,7 @@ public class PassiveLocationChanged extends BroadcastReceiver {
         return new LegacyLastLocationFinder(locationManager, context);
     }
 
-    private void verifyAndUpdateLocation(Location location, int locationUpdateDistanceDiff, long delta) {
+    private void verifyAndUpdateLocation(Location location, float locationUpdateDistanceDiff, long delta) {
         Location currentLocation = LocatorFactory.getLocation();
         if (location != null && currentLocation != null) {
             if (currentLocation.getTime() <= delta && currentLocation.distanceTo(location) >= locationUpdateDistanceDiff) {

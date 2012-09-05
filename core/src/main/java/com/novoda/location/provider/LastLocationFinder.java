@@ -20,7 +20,7 @@ import android.location.LocationListener;
 
 public interface LastLocationFinder {
 
-	public Location getLastBestLocation(int minDistance, long minTime);
+	public Location getLastBestLocation(float minDistance, long minTime);
 
 	public void setChangedLocationListener(LocationListener l);
 

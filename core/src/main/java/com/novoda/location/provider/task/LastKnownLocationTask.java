@@ -25,7 +25,7 @@ import com.novoda.location.provider.LastLocationFinder;
 public class LastKnownLocationTask extends AsyncTask<Void, Void, Location> {
     
     private LastLocationFinder lastLocationFinder;
-    private int locationUpdateDistanceDiff;
+    private float locationUpdateDistanceDiff;
     private long locationUpdateInterval;
 
     public LastKnownLocationTask(LastLocationFinder lastLocationFinder, LocatorSettings settings) {

@@ -38,8 +38,8 @@ public class LocationUpdateManager {
     private final Criteria criteria;
     private final LocationManager locationManager;
     private final LocationUpdateRequester locationUpdateRequester;
-    private PendingIntent locationListenerPendingIntent;
-    private PendingIntent locationListenerPassivePendingIntent;
+    private final PendingIntent locationListenerPendingIntent;
+    private final PendingIntent locationListenerPassivePendingIntent;
     private AsyncTask<Void, Void, Location> lastKnownLocationTask;
     
     public LocationUpdateManager(LocatorSettings settings, Criteria criteria, Context context, LocationManager locationManager) {
@@ -59,9 +59,8 @@ public class LocationUpdateManager {
 
 	public void requestActiveLocationUpdates() throws NoProviderAvailable {
 		try { 
-			locationUpdateRequester.requestActiveLocationUpdates(settings.getUpdatesInterval(),
-			                                                     settings.getUpdatesDistance(), 
-			                                                     criteria, 
+			locationUpdateRequester.requestActiveLocationUpdates(
+                    settings, criteria,
 			                                                     locationListenerPendingIntent);
 		} catch(IllegalArgumentException iae) {
 			throw new NoProviderAvailable();

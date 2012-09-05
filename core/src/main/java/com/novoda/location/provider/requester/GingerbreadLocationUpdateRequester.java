@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * Code modified by Novoda Ltd, 2011.
  */
 package com.novoda.location.provider.requester;
@@ -21,23 +21,24 @@ package com.novoda.location.provider.requester;
 import android.app.PendingIntent;
 import android.location.Criteria;
 import android.location.LocationManager;
+import com.novoda.location.LocatorSettings;
 
 /**
- * Provides support for initiating active and passive location updates 
+ * Provides support for initiating active and passive location updates
  * optimized for the Gingerbread release. Includes use of the Passive Location Provider.
- * 
+ * <p/>
  * Uses broadcast Intents to notify the app of location changes.
  */
 public class GingerbreadLocationUpdateRequester extends FroyoLocationUpdateRequester {
 
-  public GingerbreadLocationUpdateRequester(LocationManager locationManager) {
-    super(locationManager);
-  }
+    public GingerbreadLocationUpdateRequester(LocationManager locationManager) {
+        super(locationManager);
+    }
 
-  @Override
-  public void requestActiveLocationUpdates(long minTime, long minDistance, Criteria criteria, PendingIntent pendingIntent) {
-    // Gingerbread supports a location update request that accepts criteria directly.
-    // Note that we aren't monitoring this provider to check if it becomes disabled - this is handled by the calling Activity.
-    locationManager.requestLocationUpdates(minTime, minDistance, criteria, pendingIntent);
-  }
+    @Override
+    public void requestActiveLocationUpdates(LocatorSettings settings, Criteria criteria, PendingIntent pendingIntent) {
+        long minTime = settings.getUpdatesInterval();
+        float minDistance = settings.getUpdatesDistance();
+        locationManager.requestLocationUpdates(minTime, minDistance, criteria, pendingIntent);
+    }
 }

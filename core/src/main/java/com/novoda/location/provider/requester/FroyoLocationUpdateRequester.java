@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * Code modified by Novoda Ltd, 2011.
  */
 package com.novoda.location.provider.requester;
@@ -20,38 +20,39 @@ package com.novoda.location.provider.requester;
 import android.app.PendingIntent;
 import android.location.Criteria;
 import android.location.LocationManager;
+import com.novoda.location.LocatorSettings;
+import com.novoda.location.provider.LocationUpdateRequester;
 
 /**
  * Provides support for initiating active and passive location updates optimized
  * for the Froyo release. Includes use of the Passive Location Provider.
- * 
+ * <p/>
  * Uses broadcast Intents to notify the app of location changes.
  */
-public class FroyoLocationUpdateRequester extends BaseLocationUpdateRequester {
+public class FroyoLocationUpdateRequester implements LocationUpdateRequester {
 
-	public FroyoLocationUpdateRequester(LocationManager locationManager) {
-		super(locationManager);
-	}
+    protected LocationManager locationManager;
 
-	@Override
-	public void requestActiveLocationUpdates(long minTime, long minDistance, Criteria criteria, PendingIntent pendingIntent) {
-        // Prior to Gingerbread we needed to find the best provider manually.
-        // Note that we aren't monitoring this provider to check if it becomes
-        // disabled - this is handled by the calling Activity.
+    public FroyoLocationUpdateRequester(LocationManager locationManager) {
+        this.locationManager = locationManager;
+    }
+
+    @Override
+    public void requestActiveLocationUpdates(LocatorSettings settings, Criteria criteria, PendingIntent pendingIntent) {
         String provider = locationManager.getBestProvider(criteria, true);
         if (provider == null) {
             return;
         }
+        long minTime = settings.getUpdatesInterval();
+        float minDistance = settings.getUpdatesDistance();
         locationManager.requestLocationUpdates(provider, minTime, minDistance, pendingIntent);
-	}
-	
-	@Override
-	public void requestPassiveLocationUpdates(long minTime, long minDistance,
-	        PendingIntent pendingIntent) {
-	    // Froyo introduced the Passive Location Provider, which receives
-	    // updates whenever a 3rd party app receives location updates.
-	    locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, minTime, minDistance, pendingIntent);
-	}
+    }
 
-	
+    @Override
+    public void requestPassiveLocationUpdates(LocatorSettings settings, PendingIntent pendingIntent) {
+        long minTime = settings.getPassiveUpdatesInterval();
+        float minDistance = settings.getPassiveUpdatesDistance();
+        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, minTime, minDistance, pendingIntent);
+    }
+
 }

@@ -5,37 +5,35 @@ import com.novoda.location.Locator;
 import com.novoda.location.LocatorFactory;
 import com.novoda.location.LocatorSettings;
 import com.novoda.location.provider.LastLocationFinder;
-import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.internal.matchers.GreaterOrEqual;
-import org.mockito.internal.matchers.GreaterThan;
 import robolectricsetup.NovocationTestRunner;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.longThat;
+import static org.mockito.Mockito.*;
 
 @RunWith(NovocationTestRunner.class)
 public class LastKnownLocationTaskShould {
 
     static final Void[] UNIMPORTANT_VALUES = null;
     static final Location INVALID_LOCATION = null;
+    static final float UPDATES_DISTANCE = 200;
+    static final long UPDATES_INTERVAL = 60 * 3 * 1000;
 
-    LastLocationFinder lastLocationFinder = mock(LastLocationFinder.class);
-    LocatorSettings settings = new LocatorSettings("", "");
+    final LastLocationFinder lastLocationFinder = mock(LastLocationFinder.class);
+    final LocatorSettings settings = new LocatorSettings("", "");
+    final Locator locator = mock(Locator.class);
     LastKnownLocationTask task;
-    int updatesDistance = 200;
-    int updatesInterval = 60 * 3 * 1000;
-    Locator locator = mock(Locator.class);
 
     @Before
     public void setUp() throws Exception {
-        settings.setUpdatesDistance(updatesDistance);
-        settings.setUpdatesInterval(updatesInterval);
+        settings.setUpdatesDistance(UPDATES_DISTANCE);
+        settings.setUpdatesInterval(UPDATES_INTERVAL);
         task = new LastKnownLocationTask(lastLocationFinder, settings);
         LocatorFactory.setLocator(locator);
     }
@@ -47,11 +45,11 @@ public class LastKnownLocationTaskShould {
 
     @Test
     public void get_the_last_best_location_using_the_updates_distance_and_interval_from_the_settings() throws Exception {
-        long expectedMinimumTime = System.currentTimeMillis() - updatesInterval;
+        long expectedMinimumTime = System.currentTimeMillis() - UPDATES_INTERVAL;
 
         task.doInBackground(UNIMPORTANT_VALUES);
 
-        verify(lastLocationFinder).getLastBestLocation(eq(updatesDistance), longThat(new GreaterOrEqual<Long>(expectedMinimumTime)));
+        verify(lastLocationFinder).getLastBestLocation(eq(UPDATES_DISTANCE), longThat(new GreaterOrEqual<Long>(expectedMinimumTime)));
     }
 
     @Test
@@ -70,7 +68,7 @@ public class LastKnownLocationTaskShould {
 
     @Test
     public void set_a_location_if_its_valid() throws Exception {
-        Location location = new Location("my provider");
+        Location location = new Location("test provider");
 
         task.onPostExecute(location);
 

@@ -187,9 +187,6 @@ public class DefaultLocator implements Locator {
     }
 
     private void unregisterDisabledProviderReceiver() {
-        if(providerStatusChanged == null) {
-            return;
-        }
         try {
             context.unregisterReceiver(providerStatusChanged);
         } catch (Exception e) {
@@ -219,5 +216,15 @@ public class DefaultLocator implements Locator {
     @Override
     public boolean isGpsProviderEnabled() {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    /**
+     * This is for testing only, it will be removed
+     *
+     * @param locationUpdateManager
+     */
+    @Deprecated
+    void setLocationUpdateManager(LocationUpdateManager locationUpdateManager) {
+        this.locationUpdateManager = locationUpdateManager;
     }
 }
