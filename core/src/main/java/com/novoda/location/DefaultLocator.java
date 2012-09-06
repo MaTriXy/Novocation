@@ -18,7 +18,7 @@
  * 
  * Code modified by Novoda Ltd, 2011.
  */
-package com.novoda.location.locator;
+package com.novoda.location;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -35,10 +35,10 @@ import com.novoda.location.Locator;
 import com.novoda.location.LocatorSettings;
 import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.location.provider.LocationProviderFactory;
-import com.novoda.location.provider.LocationUpdateManager;
+import com.novoda.location.LocationUpdateManager;
 import com.novoda.location.util.LocationAccuracy;
 
-public class DefaultLocator implements Locator {
+class DefaultLocator implements Locator {
 
 	private volatile Location currentLocation;
 	private LocationAccuracy locationAccuracy;

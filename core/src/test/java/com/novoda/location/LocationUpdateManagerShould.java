@@ -1,4 +1,4 @@
-package com.novoda.location.provider;
+package com.novoda.location;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.location.Criteria;
 import android.location.LocationManager;
 import com.novoda.location.Constants;
+import com.novoda.location.LocationUpdateManager;
 import com.novoda.location.LocatorSettings;
 import com.novoda.location.exception.NoProviderAvailable;
+import com.novoda.location.provider.LocationProviderFactory;
+import com.novoda.location.provider.LocationUpdateRequester;
 import com.novoda.location.receiver.PassiveLocationChanged;
 import org.junit.Before;
 import org.junit.Test;

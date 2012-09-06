@@ -1,11 +1,12 @@
-package com.novoda.location.locator;
+package com.novoda.location;
 
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import com.novoda.location.DefaultLocator;
 import com.novoda.location.LocatorSettings;
-import com.novoda.location.provider.LocationUpdateManager;
+import com.novoda.location.LocationUpdateManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

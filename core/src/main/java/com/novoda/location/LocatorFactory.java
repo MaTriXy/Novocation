@@ -15,8 +15,6 @@
  */
 package com.novoda.location;
 
-import com.novoda.location.locator.DefaultLocator;
-
 import android.location.Location;
 
 public class LocatorFactory {

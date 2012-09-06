@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.novoda.location.provider;
+package com.novoda.location;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -25,13 +25,16 @@ import android.os.AsyncTask;
 import com.novoda.location.Constants;
 import com.novoda.location.LocatorSettings;
 import com.novoda.location.exception.NoProviderAvailable;
+import com.novoda.location.provider.LastLocationFinder;
+import com.novoda.location.provider.LocationProviderFactory;
+import com.novoda.location.provider.LocationUpdateRequester;
 import com.novoda.location.provider.task.LastKnownLocationTask;
 import com.novoda.location.receiver.PassiveLocationChanged;
 import com.novoda.location.util.ApiLevelDetector;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 
-public class LocationUpdateManager {
+class LocationUpdateManager {
 
     private final LocationProviderFactory locationProviderFactory;
     private final LocatorSettings settings;
