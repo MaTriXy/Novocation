@@ -34,9 +34,9 @@ import com.novoda.location.provider.LastLocationFinder;
  */
 public class LegacyLastLocationFinder implements LastLocationFinder {
 
-    protected final Context context;
-    protected final LocationManager locationManager;
-    protected final Criteria criteria = new Criteria();
+    private final Context context;
+    private final LocationManager locationManager;
+    private final Criteria criteria = new Criteria();
 
     protected LocationListener locationListener;
 

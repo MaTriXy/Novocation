@@ -52,7 +52,7 @@ public class DefaultLocator implements Locator {
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
-                locationUpdateManager.removeUpdates();
+                locationUpdateManager.removeActiveLocationUpdates();
                 startListeningForLocationUpdates();
             } catch (NoProviderAvailable npa) {
                 //We cant listen for updates if no provider is enabled
@@ -150,7 +150,7 @@ public class DefaultLocator implements Locator {
     	locationUpdateManager.requestActiveLocationUpdates();
         registerProviderStatusChangedReceiver(context);
         ifGPSregisterOneShotNetworkUpdate(context);
-        locationUpdateManager.removePassiveUpdates();
+        locationUpdateManager.removePassiveLocationUpdates();
     }
     
     private void registerProviderStatusChangedReceiver(Context c) {
@@ -180,7 +180,7 @@ public class DefaultLocator implements Locator {
 
     private void stopListeningForLocationUpdates() {
         unregisterDisabledProviderReceiver();
-        locationUpdateManager.removeUpdates();
+        locationUpdateManager.removeActiveLocationUpdates();
         locationUpdateManager.stopFetchLastKnownLocation();
         locationUpdateManager.requestPassiveLocationUpdates();
         locationManager.removeUpdates(oneShotNetworkLocationListener);

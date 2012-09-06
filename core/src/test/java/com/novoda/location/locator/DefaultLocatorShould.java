@@ -7,7 +7,6 @@ import android.location.LocationManager;
 import com.novoda.location.LocatorSettings;
 import com.novoda.location.provider.LocationUpdateManager;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import robolectricsetup.NovocationTestRunner;
@@ -68,27 +67,38 @@ public class DefaultLocatorShould {
         verify(context).sendBroadcast(eq(locationUpdated));
     }
 
-
     @Test
-    public void testName() throws Exception {
+    public void remove_updates_when_stopping_location_updates() throws Exception {
         LocationUpdateManager updateManager = mock(LocationUpdateManager.class);
 
         locator.setLocationUpdateManager(updateManager);
 
         locator.stopLocationUpdates();
 
-        verify(updateManager).removeUpdates();
-        verify(updateManager).stopFetchLastKnownLocation();
-        verify(updateManager).requestPassiveLocationUpdates();
+        verify(updateManager).removeActiveLocationUpdates();
     }
 
-    @Ignore
     @Test
-    public void testb() throws Exception {
+    public void stop_fetching_last_known_locations_when_stopping_updates() throws Exception {
         LocationUpdateManager updateManager = mock(LocationUpdateManager.class);
 
         locator.setLocationUpdateManager(updateManager);
 
-        locator.startLocationUpdates();
+        locator.stopLocationUpdates();
+
+        verify(updateManager).stopFetchLastKnownLocation();
     }
+
+    @Test
+    public void request_passive_updates_when_stopping_location_updates() throws Exception {
+        LocationUpdateManager updateManager = mock(LocationUpdateManager.class);
+
+        locator.setLocationUpdateManager(updateManager);
+
+        locator.stopLocationUpdates();
+
+        verify(updateManager).requestPassiveLocationUpdates();
+    }
+
+
 }

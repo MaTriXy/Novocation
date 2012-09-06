@@ -19,20 +19,18 @@ import android.os.Build;
 
 public class ApiLevelDetector {
 
-	private static final int API_LEVEL;
 	private static final boolean SUPPORTS_GINGERBREAD;
 	private static final boolean SUPPORTS_FROYO;
     
 	static {
-        int apiLevel = -1;
+        int apiLevel;
         try {
             apiLevel = Build.VERSION.class.getField("SDK_INT").getInt(null);
         } catch (Exception e) {
             apiLevel = Integer.parseInt(Build.VERSION.SDK);
         }
-        API_LEVEL = apiLevel;
-        SUPPORTS_GINGERBREAD = API_LEVEL >= 9;
-        SUPPORTS_FROYO = API_LEVEL >= 8;
+        SUPPORTS_GINGERBREAD = apiLevel >= 9;
+        SUPPORTS_FROYO = apiLevel >= 8;
     }
 	
 	public static final boolean supportsGingerbread() {

@@ -32,6 +32,10 @@ public interface Locator {
 
 	void startLocationUpdates() throws NoProviderAvailable;
 
+    //void stopAllLocationUpdates
+
+    //void stopActiveLocationUpdates();
+
 	void stopLocationUpdates();
 
 	boolean isNetworkProviderEnabled();

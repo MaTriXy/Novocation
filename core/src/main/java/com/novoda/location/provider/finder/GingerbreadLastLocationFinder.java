@@ -34,12 +34,11 @@ import android.location.LocationManager;
 public class GingerbreadLastLocationFinder implements LastLocationFinder {
 
 	protected static final String SINGLE_LOCATION_UPDATE_ACTION = "com.radioactiveyak.places.SINGLE_LOCATION_UPDATE_ACTION";
-	protected static final String TAG = "LastLocationFinder";
 
-	protected final PendingIntent singleUpatePI;
-	protected final LocationManager locationManager;
-	protected final Context context;
-	protected final Criteria criteria = new Criteria();
+	private final PendingIntent singleUpdate;
+	private final LocationManager locationManager;
+	private final Context context;
+	private final Criteria criteria = new Criteria();
 
 	protected LocationListener locationListener;
 	
@@ -48,7 +47,7 @@ public class GingerbreadLastLocationFinder implements LastLocationFinder {
 		this.locationManager = locationManager;
 		criteria.setAccuracy(Criteria.ACCURACY_COARSE);
 		Intent updateIntent = new Intent(SINGLE_LOCATION_UPDATE_ACTION);
-		singleUpatePI = PendingIntent.getBroadcast(context, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		singleUpdate = PendingIntent.getBroadcast(context, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
 	@Override
@@ -84,7 +83,7 @@ public class GingerbreadLastLocationFinder implements LastLocationFinder {
 		if (locationListener != null && (bestTime < minTime || bestAccuracy > minDistance)) {
 			IntentFilter locIntentFilter = new IntentFilter(SINGLE_LOCATION_UPDATE_ACTION);
 			context.registerReceiver(singleUpdateReceiver, locIntentFilter);
-			locationManager.requestSingleUpdate(criteria, singleUpatePI);
+			locationManager.requestSingleUpdate(criteria, singleUpdate);
 		}
 
 		return bestResult;
@@ -99,7 +98,7 @@ public class GingerbreadLastLocationFinder implements LastLocationFinder {
 			if (locationListener != null && location != null) {
 				locationListener.onLocationChanged(location);
 			}
-			locationManager.removeUpdates(singleUpatePI);
+			locationManager.removeUpdates(singleUpdate);
 		}
 	};
 
@@ -110,7 +109,7 @@ public class GingerbreadLastLocationFinder implements LastLocationFinder {
 
 	@Override
 	public void cancel() {
-		locationManager.removeUpdates(singleUpatePI);
+		locationManager.removeUpdates(singleUpdate);
 		try {
 			context.unregisterReceiver(singleUpdateReceiver);
 		} catch(Exception e) {

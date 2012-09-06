@@ -2,10 +2,11 @@ package com.novoda.location.receiver;
 
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.location.LocationManager;
+import com.novoda.location.Locator;
 import com.novoda.location.LocatorFactory;
 import com.novoda.location.LocatorSettings;
-import com.novoda.location.locator.DefaultLocator;
 import com.novoda.location.provider.LocationProviderFactory;
 import com.novoda.location.provider.store.SettingsDao;
 import com.xtremelabs.robolectric.Robolectric;
@@ -23,6 +24,7 @@ import static org.mockito.Mockito.*;
 @RunWith(NovocationTestRunner.class)
 public class RestorePassiveListenerBootShould {
 
+    static final Intent UNIMPORTANT_INTENT = null;
     final LocationManager locationManager = mock(LocationManager.class);
     final Context context = spy(Robolectric.getShadowApplication().getApplicationContext());
     final SettingsDao settingsDao = new LocationProviderFactory().getSettingsDao();
@@ -33,8 +35,8 @@ public class RestorePassiveListenerBootShould {
     public void setUp() throws Exception {
         doReturn(locationManager).when(context).getSystemService(eq(Context.LOCATION_SERVICE));
 
-        DefaultLocator locator = new DefaultLocator();
-        locator.prepare(context, settings);
+        Locator locator = mock(Locator.class);
+        when(locator.getSettings()).thenReturn(settings);
         LocatorFactory.setLocator(locator);
     }
 
@@ -49,7 +51,7 @@ public class RestorePassiveListenerBootShould {
 
         settingsDao.persistSettingsToPreferences(context, settings);
 
-        restorePassiveListenerBoot.onReceive(context, null);
+        restorePassiveListenerBoot.onReceive(context, UNIMPORTANT_INTENT);
 
         verify(locationManager).requestLocationUpdates(eq(LocationManager.PASSIVE_PROVIDER), anyLong(), anyFloat(), any(PendingIntent.class));
     }
@@ -60,7 +62,7 @@ public class RestorePassiveListenerBootShould {
 
         settingsDao.persistSettingsToPreferences(context, settings);
 
-        restorePassiveListenerBoot.onReceive(context, null);
+        restorePassiveListenerBoot.onReceive(context, UNIMPORTANT_INTENT);
 
         verify(locationManager, never()).requestLocationUpdates(anyString(), anyLong(), anyFloat(), any(PendingIntent.class));
     }
@@ -69,7 +71,7 @@ public class RestorePassiveListenerBootShould {
     public void NOT_request_for_passive_updates_if_the_application_has_not_run_once_yet() throws Exception {
         assertThat(settingsDao.hasApplicationRunOnce(context), is(false));
 
-        restorePassiveListenerBoot.onReceive(context, null);
+        restorePassiveListenerBoot.onReceive(context, UNIMPORTANT_INTENT);
 
         verify(locationManager, never()).requestLocationUpdates(anyString(), anyLong(), anyFloat(), any(PendingIntent.class));
     }

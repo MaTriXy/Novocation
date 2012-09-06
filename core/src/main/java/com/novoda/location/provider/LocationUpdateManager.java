@@ -33,7 +33,7 @@ import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 
 public class LocationUpdateManager {
 
-    private final LocationProviderFactory locationProviderFactory = new LocationProviderFactory();
+    private final LocationProviderFactory locationProviderFactory;
     private final LocatorSettings settings;
     private final Criteria criteria;
     private final LocationManager locationManager;
@@ -41,12 +41,29 @@ public class LocationUpdateManager {
     private final PendingIntent locationListenerPendingIntent;
     private final PendingIntent locationListenerPassivePendingIntent;
     private AsyncTask<Void, Void, Location> lastKnownLocationTask;
-    
+
+    /**
+    *
+    * For testing only
+    *
+    */
+    @Deprecated
+    LocationUpdateManager(LocatorSettings settings, LocationManager locationManager, LocationProviderFactory locationProviderFactory, Criteria criteria, PendingIntent locationListenerPendingIntent, PendingIntent locationListenerPassivePendingIntent) {
+        this.locationProviderFactory = locationProviderFactory;
+        this.settings = settings;
+        this.criteria = criteria;
+        this.locationManager = locationManager;
+        this.locationListenerPendingIntent = locationListenerPendingIntent;
+        this.locationListenerPassivePendingIntent = locationListenerPassivePendingIntent;
+        locationUpdateRequester = locationProviderFactory.getLocationUpdateRequester(locationManager);
+    }
+
     public LocationUpdateManager(LocatorSettings settings, Criteria criteria, Context context, LocationManager locationManager) {
-    	this.settings = settings;
-    	this.criteria = criteria;
-    	this.locationManager = locationManager;
-    	locationUpdateRequester = locationProviderFactory.getLocationUpdateRequester(locationManager);
+        this.settings = settings;
+        this.criteria = criteria;
+        this.locationManager = locationManager;
+        locationProviderFactory = new LocationProviderFactory();
+        locationUpdateRequester = locationProviderFactory.getLocationUpdateRequester(locationManager);
 
         Intent activeIntent = new Intent(Constants.ACTIVE_LOCATION_UPDATE_ACTION);
         activeIntent.setPackage(settings.getPackageName());
@@ -57,41 +74,39 @@ public class LocationUpdateManager {
         locationListenerPassivePendingIntent = PendingIntent.getBroadcast(context, 0, passiveIntent, FLAG_UPDATE_CURRENT);
     }
 
-	public void requestActiveLocationUpdates() throws NoProviderAvailable {
-		try { 
-			locationUpdateRequester.requestActiveLocationUpdates(
-                    settings, criteria,
-			                                                     locationListenerPendingIntent);
-		} catch(IllegalArgumentException iae) {
-			throw new NoProviderAvailable();
-		}
-	}
+    public void requestActiveLocationUpdates() throws NoProviderAvailable {
+        try {
+            locationUpdateRequester.requestActiveLocationUpdates( settings, criteria, locationListenerPendingIntent);
+        } catch (IllegalArgumentException iae) {
+            throw new NoProviderAvailable();
+        }
+    }
 
-	public void requestPassiveLocationUpdates() {
-		if (ApiLevelDetector.supportsFroyo() && settings.shouldEnablePassiveUpdates()) {
-			locationUpdateRequester.requestPassiveLocationUpdates(settings, locationListenerPassivePendingIntent);
-		}
-	}
-	
-	public void removeUpdates() {
-		locationManager.removeUpdates(locationListenerPendingIntent);
-	}
-	
-	public void removePassiveUpdates() {
-		locationManager.removeUpdates(locationListenerPassivePendingIntent);
-	}
-    
+    public void requestPassiveLocationUpdates() {
+        if (ApiLevelDetector.supportsFroyo() && settings.shouldEnablePassiveUpdates()) {
+            locationUpdateRequester.requestPassiveLocationUpdates(settings, locationListenerPassivePendingIntent);
+        }
+    }
+
+    public void removeActiveLocationUpdates() {
+        locationManager.removeUpdates(locationListenerPendingIntent);
+    }
+
+    public void removePassiveLocationUpdates() {
+        locationManager.removeUpdates(locationListenerPassivePendingIntent);
+    }
+
     public void fetchLastKnownLocation(Context context) {
-    	LastLocationFinder finder = locationProviderFactory.getLastLocationFinder(locationManager, context);
+        LastLocationFinder finder = locationProviderFactory.getLastLocationFinder(locationManager, context);
         lastKnownLocationTask = new LastKnownLocationTask(finder, settings);
         lastKnownLocationTask.execute();
     }
-    
-	public void stopFetchLastKnownLocation() {
-		if (lastKnownLocationTask == null) {
-			return;
+
+    public void stopFetchLastKnownLocation() {
+        if (lastKnownLocationTask == null) {
+            return;
         }
-		lastKnownLocationTask.cancel(true);
-	}
+        lastKnownLocationTask.cancel(true);
+    }
 
 }

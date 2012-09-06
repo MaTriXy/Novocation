@@ -23,12 +23,6 @@ import android.location.LocationManager;
 
 import com.novoda.location.LocatorSettings;
 
-/**
- * Provides support for initiating active and passive location updates for all
- * Android platforms from Android 1.6.
- * <p/>
- * Uses broadcast Intents to notify the app of location changes.
- */
 public class LegacyLocationUpdateRequester extends FroyoLocationUpdateRequester {
 
     protected final AlarmManager alarmManager;

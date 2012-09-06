@@ -23,12 +23,6 @@ import android.location.Criteria;
 import android.location.LocationManager;
 import com.novoda.location.LocatorSettings;
 
-/**
- * Provides support for initiating active and passive location updates
- * optimized for the Gingerbread release. Includes use of the Passive Location Provider.
- * <p/>
- * Uses broadcast Intents to notify the app of location changes.
- */
 public class GingerbreadLocationUpdateRequester extends FroyoLocationUpdateRequester {
 
     public GingerbreadLocationUpdateRequester(LocationManager locationManager) {
