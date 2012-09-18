@@ -30,12 +30,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-import com.novoda.location.Constants;
-import com.novoda.location.Locator;
-import com.novoda.location.LocatorSettings;
 import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.location.provider.LocationProviderFactory;
-import com.novoda.location.LocationUpdateManager;
 import com.novoda.location.util.LocationAccuracy;
 
 class DefaultLocator implements Locator {
@@ -90,6 +86,9 @@ class DefaultLocator implements Locator {
         context = c;
         locationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
         locationAccuracy = new LocationAccuracy(settings);
+        LocationProviderFactory providerFactory = new LocationProviderFactory();
+        LocationUpdatesIntentFactory updatesIntentFactory = new LocationUpdatesIntentFactory(settings, context);
+        locationUpdateManager = new LocationUpdateManager(settings, locationManager, providerFactory, updatesIntentFactory);
     }
 
     @Override
@@ -101,10 +100,7 @@ class DefaultLocator implements Locator {
     public void startLocationUpdates() throws NoProviderAvailable {
         createActiveUpdateCriteria();
         persistSettingsToPreferences();
-        
-        createLocationUpdateManager();
         sendFirstAvailableLocation();
-        
         startListeningForLocationUpdates();
     }
     
@@ -121,10 +117,6 @@ class DefaultLocator implements Locator {
 		new LocationProviderFactory().getSettingsDao().persistSettingsToPreferences(context, settings);
 	}
 	
-	private void createLocationUpdateManager() {
-	    this.locationUpdateManager = new LocationUpdateManager(settings, criteria, context, locationManager);
-	}
-    
 	private void sendFirstAvailableLocation() {
 		if (currentLocation == null) {
 			locationUpdateManager.fetchLastKnownLocation(context);
@@ -147,9 +139,9 @@ class DefaultLocator implements Locator {
     	if (!settings.shouldUpdateLocation()) {
     		return;
     	}
-    	locationUpdateManager.requestActiveLocationUpdates();
+    	locationUpdateManager.requestActiveLocationUpdates(criteria);
         registerProviderStatusChangedReceiver(context);
-        ifGPSregisterOneShotNetworkUpdate(context);
+        ifGPSregisterOneShotNetworkUpdate();
         locationUpdateManager.removePassiveLocationUpdates();
     }
     
@@ -160,7 +152,7 @@ class DefaultLocator implements Locator {
         c.registerReceiver(providerStatusChanged, providerEnabled);
     }
     
-	private void ifGPSregisterOneShotNetworkUpdate(Context context) {
+	private void ifGPSregisterOneShotNetworkUpdate() {
         String bestEnabledProvider = locationManager.getBestProvider(criteria, true);
         if(bestEnabledProvider != null && LocationManager.GPS_PROVIDER.equals(bestEnabledProvider)) {
             locationManager.removeUpdates(oneShotNetworkLocationListener);

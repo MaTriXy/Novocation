@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 public class LocationChangedShould {
 
     final LocationChanged locationChangedSpy = spy(new LocationChanged());
-    LocationChanged locationChanged = new LocationChanged();
+    final LocationChanged locationChanged = new LocationChanged();
 
     @Before
     public void setUp() throws Exception {

@@ -17,95 +17,69 @@ package com.novoda.location;
 
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
-import com.novoda.location.Constants;
-import com.novoda.location.LocatorSettings;
 import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.location.provider.LastLocationFinder;
 import com.novoda.location.provider.LocationProviderFactory;
 import com.novoda.location.provider.LocationUpdateRequester;
 import com.novoda.location.provider.task.LastKnownLocationTask;
-import com.novoda.location.receiver.PassiveLocationChanged;
 import com.novoda.location.util.ApiLevelDetector;
-
-import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 
 class LocationUpdateManager {
 
     private final LocationProviderFactory locationProviderFactory;
     private final LocatorSettings settings;
-    private final Criteria criteria;
     private final LocationManager locationManager;
     private final LocationUpdateRequester locationUpdateRequester;
-    private final PendingIntent locationListenerPendingIntent;
-    private final PendingIntent locationListenerPassivePendingIntent;
+    private final PendingIntent activeLocationUpdate;
+    private final PendingIntent passiveLocationUpdate;
     private AsyncTask<Void, Void, Location> lastKnownLocationTask;
 
-    /**
-    *
-    * For testing only
-    *
-    */
-    @Deprecated
-    LocationUpdateManager(LocatorSettings settings, LocationManager locationManager, LocationProviderFactory locationProviderFactory, Criteria criteria, PendingIntent locationListenerPendingIntent, PendingIntent locationListenerPassivePendingIntent) {
+    LocationUpdateManager(LocatorSettings settings,
+                          LocationManager locationManager,
+                          LocationProviderFactory locationProviderFactory,
+                          LocationUpdatesIntentFactory updatesIntentFactory) {
+
+        this.settings = settings;
         this.locationProviderFactory = locationProviderFactory;
-        this.settings = settings;
-        this.criteria = criteria;
         this.locationManager = locationManager;
-        this.locationListenerPendingIntent = locationListenerPendingIntent;
-        this.locationListenerPassivePendingIntent = locationListenerPassivePendingIntent;
+        activeLocationUpdate = updatesIntentFactory.buildActive();
+        passiveLocationUpdate = updatesIntentFactory.buildPassive();
         locationUpdateRequester = locationProviderFactory.getLocationUpdateRequester(locationManager);
     }
 
-    public LocationUpdateManager(LocatorSettings settings, Criteria criteria, Context context, LocationManager locationManager) {
-        this.settings = settings;
-        this.criteria = criteria;
-        this.locationManager = locationManager;
-        locationProviderFactory = new LocationProviderFactory();
-        locationUpdateRequester = locationProviderFactory.getLocationUpdateRequester(locationManager);
-
-        Intent activeIntent = new Intent(Constants.ACTIVE_LOCATION_UPDATE_ACTION);
-        activeIntent.setPackage(settings.getPackageName());
-        locationListenerPendingIntent = PendingIntent.getBroadcast(context, 0, activeIntent, FLAG_UPDATE_CURRENT);
-
-        Intent passiveIntent = new Intent(context, PassiveLocationChanged.class);
-        passiveIntent.setPackage(settings.getPackageName());
-        locationListenerPassivePendingIntent = PendingIntent.getBroadcast(context, 0, passiveIntent, FLAG_UPDATE_CURRENT);
-    }
-
-    public void requestActiveLocationUpdates() throws NoProviderAvailable {
+    void requestActiveLocationUpdates(Criteria criteria) throws NoProviderAvailable {
         try {
-            locationUpdateRequester.requestActiveLocationUpdates( settings, criteria, locationListenerPendingIntent);
+            locationUpdateRequester.requestActiveLocationUpdates(settings, criteria, activeLocationUpdate);
         } catch (IllegalArgumentException iae) {
             throw new NoProviderAvailable();
         }
     }
 
-    public void requestPassiveLocationUpdates() {
+    void requestPassiveLocationUpdates() {
         if (ApiLevelDetector.supportsFroyo() && settings.shouldEnablePassiveUpdates()) {
-            locationUpdateRequester.requestPassiveLocationUpdates(settings, locationListenerPassivePendingIntent);
+            locationUpdateRequester.requestPassiveLocationUpdates(settings, passiveLocationUpdate);
         }
     }
 
-    public void removeActiveLocationUpdates() {
-        locationManager.removeUpdates(locationListenerPendingIntent);
+    void removeActiveLocationUpdates() {
+        locationManager.removeUpdates(activeLocationUpdate);
     }
 
-    public void removePassiveLocationUpdates() {
-        locationManager.removeUpdates(locationListenerPassivePendingIntent);
+    void removePassiveLocationUpdates() {
+        locationManager.removeUpdates(passiveLocationUpdate);
     }
 
-    public void fetchLastKnownLocation(Context context) {
+    void fetchLastKnownLocation(Context context) {
         LastLocationFinder finder = locationProviderFactory.getLastLocationFinder(locationManager, context);
         lastKnownLocationTask = new LastKnownLocationTask(finder, settings);
         lastKnownLocationTask.execute();
     }
 
-    public void stopFetchLastKnownLocation() {
+    void stopFetchLastKnownLocation() {
         if (lastKnownLocationTask == null) {
             return;
         }
