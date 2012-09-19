@@ -17,16 +17,13 @@
  */
 package com.novoda.location.provider.finder;
 
-import java.util.List;
-
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
-
 import com.novoda.location.provider.LastLocationFinder;
+
+import java.util.List;
 
 /**
  * Legacy implementation of Last Location Finder for all Android platforms down
@@ -34,14 +31,10 @@ import com.novoda.location.provider.LastLocationFinder;
  */
 public class LegacyLastLocationFinder implements LastLocationFinder {
 
-    private final Context context;
     private final LocationManager locationManager;
     private final Criteria criteria = new Criteria();
 
-    protected LocationListener locationListener;
-
     public LegacyLastLocationFinder(LocationManager locationManager, Context context) {
-        this.context = context;
         this.locationManager = locationManager;
         criteria.setAccuracy(Criteria.ACCURACY_COARSE);
     }
@@ -72,51 +65,7 @@ public class LegacyLastLocationFinder implements LastLocationFinder {
             }
         }
 
-        // If the best result is beyond the allowed time limit, or the accuracy of the
-        // best result is wider than the acceptable maximum distance, request a single update.
-        // This check simply implements the same conditions we set when requesting regular
-        // location updates every [minTime] and [minDistance].
-        // Prior to Gingerbread "one-shot" updates weren't available, so we need to implement
-        // this manually.
-        if (locationListener != null && (bestTime < minTime || bestAccuracy > minDistance)) {
-            String provider = locationManager.getBestProvider(criteria, true);
-            if (provider != null) {
-                locationManager.requestLocationUpdates(provider, 0, 0, singleUpdateListener, context.getMainLooper());
-            }
-        }
         return bestResult;
-    }
-
-    protected LocationListener singleUpdateListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            if (locationListener != null && location != null) {
-                locationListener.onLocationChanged(location);
-            }
-            locationManager.removeUpdates(singleUpdateListener);
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-        }
-    };
-
-    @Override
-    public void setChangedLocationListener(LocationListener l) {
-        locationListener = l;
-    }
-
-    @Override
-    public void cancel() {
-        locationManager.removeUpdates(singleUpdateListener);
     }
 
 }

@@ -48,8 +48,4 @@ public class LastKnownLocationTask extends AsyncTask<Void, Void, Location> {
         LocatorFactory.setLocation(lastKnownLocation);
     }
 
-    @Override
-    protected void onCancelled() {
-        lastLocationFinder.cancel();
-    }
 }

@@ -22,8 +22,4 @@ public interface LastLocationFinder {
 
 	public Location getLastBestLocation(float minDistance, long minTime);
 
-	public void setChangedLocationListener(LocationListener l);
-
-	public void cancel();
-
 }

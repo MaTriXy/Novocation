@@ -17,38 +17,22 @@
  */
 package com.novoda.location.provider.finder;
 
-import java.util.List;
-
-import com.novoda.location.provider.LastLocationFinder;
-
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
+import com.novoda.location.provider.LastLocationFinder;
+
+import java.util.List;
 
 public class GingerbreadLastLocationFinder implements LastLocationFinder {
 
-    //TODO this action name needs to be changed to fit with the libraries standards
-	protected static final String SINGLE_LOCATION_UPDATE_ACTION = "com.radioactiveyak.places.SINGLE_LOCATION_UPDATE_ACTION";
-
-	private final PendingIntent singleUpdate;
 	private final LocationManager locationManager;
-	private final Context context;
 	private final Criteria criteria = new Criteria();
 
-	protected LocationListener locationListener;
-	
 	public GingerbreadLastLocationFinder(LocationManager locationManager, Context context) {
-		this.context = context;
 		this.locationManager = locationManager;
 		criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-		Intent updateIntent = new Intent(SINGLE_LOCATION_UPDATE_ACTION);
-		singleUpdate = PendingIntent.getBroadcast(context, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
 	@Override
@@ -77,44 +61,7 @@ public class GingerbreadLastLocationFinder implements LastLocationFinder {
 			}
 		}
 
-		// If the best result is beyond the allowed time limit, or the accuracy of the
-		// best result is wider than the acceptable maximum distance, request a single update.
-		// This check simply implements the same conditions we set when requesting regular
-		// location updates every [minTime] and [minDistance].
-		if (locationListener != null && (bestTime < minTime || bestAccuracy > minDistance)) {
-			IntentFilter locIntentFilter = new IntentFilter(SINGLE_LOCATION_UPDATE_ACTION);
-			context.registerReceiver(singleUpdateReceiver, locIntentFilter);
-			locationManager.requestSingleUpdate(criteria, singleUpdate);
-		}
-
 		return bestResult;
 	}
 
-	protected BroadcastReceiver singleUpdateReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			context.unregisterReceiver(singleUpdateReceiver);
-			String key = LocationManager.KEY_LOCATION_CHANGED;
-			Location location = (Location) intent.getExtras().get(key);
-			if (locationListener != null && location != null) {
-				locationListener.onLocationChanged(location);
-			}
-			locationManager.removeUpdates(singleUpdate);
-		}
-	};
-
-	@Override
-	public void setChangedLocationListener(LocationListener l) {
-		locationListener = l;
-	}
-
-	@Override
-	public void cancel() {
-		locationManager.removeUpdates(singleUpdate);
-		try {
-			context.unregisterReceiver(singleUpdateReceiver);
-		} catch(Exception e) {
-			//In case it has not been unregister in onReceive
-		}
-	}
 }

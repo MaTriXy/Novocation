@@ -20,7 +20,6 @@ package com.novoda.location.provider.requester;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.location.LocationManager;
-
 import com.novoda.location.LocatorSettings;
 
 public class LegacyLocationUpdateRequester extends FroyoLocationUpdateRequester {

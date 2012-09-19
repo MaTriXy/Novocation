@@ -1,16 +1,10 @@
 package com.novoda.location.provider.finder;
 
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Looper;
 import com.novoda.location.provider.LastLocationFinder;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import robolectricsetup.NovocationTestRunner;
@@ -20,10 +14,8 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(NovocationTestRunner.class)
 public class GingerbreadLastLocationFinderShould {
@@ -135,74 +127,6 @@ public class GingerbreadLastLocationFinderShould {
         Location secondLocation = addLocationToManager(RECENT_TIME, MIN_ACCURACY, PROVIDER_TWO);
         Location lastBestLocation = getLastBestLocation();
         assertThat(lastBestLocation, is(secondLocation));
-    }
-
-    @Test
-    public void request_location_updates_if_the_best_location_time_is_below_the_minimum_time() throws Exception {
-        addLocationListener();
-        addLocationToManager(LESS_RECENT_TIME, MIN_ACCURACY, PROVIDER_ONE);
-
-        getLastBestLocation();
-
-        verifyLocationUpdatesAreRequestedFor();
-    }
-
-    @Test
-    public void request_location_updates_if_the_best_location_accuracy_is_worst_than_the_minimum_required() throws Exception {
-        addLocationListener();
-        addLocationToManager(RECENT_TIME, MIN_ACCURACY * 2, PROVIDER_ONE);
-
-        getLastBestLocation();
-
-        verifyLocationUpdatesAreRequestedFor();
-    }
-
-    @Test
-    public void not_request_location_updates_if_a_location_satisfying_the_time_and_distance_requirements_is_found() throws Exception {
-        addLocationListener();
-        addLocationToManager(RECENT_TIME, MIN_ACCURACY / 2, PROVIDER_ONE);
-
-        getLastBestLocation();
-
-        verifyLocationUpdatesAre_NOT_Requested();
-    }
-
-    private void addLocationListener() {
-        LocationListener locationListener = mock(LocationListener.class);
-        lastLocationFinder.setChangedLocationListener(locationListener);
-    }
-
-    private void verifyLocationUpdatesAreRequestedFor() {
-        verify(locationManager).requestSingleUpdate(any(Criteria.class), any(PendingIntent.class));
-    }
-
-    private void verifyLocationUpdatesAre_NOT_Requested() {
-        verify(locationManager, never()).requestSingleUpdate(any(Criteria.class), any(PendingIntent.class));
-    }
-
-    @Test
-    public void stop_location_updates_when_asked_to() throws Exception {
-        lastLocationFinder.cancel();
-
-        verify(locationManager).removeUpdates(any(PendingIntent.class));
-    }
-
-    @Test
-    public void unregister_a_receiver_when_stopping_location_updates() throws Exception {
-        lastLocationFinder.cancel();
-
-        verify(context).unregisterReceiver(any(BroadcastReceiver.class));
-    }
-
-    @Test
-    public void fail_gracefully_if_unregistering_a_broadcast_receiver_blows_up_while_stopping_location_updates() throws Exception {
-        doThrow(new IllegalArgumentException()).when(context).unregisterReceiver(any(BroadcastReceiver.class));
-
-        try {
-            lastLocationFinder.cancel();
-        } catch (Exception e) {
-            fail("This exception should have been caught");
-        }
     }
 
 }

@@ -53,13 +53,6 @@ public class LastKnownLocationTaskShould {
     }
 
     @Test
-    public void cancel_location_updates_on_cancel() throws Exception {
-        task.onCancelled();
-
-        verify(lastLocationFinder).cancel();
-    }
-
-    @Test
     public void not_set_a_location_if_its_invalid() throws Exception {
         task.onPostExecute(INVALID_LOCATION);
 
