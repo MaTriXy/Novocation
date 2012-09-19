@@ -26,7 +26,6 @@ import android.location.LocationManager;
 import com.novoda.location.LocatorFactory;
 import com.novoda.location.provider.LastLocationFinder;
 import com.novoda.location.provider.LocationProviderFactory;
-import com.novoda.location.provider.finder.LegacyLastLocationFinder;
 import com.novoda.location.provider.store.SettingsDao;
 
 //TODO this logic needs to be extracted to a java object with the dependencies injected through the constructor
@@ -53,7 +52,7 @@ public class PassiveLocationChanged extends BroadcastReceiver {
             long delta = System.currentTimeMillis() - locationUpdateInterval;
 
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            LastLocationFinder lastLocationFinder = getLastLocationFinder(context, locationManager);
+            LastLocationFinder lastLocationFinder = getLastLocationFinder(locationManager);
             location = lastLocationFinder.getLastBestLocation(locationUpdateDistanceDiff, delta);
             // Check if the last location detected from the providers is either
             // too soon, or too close to the last value we used. If it is within
@@ -64,9 +63,8 @@ public class PassiveLocationChanged extends BroadcastReceiver {
         }
     }
 
-    protected LastLocationFinder getLastLocationFinder(Context context, LocationManager locationManager) {
-        //TODO the LocationFinder should be built by the factory
-        return new LegacyLastLocationFinder(locationManager, context);
+    protected LastLocationFinder getLastLocationFinder(LocationManager locationManager) {
+        return new LastLocationFinder(locationManager);
     }
 
     private void verifyAndUpdateLocation(Location location, float locationUpdateDistanceDiff, long delta) {

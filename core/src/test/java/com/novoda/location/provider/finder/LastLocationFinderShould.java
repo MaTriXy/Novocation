@@ -18,7 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(NovocationTestRunner.class)
-public class LegacyLastLocationFinderShould {
+public class LastLocationFinderShould {
 
     static final int MIN_ACCURACY = 100;
     static final long MIN_TIME = System.currentTimeMillis() - (1000 * 60 * 4);
@@ -35,7 +35,7 @@ public class LegacyLastLocationFinderShould {
     final Context context = mock(Context.class);
     final LocationManager locationManager = mock(LocationManager.class);
     final List<String> providers = new ArrayList<String>();
-    final LastLocationFinder lastLocationFinder = new LegacyLastLocationFinder(locationManager, context);
+    final LastLocationFinder lastLocationFinder = new LastLocationFinder(locationManager);
 
 
     @Before

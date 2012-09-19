@@ -93,7 +93,7 @@ public class PassiveLocationChangedShould {
     private void addLastBestLocation(Location lastBestLocation) {
         LastLocationFinder lastLocationFinder = mock(LastLocationFinder.class);
         when(lastLocationFinder.getLastBestLocation(anyInt(), anyLong())).thenReturn(lastBestLocation);
-        when(passiveLocationChanged.getLastLocationFinder(any(Context.class), any(LocationManager.class))).thenReturn(lastLocationFinder);
+        when(passiveLocationChanged.getLastLocationFinder(any(LocationManager.class))).thenReturn(lastLocationFinder);
     }
 
     @Test
