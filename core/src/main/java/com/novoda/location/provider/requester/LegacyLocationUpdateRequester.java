@@ -25,9 +25,9 @@ import com.novoda.location.LocatorSettings;
 
 public class LegacyLocationUpdateRequester extends FroyoLocationUpdateRequester {
 
-    protected final AlarmManager alarmManager;
+    private final AlarmManager alarmManager;
 
-    protected LegacyLocationUpdateRequester(LocationManager locationManager, AlarmManager alarmManager, LocatorSettings settings) {
+    protected LegacyLocationUpdateRequester(LocationManager locationManager, AlarmManager alarmManager) {
         super(locationManager);
         this.alarmManager = alarmManager;
     }
@@ -40,7 +40,10 @@ public class LegacyLocationUpdateRequester extends FroyoLocationUpdateRequester 
         // more expensive than simple passive alarms, however the Receiver will
         // ensure we've transitioned beyond the minimum time and distance before
         // initiating a background nearby loction update.
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis()
-                + settings.getPassiveUpdatesInterval(), settings.getPassiveUpdatesInterval(), pendingIntent);
+
+        long currentTime = System.currentTimeMillis();
+        long repeatingInterval = settings.getPassiveUpdatesInterval();
+        long startingTime = currentTime + repeatingInterval;
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, startingTime, repeatingInterval, pendingIntent);
     }
 }

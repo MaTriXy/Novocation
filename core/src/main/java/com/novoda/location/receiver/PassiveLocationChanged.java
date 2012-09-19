@@ -35,7 +35,7 @@ public class PassiveLocationChanged extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String key = LocationManager.KEY_LOCATION_CHANGED;
-        Location location = null;
+        Location location;
         if (intent.hasExtra(key)) {
             location = (Location) intent.getExtras().get(key);
             updateLocation(location);
