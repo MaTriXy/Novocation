@@ -7,7 +7,7 @@ import android.location.LocationManager;
 import com.novoda.location.Constants;
 import com.novoda.location.Locator;
 import com.novoda.location.LocatorFactory;
-import com.novoda.location.LocatorSettings;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,14 +20,17 @@ import static org.mockito.Mockito.*;
 @RunWith(NovocationTestRunner.class)
 public class LocationChangedShould {
 
-    final LocationChanged locationChangedSpy = spy(new LocationChanged());
     final LocationChanged locationChanged = new LocationChanged();
+    final Locator locator = mock(Locator.class);
 
     @Before
     public void setUp() throws Exception {
-        Locator locator = LocatorFactory.getInstance();
-        LocatorSettings locatorSettings = new LocatorSettings("", "");
-        locator.prepare(mock(Context.class), locatorSettings);
+        LocatorFactory.setLocator(locator);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        LocatorFactory.setLocator(null);
     }
 
     @Test
@@ -45,16 +48,16 @@ public class LocationChangedShould {
         Location newLocation = new Location("random provider");
         intent.putExtra(LocationManager.KEY_LOCATION_CHANGED, newLocation);
 
-        locationChangedSpy.onReceive(null, intent);
+        locationChanged.onReceive(null, intent);
 
-        verify(locationChangedSpy).updateLocation(eq(intent));
+        verify(locator).setLocation(eq(newLocation));
     }
 
     @Test
     public void NOT_update_the_current_location_if_a_new_location_is_not_received() throws Exception {
-        locationChangedSpy.onReceive(null, new Intent());
+        locationChanged.onReceive(null, new Intent());
 
-        verify(locationChangedSpy, never()).updateLocation(eq(new Intent()));
+        verify(locator, never()).setLocation(any(Location.class));
     }
 
     @Test

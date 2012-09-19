@@ -49,6 +49,7 @@ public class LocationChanged extends BroadcastReceiver {
 
     private void broadcastProviderStatusHasChanged(Context context, Intent i) {
         Intent providerStatusChanged;
+        //TODO these intents should be changed to callbacks.
         if (providerHasBeenEnabled(i)) {
             providerStatusChanged = new Intent(Constants.ACTIVE_LOCATION_UPDATE_PROVIDER_ENABLED_ACTION);
         } else {
@@ -65,7 +66,7 @@ public class LocationChanged extends BroadcastReceiver {
         return intent.hasExtra(LocationManager.KEY_LOCATION_CHANGED);
     }
 
-    protected void updateLocation(Intent i) {
+    private void updateLocation(Intent i) {
         LocatorFactory.setLocation(getLocation(i));
     }
 
