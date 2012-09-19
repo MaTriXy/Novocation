@@ -36,6 +36,8 @@ public class LocationAccuracy {
     public boolean isBetterLocation(Location newLocation, Location currentLocation) {
         if (currentLocation == null) {
             return true;
+        }else if (newLocation == null) {
+            return false;
         } else {
             long timeDelta = newLocation.getTime() - currentLocation.getTime();
             int accuracyDelta = (int) (newLocation.getAccuracy() - currentLocation.getAccuracy());

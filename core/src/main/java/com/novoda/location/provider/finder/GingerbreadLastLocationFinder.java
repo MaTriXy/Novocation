@@ -33,6 +33,7 @@ import android.location.LocationManager;
 
 public class GingerbreadLastLocationFinder implements LastLocationFinder {
 
+    //TODO this action name needs to be changed to fit with the libraries standards
 	protected static final String SINGLE_LOCATION_UPDATE_ACTION = "com.radioactiveyak.places.SINGLE_LOCATION_UPDATE_ACTION";
 
 	private final PendingIntent singleUpdate;

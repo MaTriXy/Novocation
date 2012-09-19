@@ -37,6 +37,12 @@ public class LocationAccuracyShould {
     }
 
     @Test
+    public void not_be_better_if_the_new_location_is_invalid() {
+        newLocation = INVALID_LOCATION;
+        assertThat(newLocationIsBetter(), is(false));
+    }
+
+    @Test
     public void not_be_better_if_both_locations_are_the_same() {
         currentLocation = newLocation;
         assertThat(newLocationIsBetter(), is(false));
@@ -117,9 +123,7 @@ public class LocationAccuracyShould {
         assertThat(newLocationIsBetter(), is(false));
     }
 
-    @Test
-    public void handle_a_location_having_an_invalid_provider() {
-        newLocation.setProvider(INVALID_PROVIDER);
+    private void assertThatLocationAccuracyDoesntCrash() {
         try {
             newLocationIsBetter();
         } catch (Exception e) {
@@ -128,14 +132,16 @@ public class LocationAccuracyShould {
     }
 
     @Test
+    public void handle_a_location_having_an_invalid_provider() {
+        newLocation.setProvider(INVALID_PROVIDER);
+        assertThatLocationAccuracyDoesntCrash();
+    }
+
+    @Test
     public void handle_both_locations_having_an_invalid_providers() {
         newLocation.setProvider(INVALID_PROVIDER);
         currentLocation.setProvider(INVALID_PROVIDER);
-        try {
-            newLocationIsBetter();
-        } catch (Exception e) {
-            fail();
-        }
+        assertThatLocationAccuracyDoesntCrash();
     }
 
     private void newLocationIsMoreRecent() {
