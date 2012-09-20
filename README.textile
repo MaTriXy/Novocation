@@ -4,6 +4,13 @@ Novocation is a project to hide Android location logic away in a jar. Most of th
 
 h2. How to use the library
 
+
+h2. Current development work
+Novocation is an active project and you can see where work efforts are being spent here: 
+https://www.pivotaltracker.com/projects/644919#
+If you find an issue please raise it here on Github!
+
+
 h3. Using maven
 
 If you are using maven you need to define the repo and then the dependency
