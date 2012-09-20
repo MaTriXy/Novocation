@@ -6,6 +6,7 @@ h2. How to use the library
 
 
 h2. Current development work
+
 Novocation is an active project and you can see where work efforts are being spent here: 
 https://www.pivotaltracker.com/projects/644919#
 If you find an issue please raise it here on Github!
