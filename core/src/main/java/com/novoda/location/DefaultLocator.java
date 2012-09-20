@@ -12,10 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * This code is based on Reto Meier's Location Pro-tips and Stefano 
  * Dacchille's IgnitedLocation.
- * 
+ *
  * Code modified by Novoda Ltd, 2011.
  */
 package com.novoda.location;
@@ -36,14 +36,14 @@ import com.novoda.location.util.LocationAccuracy;
 
 class DefaultLocator implements Locator {
 
-	private volatile Location currentLocation;
-	private LocationAccuracy locationAccuracy;
+    private volatile Location currentLocation;
+    private LocationAccuracy locationAccuracy;
     private Context context;
     private LocatorSettings settings;
     private LocationManager locationManager;
     private Criteria criteria;
     private LocationUpdateManager locationUpdateManager;
-    
+
     private final BroadcastReceiver providerStatusChanged = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -55,31 +55,31 @@ class DefaultLocator implements Locator {
             }
         }
     };
-    
+
     private final LocationListener oneShotNetworkLocationListener = new LocationListener() {
-        
+
         @Override
         public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
             locationManager.removeUpdates(this);
         }
-        
+
         @Override
         public void onProviderEnabled(String arg0) {
             locationManager.removeUpdates(this);
         }
-        
+
         @Override
         public void onProviderDisabled(String arg0) {
             locationManager.removeUpdates(this);
         }
-        
+
         @Override
         public void onLocationChanged(Location location) {
             locationManager.removeUpdates(this);
             setLocation(location);
         }
     };
-    
+
     @Override
     public void prepare(Context c, LocatorSettings settings) {
         this.settings = settings;
@@ -103,7 +103,7 @@ class DefaultLocator implements Locator {
         sendFirstAvailableLocation();
         startListeningForLocationUpdates();
     }
-    
+
     private void createActiveUpdateCriteria() {
         criteria = new Criteria();
         if (settings.shouldUseGps()) {
@@ -113,18 +113,18 @@ class DefaultLocator implements Locator {
         }
     }
 
-	private void persistSettingsToPreferences() {
-		new LocationProviderFactory().getSettingsDao().persistSettingsToPreferences(context, settings);
-	}
-	
-	private void sendFirstAvailableLocation() {
-		if (currentLocation == null) {
-			locationUpdateManager.fetchLastKnownLocation(context);
-        }else{
+    private void persistSettingsToPreferences() {
+        new LocationProviderFactory().getSettingsDao().persistSettingsToPreferences(context, settings);
+    }
+
+    private void sendFirstAvailableLocation() {
+        if (currentLocation == null) {
+            locationUpdateManager.fetchLastKnownLocation();
+        } else {
             sendLocationUpdateBroadcast();
         }
-	}
-	
+    }
+
     private void sendLocationUpdateBroadcast() {
         if (context == null) {
             return;
@@ -134,33 +134,33 @@ class DefaultLocator implements Locator {
         broadcast.setPackage(settings.getPackageName());
         context.sendBroadcast(broadcast);
     }
-    
+
     private void startListeningForLocationUpdates() throws NoProviderAvailable {
-    	if (!settings.shouldUpdateLocation()) {
-    		return;
-    	}
-    	locationUpdateManager.requestActiveLocationUpdates(criteria);
+        if (!settings.shouldUpdateLocation()) {
+            return;
+        }
+        locationUpdateManager.requestActiveLocationUpdates(criteria);
         registerProviderStatusChangedReceiver(context);
         ifGPSregisterOneShotNetworkUpdate();
         locationUpdateManager.removePassiveLocationUpdates();
     }
-    
+
     private void registerProviderStatusChangedReceiver(Context c) {
         IntentFilter providerDisabled = new IntentFilter(Constants.ACTIVE_LOCATION_UPDATE_PROVIDER_DISABLED_ACTION);
         c.registerReceiver(providerStatusChanged, providerDisabled);
-        IntentFilter providerEnabled = new IntentFilter(Constants.ACTIVE_LOCATION_UPDATE_PROVIDER_ENABLED_ACTION);   
+        IntentFilter providerEnabled = new IntentFilter(Constants.ACTIVE_LOCATION_UPDATE_PROVIDER_ENABLED_ACTION);
         c.registerReceiver(providerStatusChanged, providerEnabled);
     }
-    
-	private void ifGPSregisterOneShotNetworkUpdate() {
+
+    private void ifGPSregisterOneShotNetworkUpdate() {
         String bestEnabledProvider = locationManager.getBestProvider(criteria, true);
-        if(bestEnabledProvider != null && LocationManager.GPS_PROVIDER.equals(bestEnabledProvider)) {
+        if (bestEnabledProvider != null && LocationManager.GPS_PROVIDER.equals(bestEnabledProvider)) {
             locationManager.removeUpdates(oneShotNetworkLocationListener);
             if (isNetworkProviderEnabled()) {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, oneShotNetworkLocationListener);
             }
         }
-	}
+    }
 
     @Override
     public void stopLocationUpdates() {
@@ -173,7 +173,6 @@ class DefaultLocator implements Locator {
     private void stopListeningForLocationUpdates() {
         unregisterDisabledProviderReceiver();
         locationUpdateManager.removeActiveLocationUpdates();
-        locationUpdateManager.stopFetchLastKnownLocation();
         locationUpdateManager.requestPassiveLocationUpdates();
         locationManager.removeUpdates(oneShotNetworkLocationListener);
     }
@@ -193,11 +192,10 @@ class DefaultLocator implements Locator {
 
     @Override
     public void setLocation(Location location) {
-        if (locationAccuracy.isWorseLocation(location, currentLocation)) {
-            return;
+        if (locationAccuracy.isBetterLocation(location, currentLocation)) {
+            currentLocation = location;
+            sendLocationUpdateBroadcast();
         }
-        currentLocation = location;
-        sendLocationUpdateBroadcast();
     }
 
     @Override

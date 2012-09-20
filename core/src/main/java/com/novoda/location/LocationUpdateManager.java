@@ -16,7 +16,6 @@
 package com.novoda.location;
 
 import android.app.PendingIntent;
-import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -25,7 +24,6 @@ import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.location.provider.LastLocationFinder;
 import com.novoda.location.provider.LocationProviderFactory;
 import com.novoda.location.provider.LocationUpdateRequester;
-import com.novoda.location.provider.task.LastKnownLocationTask;
 import com.novoda.location.util.ApiLevelDetector;
 
 class LocationUpdateManager {
@@ -73,17 +71,15 @@ class LocationUpdateManager {
         locationManager.removeUpdates(passiveLocationUpdate);
     }
 
-    void fetchLastKnownLocation(Context context) {
-        LastLocationFinder finder = locationProviderFactory.getLastLocationFinder(locationManager, context);
-        lastKnownLocationTask = new LastKnownLocationTask(finder, settings);
-        lastKnownLocationTask.execute();
-    }
-
-    void stopFetchLastKnownLocation() {
-        if (lastKnownLocationTask == null) {
-            return;
+    void fetchLastKnownLocation() {
+        LastLocationFinder finder = locationProviderFactory.getLastLocationFinder(locationManager);
+        float locationUpdateDistanceDiff = settings.getUpdatesDistance();
+        long locationUpdateInterval = settings.getUpdatesInterval();
+        long minimumTime = System.currentTimeMillis() - locationUpdateInterval;
+        Location lastKnownLocation = finder.getLastBestLocation(locationUpdateDistanceDiff, minimumTime);
+        if (lastKnownLocation != null) {
+            LocatorFactory.setLocation(lastKnownLocation);
         }
-        lastKnownLocationTask.cancel(true);
     }
 
 }

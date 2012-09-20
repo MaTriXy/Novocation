@@ -17,7 +17,6 @@
  */
 package com.novoda.location.provider;
 
-import android.content.Context;
 import android.location.LocationManager;
 import com.novoda.location.provider.requester.FroyoLocationUpdateRequester;
 import com.novoda.location.provider.requester.GingerbreadLocationUpdateRequester;
@@ -27,7 +26,7 @@ import com.novoda.location.util.ApiLevelDetector;
 
 public class LocationProviderFactory {
 
-    public LastLocationFinder getLastLocationFinder(LocationManager locationManager, Context context) {
+    public LastLocationFinder getLastLocationFinder(LocationManager locationManager) {
         return new LastLocationFinder(locationManager);
     }
 

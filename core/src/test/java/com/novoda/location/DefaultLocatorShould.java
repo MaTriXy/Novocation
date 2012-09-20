@@ -8,13 +8,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import com.xtremelabs.robolectric.Robolectric;
-import com.xtremelabs.robolectric.shadows.ShadowLocationManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import robolectricsetup.NovocationTestRunner;
-
-import java.util.List;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -80,7 +77,7 @@ public class DefaultLocatorShould {
 
         locator.startLocationUpdates();
 
-        verify(updateManager).fetchLastKnownLocation(eq(context));
+        verify(updateManager).fetchLastKnownLocation();
     }
 
     @Test
@@ -219,13 +216,6 @@ public class DefaultLocatorShould {
         locator.stopLocationUpdates();
 
         verify(updateManager).removeActiveLocationUpdates();
-    }
-
-    @Test
-    public void stop_fetching_last_known_locations_when_stopping_updates() throws Exception {
-        locator.stopLocationUpdates();
-
-        verify(updateManager).stopFetchLastKnownLocation();
     }
 
     @Test

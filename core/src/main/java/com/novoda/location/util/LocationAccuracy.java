@@ -29,10 +29,6 @@ public class LocationAccuracy {
         this.settings = settings;
     }
 
-    public boolean isWorseLocation(Location location, Location currentBestLocation) {
-        return !isBetterLocation(location, currentBestLocation);
-    }
-
     public boolean isBetterLocation(Location newLocation, Location currentLocation) {
         if (currentLocation == null) {
             return true;

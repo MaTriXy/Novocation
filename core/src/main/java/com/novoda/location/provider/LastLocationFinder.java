@@ -35,9 +35,6 @@ public class LastLocationFinder {
         float bestAccuracy = Float.MAX_VALUE;
         long bestTime = Long.MIN_VALUE;
 
-        // Iterate through all the providers on the system, keeping
-        // note of the most accurate result within the acceptable time limit.
-        // If no result is found within maxTime, return the newest Location.
         List<String> matchingProviders = locationManager.getProviders(true);
         for (String provider : matchingProviders) {
             Location location = locationManager.getLastKnownLocation(provider);
