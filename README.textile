@@ -1,16 +1,19 @@
+<a href='http://london.novoda.com:8080/job/Novocation/'><img src='http://london.novoda.com:8080/job/Novocation/badge/icon'></a>
+
 h1. Novocation
 
 Novocation is a project to hide Android location logic away in a jar. Most of the code originates from Reto Meier's <a href="http://code.google.com/p/android-protips-location">Android Protips: A Deep Dive Into Location</a>. It's also heaviliy inspired by Stefano Dacchille's <a href="https://github.com/stefanodacchille/ignition-location">Ignition Location</a>.
-
-h2. How to use the library
 
 
 h2. Current development work
 
 Novocation is an active project and you can see where work efforts are being spent here: 
-https://www.pivotaltracker.com/projects/644919#
-If you find an issue please raise it here on Github!
 
+https://www.pivotaltracker.com/projects/644919#
+
+Please report bugs, tell us about your problems or request features by creating issues here on GitHub.
+
+h2. How to use the library
 
 h3. Using maven
 
@@ -128,7 +131,3 @@ Novocation is licensed under the <a href="http://www.apache.org/licenses/LICENSE
 h2. Demo app
 
 If you want to see the capabilities of the library you can try out the <a href="https://market.android.com/details?id=com.novoda.locationdemo">Novocation demo</a>. This will also help us in improving the library as we track with analytics the quality of the position and the time to get it.
-
-h2. Issues
-
-Please report bugs, tell us about your problems or request features by creating issues on GitHub.
