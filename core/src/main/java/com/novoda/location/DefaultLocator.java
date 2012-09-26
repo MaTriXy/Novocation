@@ -65,6 +65,8 @@ class DefaultLocator implements Locator {
         }
     };
 
+    private boolean listeningForActiveLocationUpdates;
+
     @Override
     public void prepare(Context c, LocatorSettings settings) {
         this.settings = settings;
@@ -124,6 +126,7 @@ class DefaultLocator implements Locator {
         if (!settings.shouldUpdateLocation()) {
             return;
         }
+        listeningForActiveLocationUpdates = true;
         locationUpdateManager.requestActiveLocationUpdates(criteria);
         ifGPSregisterOneShotNetworkUpdate();
         locationUpdateManager.removePassiveLocationUpdates();
@@ -144,6 +147,7 @@ class DefaultLocator implements Locator {
         if (!settings.shouldUpdateLocation()) {
             return;
         }
+        listeningForActiveLocationUpdates = false;
         stopListeningForLocationUpdates();
     }
 
@@ -167,6 +171,18 @@ class DefaultLocator implements Locator {
     }
 
     @Override
+    public void providerStatusChanged() {
+        if (listeningForActiveLocationUpdates) {
+            try {
+                locationUpdateManager.removeActiveLocationUpdates();
+                startListeningForLocationUpdates();
+            } catch (NoProviderAvailable npa) {
+                //We cant listen for updates if no provider is enabled
+            }
+        }
+    }
+
+    @Override
     public boolean isNetworkProviderEnabled() {
         return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
@@ -174,16 +190,6 @@ class DefaultLocator implements Locator {
     @Override
     public boolean isGpsProviderEnabled() {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    }
-
-    @Override
-    public void providerStatusChanged() {
-        try {
-            locationUpdateManager.removeActiveLocationUpdates();
-            startListeningForLocationUpdates();
-        } catch (NoProviderAvailable npa) {
-            //We cant listen for updates if no provider is enabled
-        }
     }
 
     /**

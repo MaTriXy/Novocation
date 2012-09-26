@@ -25,7 +25,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-//TODO rename this class - its misleading. Its enabling, not unregistering, only when connectivity changes to conneced, and its not only the Passive Listener
+//TODO rename this class - its misleading. Its enabling, not unregistering, only when connectivity changes to connected, and its not only the Passive Listener
 //TODO should this disable on lost connectivity?
 public class UnregisterPassiveListenerOnLostConnectivity extends BroadcastReceiver {
 	

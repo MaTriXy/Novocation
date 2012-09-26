@@ -1,6 +1,5 @@
 package com.novoda.location;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Criteria;
@@ -13,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import robolectricsetup.NovocationTestRunner;
 
-import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.eq;
@@ -182,6 +180,15 @@ public class DefaultLocatorShould {
 
         //2 because start location updates also requests active location updates
         verify(updateManager, times(2)).requestActiveLocationUpdates(any(Criteria.class));
+    }
+
+    @Test
+    public void NOT_act_when_a_provider_status_changes_if_location_updates_have_not_been_started() throws Exception {
+        locator.stopLocationUpdates();
+
+        locator.providerStatusChanged();
+
+        verify(updateManager, never()).requestActiveLocationUpdates(any(Criteria.class));
     }
 
     @Test

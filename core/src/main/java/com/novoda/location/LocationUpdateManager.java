@@ -19,7 +19,6 @@ import android.app.PendingIntent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.location.provider.LastLocationFinder;
 import com.novoda.location.provider.LocationProviderFactory;
@@ -34,7 +33,6 @@ class LocationUpdateManager {
     private final LocationUpdateRequester locationUpdateRequester;
     private final PendingIntent activeLocationUpdate;
     private final PendingIntent passiveLocationUpdate;
-    private AsyncTask<Void, Void, Location> lastKnownLocationTask;
 
     LocationUpdateManager(LocatorSettings settings,
                           LocationManager locationManager,

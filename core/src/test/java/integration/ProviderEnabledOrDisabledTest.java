@@ -83,4 +83,5 @@ public class ProviderEnabledOrDisabledTest {
 
         verify(locationManager, times(3)).removeUpdates(any(PendingIntent.class));
     }
+
 }
