@@ -7,7 +7,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import com.novoda.location.receiver.LocationChanged;
 import com.xtremelabs.robolectric.Robolectric;
 import org.junit.Before;
 import org.junit.Test;
@@ -166,47 +165,20 @@ public class DefaultLocatorShould {
         verify(locationManager, never()).removeUpdates(any(LocationListener.class));
     }
 
-    private void disableALocationProvider() {
-        context.sendBroadcast(new Intent(Constants.ACTIVE_LOCATION_UPDATE_PROVIDER_DISABLED_ACTION));
-    }
-
-    private void enbableALocationProvider() {
-        context.sendBroadcast(new Intent(Constants.ACTIVE_LOCATION_UPDATE_PROVIDER_ENABLED_ACTION));
-    }
-
     @Test
-    public void remove_active_location_updates_when_a_provider_has_been_enabled() throws Exception {
+    public void remove_active_location_updates_when_a_provider_status_has_changed() throws Exception {
         locator.startLocationUpdates();
 
-        enbableALocationProvider();
+        locator.providerStatusChanged();
 
         verify(updateManager).removeActiveLocationUpdates();
     }
 
     @Test
-    public void remove_active_location_updates_when_a_provider_has_been_disabled() throws Exception {
+    public void request_active_location_updates_when_a_provider_status_has_changed() throws Exception {
         locator.startLocationUpdates();
 
-        disableALocationProvider();
-
-        verify(updateManager).removeActiveLocationUpdates();
-    }
-
-    @Test
-    public void request_active_location_updates_when_a_provider_has_been_enabled() throws Exception {
-        locator.startLocationUpdates();
-
-        enbableALocationProvider();
-
-        //2 because start location updates also requests active location updates
-        verify(updateManager, times(2)).requestActiveLocationUpdates(any(Criteria.class));
-    }
-
-    @Test
-    public void request_active_location_updates_when_a_provider_has_been_disabled() throws Exception {
-        locator.startLocationUpdates();
-
-        disableALocationProvider();
+        locator.providerStatusChanged();
 
         //2 because start location updates also requests active location updates
         verify(updateManager, times(2)).requestActiveLocationUpdates(any(Criteria.class));
@@ -224,13 +196,6 @@ public class DefaultLocatorShould {
         locator.stopLocationUpdates();
 
         verify(updateManager).requestPassiveLocationUpdates();
-    }
-
-    @Test
-    public void unregister_a_receiver_when_stopping_location_updates() throws Exception {
-        locator.stopLocationUpdates();
-
-        verify(context).unregisterReceiver(any(BroadcastReceiver.class));
     }
 
     @Test

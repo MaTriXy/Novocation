@@ -20,16 +20,13 @@
  */
 package com.novoda.location;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-
 import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.location.provider.LocationProviderFactory;
 import com.novoda.location.util.LocationAccuracy;
@@ -43,18 +40,6 @@ class DefaultLocator implements Locator {
     private LocationManager locationManager;
     private Criteria criteria;
     private LocationUpdateManager locationUpdateManager;
-
-    private final BroadcastReceiver providerStatusChanged = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            try {
-                locationUpdateManager.removeActiveLocationUpdates();
-                startListeningForLocationUpdates();
-            } catch (NoProviderAvailable npa) {
-                //We cant listen for updates if no provider is enabled
-            }
-        }
-    };
 
     private final LocationListener oneShotNetworkLocationListener = new LocationListener() {
 
@@ -140,16 +125,8 @@ class DefaultLocator implements Locator {
             return;
         }
         locationUpdateManager.requestActiveLocationUpdates(criteria);
-        registerProviderStatusChangedReceiver(context);
         ifGPSregisterOneShotNetworkUpdate();
         locationUpdateManager.removePassiveLocationUpdates();
-    }
-
-    private void registerProviderStatusChangedReceiver(Context c) {
-        IntentFilter providerDisabled = new IntentFilter(Constants.ACTIVE_LOCATION_UPDATE_PROVIDER_DISABLED_ACTION);
-        c.registerReceiver(providerStatusChanged, providerDisabled);
-        IntentFilter providerEnabled = new IntentFilter(Constants.ACTIVE_LOCATION_UPDATE_PROVIDER_ENABLED_ACTION);
-        c.registerReceiver(providerStatusChanged, providerEnabled);
     }
 
     private void ifGPSregisterOneShotNetworkUpdate() {
@@ -171,18 +148,9 @@ class DefaultLocator implements Locator {
     }
 
     private void stopListeningForLocationUpdates() {
-        unregisterDisabledProviderReceiver();
         locationUpdateManager.removeActiveLocationUpdates();
         locationUpdateManager.requestPassiveLocationUpdates();
         locationManager.removeUpdates(oneShotNetworkLocationListener);
-    }
-
-    private void unregisterDisabledProviderReceiver() {
-        try {
-            context.unregisterReceiver(providerStatusChanged);
-        } catch (Exception e) {
-            //In case is not registered
-        }
     }
 
     @Override
@@ -206,6 +174,16 @@ class DefaultLocator implements Locator {
     @Override
     public boolean isGpsProviderEnabled() {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    @Override
+    public void providerStatusChanged() {
+        try {
+            locationUpdateManager.removeActiveLocationUpdates();
+            startListeningForLocationUpdates();
+        } catch (NoProviderAvailable npa) {
+            //We cant listen for updates if no provider is enabled
+        }
     }
 
     /**

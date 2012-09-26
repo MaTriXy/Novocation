@@ -42,4 +42,5 @@ public interface Locator {
 
 	boolean isGpsProviderEnabled();
 
+    void providerStatusChanged();
 }

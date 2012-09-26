@@ -1,4 +1,4 @@
-    /**
+/**
  * Copyright 2011 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,57 +20,15 @@ package com.novoda.location.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationManager;
-
-import com.novoda.location.Constants;
+import com.novoda.location.Locator;
 import com.novoda.location.LocatorFactory;
 
-//TODO this behaviour needs to be extracted to a separate class that doesn't extend BroadcastReceiver
 public class LocationChanged extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent i) {
-        if (i == null) {
-            return;
-        }
-        if (providerStatusHasChanged(i)) {
-            broadcastProviderStatusHasChanged(context, i);
-        }
-
-        if (locationHasChanged(i)) {
-            updateLocation(i);
-        }
+        Locator locator = LocatorFactory.getInstance();
+        new LocationChangedHandler(locator).onNewChange(i);
     }
 
-    private boolean providerStatusHasChanged(Intent i) {
-        return i.hasExtra(LocationManager.KEY_PROVIDER_ENABLED);
-    }
-
-    private void broadcastProviderStatusHasChanged(Context context, Intent i) {
-        Intent providerStatusChanged;
-        //TODO these intents should be changed to callbacks.
-        if (providerHasBeenEnabled(i)) {
-            providerStatusChanged = new Intent(Constants.ACTIVE_LOCATION_UPDATE_PROVIDER_ENABLED_ACTION);
-        } else {
-            providerStatusChanged = new Intent(Constants.ACTIVE_LOCATION_UPDATE_PROVIDER_DISABLED_ACTION);
-        }
-        context.sendBroadcast(providerStatusChanged);
-    }
-
-    private boolean providerHasBeenEnabled(Intent i) {
-        return i.getBooleanExtra(LocationManager.KEY_PROVIDER_ENABLED, false);
-    }
-
-    private boolean locationHasChanged(Intent intent) {
-        return intent.hasExtra(LocationManager.KEY_LOCATION_CHANGED);
-    }
-
-    private void updateLocation(Intent i) {
-        LocatorFactory.setLocation(getLocation(i));
-    }
-
-    private Location getLocation(Intent intent) {
-        return (Location) intent.getExtras().get(LocationManager.KEY_LOCATION_CHANGED);
-    }
 }
