@@ -80,8 +80,8 @@
   <dependencies>
 
     <dependency>
-      <groupId>android</groupId>
-      <artifactId>android</artifactId>
+      <groupId>${android.groupId}</groupId>
+      <artifactId>${android.artifactId}</artifactId>
       <version>${android.version}</version>
       <scope>provided</scope>
     </dependency>

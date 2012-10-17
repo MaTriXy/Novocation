@@ -13,14 +13,12 @@
 
   <properties>
     <eclipse.excludeArtifactIds>android,commons-codec,commons-logging,httpclient,httpcore,json,opengl-api,xmlParserAPIs,xpp3,novocation-core</eclipse.excludeArtifactIds>
-    <android.version>3.2_r1</android.version>
-    <google.android.maps.version>13_r1</google.android.maps.version>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>android</groupId>
-      <artifactId>android</artifactId>
+      <groupId>${android.groupId}</groupId>
+      <artifactId>${android.artifactId}</artifactId>
       <version>${android.version}</version>
       <scope>provided</scope>
     </dependency>
