@@ -1,6 +1,5 @@
 package com.novoda.location.provider.finder;
 
-import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 import com.novoda.location.provider.LastLocationFinder;
@@ -32,7 +31,6 @@ public class LastLocationFinderShould {
     static final String PROVIDER_ONE = "provider one";
     static final String PROVIDER_TWO = "provider two";
 
-    final Context context = mock(Context.class);
     final LocationManager locationManager = mock(LocationManager.class);
     final List<String> providers = new ArrayList<String>();
     final LastLocationFinder lastLocationFinder = new LastLocationFinder(locationManager);
@@ -44,7 +42,7 @@ public class LastLocationFinderShould {
     }
 
     private Location getLastBestLocation() {
-        return lastLocationFinder.getLastBestLocation(MIN_ACCURACY, MIN_TIME);
+        return lastLocationFinder.getLastBestLocation(MIN_TIME);
     }
 
     private Location addLocationToManager(long timestamp, float accuracy, String provider) {

@@ -53,7 +53,7 @@ public class PassiveLocationChanged extends BroadcastReceiver {
 
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             LastLocationFinder lastLocationFinder = getLastLocationFinder(locationManager);
-            location = lastLocationFinder.getLastBestLocation(locationUpdateDistanceDiff, delta);
+            location = lastLocationFinder.getLastBestLocation(delta);
             // Check if the last location detected from the providers is either
             // too soon, or too close to the last value we used. If it is within
             // those thresholds we set the location to null to prevent the

@@ -71,10 +71,9 @@ class LocationUpdateManager {
 
     void fetchLastKnownLocation() {
         LastLocationFinder finder = locationProviderFactory.getLastLocationFinder(locationManager);
-        float locationUpdateDistanceDiff = settings.getUpdatesDistance();
         long locationUpdateInterval = settings.getUpdatesInterval();
         long minimumTime = System.currentTimeMillis() - locationUpdateInterval;
-        Location lastKnownLocation = finder.getLastBestLocation(locationUpdateDistanceDiff, minimumTime);
+        Location lastKnownLocation = finder.getLastBestLocation(minimumTime);
         if (lastKnownLocation != null) {
             LocatorFactory.setLocation(lastKnownLocation);
         }

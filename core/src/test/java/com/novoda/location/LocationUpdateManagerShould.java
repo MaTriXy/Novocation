@@ -89,12 +89,12 @@ public class LocationUpdateManagerShould {
 
         locationUpdateManager.fetchLastKnownLocation();
 
-        verify(lastLocationFinder).getLastBestLocation(eq(UPDATES_DISTANCE), longThat(new GreaterOrEqual<Long>(expectedMinimumTime)));
+        verify(lastLocationFinder).getLastBestLocation(longThat(new GreaterOrEqual<Long>(expectedMinimumTime)));
     }
 
     @Test
     public void not_set_a_location_if_its_invalid() throws Exception {
-        when(lastLocationFinder.getLastBestLocation(anyFloat(), anyLong())).thenReturn(INVALID_LOCATION);
+        when(lastLocationFinder.getLastBestLocation(anyLong())).thenReturn(INVALID_LOCATION);
 
         locationUpdateManager.fetchLastKnownLocation();
 
@@ -105,7 +105,7 @@ public class LocationUpdateManagerShould {
     public void set_a_location_if_its_valid() throws Exception {
         Location location = new Location("test provider");
 
-        when(lastLocationFinder.getLastBestLocation(anyFloat(), anyLong())).thenReturn(location);
+        when(lastLocationFinder.getLastBestLocation(anyLong())).thenReturn(location);
 
         locationUpdateManager.fetchLastKnownLocation();
 

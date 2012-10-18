@@ -30,7 +30,7 @@ public class LastLocationFinder {
         this.locationManager = locationManager;
     }
 
-    public Location getLastBestLocation(float minDistance, long minTime) {
+    public Location getLastBestLocation(long minTime) {
         Location bestResult = null;
         float bestAccuracy = Float.MAX_VALUE;
         long bestTime = Long.MIN_VALUE;
