@@ -22,7 +22,7 @@ import android.app.PendingIntent;
 import android.location.LocationManager;
 import com.novoda.location.LocatorSettings;
 
-public class LegacyLocationUpdater extends FroyoLocationUpdater {
+class LegacyLocationUpdater extends FroyoLocationUpdater {
 
     private final AlarmManager alarmManager;
 

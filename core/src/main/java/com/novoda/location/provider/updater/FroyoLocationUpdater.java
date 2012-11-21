@@ -22,7 +22,7 @@ import android.location.Criteria;
 import android.location.LocationManager;
 import com.novoda.location.LocatorSettings;
 
-public class FroyoLocationUpdater implements LocationUpdater {
+class FroyoLocationUpdater implements LocationUpdater {
 
     protected LocationManager locationManager;
 
