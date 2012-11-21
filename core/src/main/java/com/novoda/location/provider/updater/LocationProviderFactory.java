@@ -15,11 +15,10 @@
  * 
  * Code modified by Novoda Ltd, 2011.
  */
-package com.novoda.location.provider;
+package com.novoda.location.provider.updater;
 
 import android.location.LocationManager;
-import com.novoda.location.provider.requester.FroyoLocationUpdater;
-import com.novoda.location.provider.requester.GingerbreadLocationUpdater;
+import com.novoda.location.provider.LastLocationFinder;
 import com.novoda.location.provider.store.SettingsDao;
 import com.novoda.location.provider.store.SharedPreferenceSettingsDao;
 import com.novoda.location.util.ApiLevelDetector;

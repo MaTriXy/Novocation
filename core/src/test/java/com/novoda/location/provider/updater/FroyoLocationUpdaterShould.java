@@ -1,4 +1,4 @@
-package com.novoda.location.provider.requester;
+package com.novoda.location.provider.updater;
 
 import android.app.PendingIntent;
 import android.location.Criteria;

@@ -15,13 +15,12 @@
  *
  * Code modified by Novoda Ltd, 2011.
  */
-package com.novoda.location.provider.requester;
+package com.novoda.location.provider.updater;
 
 import android.app.PendingIntent;
 import android.location.Criteria;
 import android.location.LocationManager;
 import com.novoda.location.LocatorSettings;
-import com.novoda.location.provider.LocationUpdater;
 
 public class FroyoLocationUpdater implements LocationUpdater {
 

@@ -22,11 +22,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
-
 import com.novoda.location.LocatorFactory;
 import com.novoda.location.LocatorSettings;
-import com.novoda.location.provider.LocationProviderFactory;
-import com.novoda.location.provider.LocationUpdater;
+import com.novoda.location.provider.updater.LocationProviderFactory;
+import com.novoda.location.provider.updater.LocationUpdater;
 import com.novoda.location.provider.store.SettingsDao;
 
 //TODO extract the logic out of this receiver

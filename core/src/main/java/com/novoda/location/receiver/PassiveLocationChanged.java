@@ -25,7 +25,7 @@ import android.location.LocationManager;
 
 import com.novoda.location.LocatorFactory;
 import com.novoda.location.provider.LastLocationFinder;
-import com.novoda.location.provider.LocationProviderFactory;
+import com.novoda.location.provider.updater.LocationProviderFactory;
 import com.novoda.location.provider.store.SettingsDao;
 
 //TODO this logic needs to be extracted to a java object with the dependencies injected through the constructor
