@@ -13,9 +13,9 @@
   <packaging>pom</packaging>
 
   <properties>
-    <android.groupId>com.google.android</android.groupId>
+    <android.groupId>android</android.groupId>
     <android.artifactId>android</android.artifactId>
-    <android.version>4.1.1.4</android.version>
+    <android.version>4.2_r1</android.version>
   </properties>
 
   <repositories>
