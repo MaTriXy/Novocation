@@ -32,7 +32,7 @@ public class LegacyLocationUpdater extends FroyoLocationUpdater {
     }
 
     @Override
-    public void requestPassiveLocationUpdates(LocatorSettings settings, PendingIntent pendingIntent) {
+    public void startPassiveLocationUpdates(LocatorSettings settings, PendingIntent pendingIntent) {
         // Pre-Froyo there was no Passive Location Provider, so instead we will
         // set an inexact repeating, non-waking alarm that will trigger once the
         // minimum time between passive updates has expired. This is potentially

@@ -22,8 +22,8 @@ import com.novoda.location.exception.NoProviderAvailable;
 
 public interface LocationUpdater {
 
-    void requestActiveLocationUpdates(LocatorSettings settings, Criteria criteria, PendingIntent pendingIntent) throws NoProviderAvailable;
+    void startActiveLocationUpdates(LocatorSettings settings, Criteria criteria, PendingIntent pendingIntent) throws NoProviderAvailable;
 
-    void requestPassiveLocationUpdates(LocatorSettings settings, PendingIntent pendingIntent);
+    void startPassiveLocationUpdates(LocatorSettings settings, PendingIntent pendingIntent);
 
 }

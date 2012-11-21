@@ -32,7 +32,7 @@ public class FroyoLocationUpdater implements LocationUpdater {
     }
 
     @Override
-    public void requestActiveLocationUpdates(LocatorSettings settings, Criteria criteria, PendingIntent pendingIntent) {
+    public void startActiveLocationUpdates(LocatorSettings settings, Criteria criteria, PendingIntent pendingIntent) {
         String provider = locationManager.getBestProvider(criteria, true);
         if (provider == null) {
             return;
@@ -43,7 +43,7 @@ public class FroyoLocationUpdater implements LocationUpdater {
     }
 
     @Override
-    public void requestPassiveLocationUpdates(LocatorSettings settings, PendingIntent pendingIntent) {
+    public void startPassiveLocationUpdates(LocatorSettings settings, PendingIntent pendingIntent) {
         long minTime = settings.getPassiveUpdatesInterval();
         float minDistance = settings.getPassiveUpdatesDistance();
         locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, minTime, minDistance, pendingIntent);

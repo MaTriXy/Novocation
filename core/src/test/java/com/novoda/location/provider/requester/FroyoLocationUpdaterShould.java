@@ -40,7 +40,7 @@ public class FroyoLocationUpdaterShould {
     public void request_location_updates_from_the_location_manager_if_the_given_criteria_matches_an_enabled_provider() throws Exception {
         when(locationManager.getBestProvider(criteria, true)).thenReturn(TEST_PROVIDER);
 
-        updater.requestActiveLocationUpdates(settings, criteria, pendingIntent);
+        updater.startActiveLocationUpdates(settings, criteria, pendingIntent);
 
         verify(locationManager).requestLocationUpdates(eq(TEST_PROVIDER), eq(UPDATE_TIME), eq(UPDATE_DISTANCE), eq(pendingIntent));
     }
@@ -49,7 +49,7 @@ public class FroyoLocationUpdaterShould {
     public void NOT_request_location_updates_from_the_location_manager_if_the_given_criteria_does_not_match_an_enabled_provider() throws Exception {
         when(locationManager.getBestProvider(any(Criteria.class), anyBoolean())).thenReturn(null);
 
-        updater.requestActiveLocationUpdates(settings, criteria, pendingIntent);
+        updater.startActiveLocationUpdates(settings, criteria, pendingIntent);
 
         verify(locationManager, never()).requestLocationUpdates(anyString(), anyLong(), anyFloat(), any(PendingIntent.class));
     }
@@ -62,7 +62,7 @@ public class FroyoLocationUpdaterShould {
         float passiveDistance = 500;
         settings.setPassiveUpdatesDistance(passiveDistance);
 
-        updater.requestPassiveLocationUpdates(settings, pendingIntent);
+        updater.startPassiveLocationUpdates(settings, pendingIntent);
 
         verify(locationManager).requestLocationUpdates(eq(LocationManager.PASSIVE_PROVIDER), eq(passiveTime), eq(passiveDistance), eq(pendingIntent));
     }

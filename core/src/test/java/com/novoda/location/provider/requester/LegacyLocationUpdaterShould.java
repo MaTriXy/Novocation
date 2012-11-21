@@ -29,7 +29,7 @@ public class LegacyLocationUpdaterShould {
         long triggerTime = System.currentTimeMillis() + passiveUpdatesInterval;
         GreaterOrEqual<Long> matchesTriggerTime = new GreaterOrEqual<Long>(triggerTime);
 
-        updater.requestPassiveLocationUpdates(locatorSettings, pendingIntent);
+        updater.startPassiveLocationUpdates(locatorSettings, pendingIntent);
 
         verify(alarmManager).setInexactRepeating(eq(AlarmManager.ELAPSED_REALTIME), longThat(matchesTriggerTime), eq(passiveUpdatesInterval), eq(pendingIntent));
     }

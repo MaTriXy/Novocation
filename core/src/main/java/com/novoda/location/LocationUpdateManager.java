@@ -49,7 +49,7 @@ class LocationUpdateManager {
 
     void requestActiveLocationUpdates(Criteria criteria) throws NoProviderAvailable {
         try {
-            locationUpdater.requestActiveLocationUpdates(settings, criteria, activeLocationUpdate);
+            locationUpdater.startActiveLocationUpdates(settings, criteria, activeLocationUpdate);
         } catch (IllegalArgumentException iae) {
             throw new NoProviderAvailable();
         }
@@ -57,7 +57,7 @@ class LocationUpdateManager {
 
     void requestPassiveLocationUpdates() {
         if (ApiLevelDetector.supportsFroyo() && settings.shouldEnablePassiveUpdates()) {
-            locationUpdater.requestPassiveLocationUpdates(settings, passiveLocationUpdate);
+            locationUpdater.startPassiveLocationUpdates(settings, passiveLocationUpdate);
         }
     }
 

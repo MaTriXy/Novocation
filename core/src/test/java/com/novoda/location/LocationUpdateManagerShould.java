@@ -59,12 +59,12 @@ public class LocationUpdateManagerShould {
     public void request_active_locations_from_an_update_requester() throws Exception {
         locationUpdateManager.requestActiveLocationUpdates(criteria);
 
-        verify(updater).requestActiveLocationUpdates(eq(settings), eq(criteria), eq(activeUpdate));
+        verify(updater).startActiveLocationUpdates(eq(settings), eq(criteria), eq(activeUpdate));
     }
 
     @Test(expected = NoProviderAvailable.class)
     public void throw_an_exception_if_no_provider_is_available() throws Exception {
-        doThrow(IllegalArgumentException.class).when(updater).requestActiveLocationUpdates(eq(settings), eq(criteria), eq(activeUpdate));
+        doThrow(IllegalArgumentException.class).when(updater).startActiveLocationUpdates(eq(settings), eq(criteria), eq(activeUpdate));
 
         locationUpdateManager.requestActiveLocationUpdates(criteria);
     }

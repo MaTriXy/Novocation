@@ -45,7 +45,7 @@ public class RestorePassiveListenerBoot extends BroadcastReceiver {
         LocationProviderFactory factory = new LocationProviderFactory();
         LocationUpdater lur = factory.getLocationUpdater(lm);
         LocatorSettings settings = LocatorFactory.getInstance().getSettings();
-        lur.requestPassiveLocationUpdates(settings, createPendingIntent(context));
+        lur.startPassiveLocationUpdates(settings, createPendingIntent(context));
     }
 
     private PendingIntent createPendingIntent(Context context) {

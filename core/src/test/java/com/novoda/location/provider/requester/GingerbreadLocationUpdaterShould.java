@@ -33,7 +33,7 @@ public class GingerbreadLocationUpdaterShould {
 
     @Test
     public void request_location_updates_from_the_location_manager_using_criteria() throws Exception {
-        updater.requestActiveLocationUpdates(settings, criteria, pendingIntent);
+        updater.startActiveLocationUpdates(settings, criteria, pendingIntent);
 
         verify(locationManager).requestLocationUpdates(eq(time), eq(distance), eq(criteria), eq(pendingIntent));
     }

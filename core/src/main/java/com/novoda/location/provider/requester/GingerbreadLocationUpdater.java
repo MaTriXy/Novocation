@@ -30,7 +30,7 @@ public class GingerbreadLocationUpdater extends FroyoLocationUpdater {
     }
 
     @Override
-    public void requestActiveLocationUpdates(LocatorSettings settings, Criteria criteria, PendingIntent pendingIntent) {
+    public void startActiveLocationUpdates(LocatorSettings settings, Criteria criteria, PendingIntent pendingIntent) {
         long minTime = settings.getUpdatesInterval();
         float minDistance = settings.getUpdatesDistance();
         locationManager.requestLocationUpdates(minTime, minDistance, criteria, pendingIntent);
