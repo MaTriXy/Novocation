@@ -98,7 +98,7 @@ public class DefaultLocatorShould {
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
 
-        verify(updateManager).requestActiveLocationUpdates(eq(criteria));
+        verify(updateManager).startActiveLocationUpdates(eq(criteria));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class DefaultLocatorShould {
         Criteria criteria = new Criteria();
         criteria.setPowerRequirement(Criteria.POWER_LOW);
 
-        verify(updateManager).requestActiveLocationUpdates(eq(criteria));
+        verify(updateManager).startActiveLocationUpdates(eq(criteria));
     }
 
     @Test
@@ -176,7 +176,7 @@ public class DefaultLocatorShould {
         locator.providerStatusChanged();
 
         //2 because start location updates also requests active location updates
-        verify(updateManager, times(2)).requestActiveLocationUpdates(any(Criteria.class));
+        verify(updateManager, times(2)).startActiveLocationUpdates(any(Criteria.class));
     }
 
     @Test
@@ -185,7 +185,7 @@ public class DefaultLocatorShould {
 
         locator.providerStatusChanged();
 
-        verify(updateManager, never()).requestActiveLocationUpdates(any(Criteria.class));
+        verify(updateManager, never()).startActiveLocationUpdates(any(Criteria.class));
     }
 
     @Test
@@ -199,7 +199,7 @@ public class DefaultLocatorShould {
     public void request_passive_updates_when_stopping_location_updates() throws Exception {
         locator.stopLocationUpdates();
 
-        verify(updateManager).requestPassiveLocationUpdates();
+        verify(updateManager).startPassiveLocationUpdates();
     }
 
     @Test
@@ -215,7 +215,7 @@ public class DefaultLocatorShould {
 
         locator.startLocationUpdates();
 
-        verify(updateManager, never()).requestActiveLocationUpdates(any(Criteria.class));
+        verify(updateManager, never()).startActiveLocationUpdates(any(Criteria.class));
     }
 
     @Test

@@ -126,7 +126,7 @@ class DefaultLocator implements Locator {
             return;
         }
         listeningForActiveLocationUpdates = true;
-        locationUpdateManager.requestActiveLocationUpdates(criteria);
+        locationUpdateManager.startActiveLocationUpdates(criteria);
         ifGPSregisterOneShotNetworkUpdate();
         locationUpdateManager.removePassiveLocationUpdates();
     }
@@ -152,7 +152,7 @@ class DefaultLocator implements Locator {
 
     private void stopListeningForLocationUpdates() {
         locationUpdateManager.removeActiveLocationUpdates();
-        locationUpdateManager.requestPassiveLocationUpdates();
+        locationUpdateManager.startPassiveLocationUpdates();
         locationManager.removeUpdates(oneShotNetworkLocationListener);
     }
 
