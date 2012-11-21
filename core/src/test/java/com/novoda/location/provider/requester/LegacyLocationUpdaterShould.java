@@ -15,12 +15,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(NovocationTestRunner.class)
-public class LegacyLocationUpdateRequesterShould {
+public class LegacyLocationUpdaterShould {
 
     final LocationManager locationManager = mock(LocationManager.class);
     final AlarmManager alarmManager = mock(AlarmManager.class);
     final LocatorSettings locatorSettings = new LocatorSettings("", "");
-    final LegacyLocationUpdateRequester updateRequester = new LegacyLocationUpdateRequester(locationManager, alarmManager);
+    final LegacyLocationUpdater updater = new LegacyLocationUpdater(locationManager, alarmManager);
     final PendingIntent pendingIntent = mock(PendingIntent.class);
 
     @Test
@@ -29,7 +29,7 @@ public class LegacyLocationUpdateRequesterShould {
         long triggerTime = System.currentTimeMillis() + passiveUpdatesInterval;
         GreaterOrEqual<Long> matchesTriggerTime = new GreaterOrEqual<Long>(triggerTime);
 
-        updateRequester.requestPassiveLocationUpdates(locatorSettings, pendingIntent);
+        updater.requestPassiveLocationUpdates(locatorSettings, pendingIntent);
 
         verify(alarmManager).setInexactRepeating(eq(AlarmManager.ELAPSED_REALTIME), longThat(matchesTriggerTime), eq(passiveUpdatesInterval), eq(pendingIntent));
     }

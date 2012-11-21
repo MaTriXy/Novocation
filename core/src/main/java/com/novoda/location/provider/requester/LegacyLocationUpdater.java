@@ -22,11 +22,11 @@ import android.app.PendingIntent;
 import android.location.LocationManager;
 import com.novoda.location.LocatorSettings;
 
-public class LegacyLocationUpdateRequester extends FroyoLocationUpdateRequester {
+public class LegacyLocationUpdater extends FroyoLocationUpdater {
 
     private final AlarmManager alarmManager;
 
-    protected LegacyLocationUpdateRequester(LocationManager locationManager, AlarmManager alarmManager) {
+    protected LegacyLocationUpdater(LocationManager locationManager, AlarmManager alarmManager) {
         super(locationManager);
         this.alarmManager = alarmManager;
     }

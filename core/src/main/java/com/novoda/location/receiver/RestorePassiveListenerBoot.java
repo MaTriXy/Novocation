@@ -26,7 +26,7 @@ import android.location.LocationManager;
 import com.novoda.location.LocatorFactory;
 import com.novoda.location.LocatorSettings;
 import com.novoda.location.provider.LocationProviderFactory;
-import com.novoda.location.provider.LocationUpdateRequester;
+import com.novoda.location.provider.LocationUpdater;
 import com.novoda.location.provider.store.SettingsDao;
 
 //TODO extract the logic out of this receiver
@@ -43,7 +43,7 @@ public class RestorePassiveListenerBoot extends BroadcastReceiver {
     private void requestPassiveLocationUpdates(Context context) {
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         LocationProviderFactory factory = new LocationProviderFactory();
-        LocationUpdateRequester lur = factory.getLocationUpdateRequester(lm);
+        LocationUpdater lur = factory.getLocationUpdater(lm);
         LocatorSettings settings = LocatorFactory.getInstance().getSettings();
         lur.requestPassiveLocationUpdates(settings, createPendingIntent(context));
     }

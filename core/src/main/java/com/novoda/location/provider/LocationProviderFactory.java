@@ -18,8 +18,8 @@
 package com.novoda.location.provider;
 
 import android.location.LocationManager;
-import com.novoda.location.provider.requester.FroyoLocationUpdateRequester;
-import com.novoda.location.provider.requester.GingerbreadLocationUpdateRequester;
+import com.novoda.location.provider.requester.FroyoLocationUpdater;
+import com.novoda.location.provider.requester.GingerbreadLocationUpdater;
 import com.novoda.location.provider.store.SettingsDao;
 import com.novoda.location.provider.store.SharedPreferenceSettingsDao;
 import com.novoda.location.util.ApiLevelDetector;
@@ -30,11 +30,11 @@ public class LocationProviderFactory {
         return new LastLocationFinder(locationManager);
     }
 
-    public LocationUpdateRequester getLocationUpdateRequester(LocationManager locationManager) {
+    public LocationUpdater getLocationUpdater(LocationManager locationManager) {
     	if(ApiLevelDetector.supportsGingerbread()) {
-            return new GingerbreadLocationUpdateRequester(locationManager);
+            return new GingerbreadLocationUpdater(locationManager);
     	}
-        return new FroyoLocationUpdateRequester(locationManager); 
+        return new FroyoLocationUpdater(locationManager);
     }
     
     public SettingsDao getSettingsDao() {

@@ -14,10 +14,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(NovocationTestRunner.class)
-public class GingerbreadLocationUpdateRequesterShould {
+public class GingerbreadLocationUpdaterShould {
 
     LocationManager locationManager = mock(LocationManager.class);
-    GingerbreadLocationUpdateRequester updateRequester = new GingerbreadLocationUpdateRequester(locationManager);
+    GingerbreadLocationUpdater updater = new GingerbreadLocationUpdater(locationManager);
     LocatorSettings settings = new LocatorSettings("", "");
 
     long time = 1000 * 60;
@@ -33,7 +33,7 @@ public class GingerbreadLocationUpdateRequesterShould {
 
     @Test
     public void request_location_updates_from_the_location_manager_using_criteria() throws Exception {
-        updateRequester.requestActiveLocationUpdates(settings, criteria, pendingIntent);
+        updater.requestActiveLocationUpdates(settings, criteria, pendingIntent);
 
         verify(locationManager).requestLocationUpdates(eq(time), eq(distance), eq(criteria), eq(pendingIntent));
     }

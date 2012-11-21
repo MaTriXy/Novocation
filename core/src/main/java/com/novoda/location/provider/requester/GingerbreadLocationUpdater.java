@@ -23,9 +23,9 @@ import android.location.Criteria;
 import android.location.LocationManager;
 import com.novoda.location.LocatorSettings;
 
-public class GingerbreadLocationUpdateRequester extends FroyoLocationUpdateRequester {
+public class GingerbreadLocationUpdater extends FroyoLocationUpdater {
 
-    public GingerbreadLocationUpdateRequester(LocationManager locationManager) {
+    public GingerbreadLocationUpdater(LocationManager locationManager) {
         super(locationManager);
     }
 

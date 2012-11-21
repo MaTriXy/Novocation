@@ -22,7 +22,7 @@ import android.location.LocationManager;
 import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.location.provider.LastLocationFinder;
 import com.novoda.location.provider.LocationProviderFactory;
-import com.novoda.location.provider.LocationUpdateRequester;
+import com.novoda.location.provider.LocationUpdater;
 import com.novoda.location.util.ApiLevelDetector;
 
 class LocationUpdateManager {
@@ -30,7 +30,7 @@ class LocationUpdateManager {
     private final LocationProviderFactory locationProviderFactory;
     private final LocatorSettings settings;
     private final LocationManager locationManager;
-    private final LocationUpdateRequester locationUpdateRequester;
+    private final LocationUpdater locationUpdater;
     private final PendingIntent activeLocationUpdate;
     private final PendingIntent passiveLocationUpdate;
 
@@ -44,12 +44,12 @@ class LocationUpdateManager {
         this.locationManager = locationManager;
         activeLocationUpdate = updatesIntentFactory.buildActive();
         passiveLocationUpdate = updatesIntentFactory.buildPassive();
-        locationUpdateRequester = locationProviderFactory.getLocationUpdateRequester(locationManager);
+        locationUpdater = locationProviderFactory.getLocationUpdater(locationManager);
     }
 
     void requestActiveLocationUpdates(Criteria criteria) throws NoProviderAvailable {
         try {
-            locationUpdateRequester.requestActiveLocationUpdates(settings, criteria, activeLocationUpdate);
+            locationUpdater.requestActiveLocationUpdates(settings, criteria, activeLocationUpdate);
         } catch (IllegalArgumentException iae) {
             throw new NoProviderAvailable();
         }
@@ -57,7 +57,7 @@ class LocationUpdateManager {
 
     void requestPassiveLocationUpdates() {
         if (ApiLevelDetector.supportsFroyo() && settings.shouldEnablePassiveUpdates()) {
-            locationUpdateRequester.requestPassiveLocationUpdates(settings, passiveLocationUpdate);
+            locationUpdater.requestPassiveLocationUpdates(settings, passiveLocationUpdate);
         }
     }
 

@@ -21,13 +21,13 @@ import android.app.PendingIntent;
 import android.location.Criteria;
 import android.location.LocationManager;
 import com.novoda.location.LocatorSettings;
-import com.novoda.location.provider.LocationUpdateRequester;
+import com.novoda.location.provider.LocationUpdater;
 
-public class FroyoLocationUpdateRequester implements LocationUpdateRequester {
+public class FroyoLocationUpdater implements LocationUpdater {
 
     protected LocationManager locationManager;
 
-    public FroyoLocationUpdateRequester(LocationManager locationManager) {
+    public FroyoLocationUpdater(LocationManager locationManager) {
         this.locationManager = locationManager;
     }
 

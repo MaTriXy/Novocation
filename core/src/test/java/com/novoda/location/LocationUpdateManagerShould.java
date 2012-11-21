@@ -7,7 +7,7 @@ import android.location.LocationManager;
 import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.location.provider.LastLocationFinder;
 import com.novoda.location.provider.LocationProviderFactory;
-import com.novoda.location.provider.LocationUpdateRequester;
+import com.novoda.location.provider.LocationUpdater;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,13 +23,13 @@ public class LocationUpdateManagerShould {
 
     static final Location INVALID_LOCATION = null;
     static final float UPDATES_DISTANCE = 200;
-    static final long UPDATES_INTERVAL = 60 * 3 * 1000;
+    static final long UPDATES_INTERVAL = 3 * 60 * 1000;
 
     final LocatorSettings settings = new LocatorSettings("", "");
     final Criteria criteria = mock(Criteria.class);
     final LocationManager locationManager = mock(LocationManager.class);
     final LocationProviderFactory locationProviderFactory = mock(LocationProviderFactory.class);
-    final LocationUpdateRequester updateRequester = mock(LocationUpdateRequester.class);
+    final LocationUpdater updater = mock(LocationUpdater.class);
     final PendingIntent activeUpdate = mock(PendingIntent.class);
     final PendingIntent passiveUpdate = mock(PendingIntent.class);
     final LastLocationFinder lastLocationFinder = mock(LastLocationFinder.class);
@@ -42,7 +42,7 @@ public class LocationUpdateManagerShould {
         LocationUpdatesIntentFactory updatesIntentFactory = mock(LocationUpdatesIntentFactory.class);
         when(updatesIntentFactory.buildActive()).thenReturn(activeUpdate);
         when(updatesIntentFactory.buildPassive()).thenReturn(passiveUpdate);
-        when(locationProviderFactory.getLocationUpdateRequester(eq(locationManager))).thenReturn(updateRequester);
+        when(locationProviderFactory.getLocationUpdater(eq(locationManager))).thenReturn(updater);
         when(locationProviderFactory.getLastLocationFinder(eq(locationManager))).thenReturn(lastLocationFinder);
         LocatorFactory.setLocator(locator);
         settings.setUpdatesDistance(UPDATES_DISTANCE);
@@ -59,12 +59,12 @@ public class LocationUpdateManagerShould {
     public void request_active_locations_from_an_update_requester() throws Exception {
         locationUpdateManager.requestActiveLocationUpdates(criteria);
 
-        verify(updateRequester).requestActiveLocationUpdates(eq(settings), eq(criteria), eq(activeUpdate));
+        verify(updater).requestActiveLocationUpdates(eq(settings), eq(criteria), eq(activeUpdate));
     }
 
     @Test(expected = NoProviderAvailable.class)
     public void throw_an_exception_if_no_provider_is_available() throws Exception {
-        doThrow(IllegalArgumentException.class).when(updateRequester).requestActiveLocationUpdates(eq(settings), eq(criteria), eq(activeUpdate));
+        doThrow(IllegalArgumentException.class).when(updater).requestActiveLocationUpdates(eq(settings), eq(criteria), eq(activeUpdate));
 
         locationUpdateManager.requestActiveLocationUpdates(criteria);
     }

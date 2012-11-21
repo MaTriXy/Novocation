@@ -15,14 +15,12 @@
  */
 package com.novoda.location.provider;
 
+import android.app.PendingIntent;
+import android.location.Criteria;
 import com.novoda.location.LocatorSettings;
 import com.novoda.location.exception.NoProviderAvailable;
 
-import android.app.PendingIntent;
-import android.content.Context;
-import android.location.Criteria;
-
-public interface LocationUpdateRequester {
+public interface LocationUpdater {
 
     void requestActiveLocationUpdates(LocatorSettings settings, Criteria criteria, PendingIntent pendingIntent) throws NoProviderAvailable;
 
