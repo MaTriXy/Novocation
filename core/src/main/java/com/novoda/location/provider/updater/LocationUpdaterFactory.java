@@ -25,12 +25,15 @@ import com.novoda.location.util.ApiLevelDetector;
 public class LocationUpdaterFactory {
 
     public LocationUpdater getLocationUpdater(LocationManager locationManager) {
+
+        //TODO include legacy updater
     	if(ApiLevelDetector.supportsGingerbread()) {
             return new GingerbreadLocationUpdater(locationManager);
     	}
         return new FroyoLocationUpdater(locationManager);
     }
-    
+
+    //TODO remove this from here
     public SettingsDao getSettingsDao() {
     	return new SharedPreferenceSettingsDao();
     }
