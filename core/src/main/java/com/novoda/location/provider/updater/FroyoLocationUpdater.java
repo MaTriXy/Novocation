@@ -24,7 +24,7 @@ import com.novoda.location.LocatorSettings;
 
 class FroyoLocationUpdater implements LocationUpdater {
 
-    protected LocationManager locationManager;
+    protected final LocationManager locationManager;
 
     public FroyoLocationUpdater(LocationManager locationManager) {
         this.locationManager = locationManager;
@@ -47,5 +47,20 @@ class FroyoLocationUpdater implements LocationUpdater {
         float minDistance = settings.getPassiveUpdatesDistance();
         locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, minTime, minDistance, pendingIntent);
     }
+
+    @Override
+    public void cancelPassiveLocationUpdates(PendingIntent pendingIntent) {
+        removeUpdate(pendingIntent);
+    }
+
+    @Override
+    public void cancelActiveLocationUpdates(PendingIntent pendingIntent) {
+        removeUpdate(pendingIntent);
+    }
+
+    private void removeUpdate(PendingIntent pendingIntent) {
+        locationManager.removeUpdates(pendingIntent);
+    }
+
 
 }

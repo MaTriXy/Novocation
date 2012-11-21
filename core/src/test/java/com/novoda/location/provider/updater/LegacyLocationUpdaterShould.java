@@ -33,4 +33,11 @@ public class LegacyLocationUpdaterShould {
 
         verify(alarmManager).setInexactRepeating(eq(AlarmManager.ELAPSED_REALTIME), longThat(matchesTriggerTime), eq(passiveUpdatesInterval), eq(pendingIntent));
     }
+
+    @Test
+    public void cancel_a_previously_set_alarm_when_canceling_the_passive_location_updates(){
+        updater.cancelPassiveLocationUpdates(pendingIntent);
+
+        verify(alarmManager).cancel(pendingIntent);
+    }
 }

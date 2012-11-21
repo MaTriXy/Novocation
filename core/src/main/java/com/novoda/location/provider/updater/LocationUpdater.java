@@ -26,4 +26,7 @@ public interface LocationUpdater {
 
     void startPassiveLocationUpdates(LocatorSettings settings, PendingIntent pendingIntent);
 
+    void cancelPassiveLocationUpdates(PendingIntent pendingIntent);
+
+    void cancelActiveLocationUpdates(PendingIntent pendingIntent);
 }

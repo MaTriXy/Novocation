@@ -28,7 +28,6 @@ import com.novoda.location.util.ApiLevelDetector;
 class LocationUpdateManager {
 
     private final LocatorSettings settings;
-    private final LocationManager locationManager;
     private final LocationUpdater locationUpdater;
     private final PendingIntent activeLocationUpdate;
     private final PendingIntent passiveLocationUpdate;
@@ -41,7 +40,6 @@ class LocationUpdateManager {
                           LastLocationFinder locationFinder) {
 
         this.settings = settings;
-        this.locationManager = locationManager;
         this.locationFinder = locationFinder;
         activeLocationUpdate = updatesIntentFactory.buildActive();
         passiveLocationUpdate = updatesIntentFactory.buildPassive();
@@ -63,11 +61,11 @@ class LocationUpdateManager {
     }
 
     void removeActiveLocationUpdates() {
-        locationManager.removeUpdates(activeLocationUpdate);
+        locationUpdater.cancelActiveLocationUpdates(activeLocationUpdate);
     }
 
     void removePassiveLocationUpdates() {
-        locationManager.removeUpdates(passiveLocationUpdate);
+        locationUpdater.cancelPassiveLocationUpdates(passiveLocationUpdate);
     }
 
     void fetchLastKnownLocation() {

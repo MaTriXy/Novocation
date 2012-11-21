@@ -45,4 +45,9 @@ class LegacyLocationUpdater extends FroyoLocationUpdater {
         long startingTime = currentTime + repeatingInterval;
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, startingTime, repeatingInterval, pendingIntent);
     }
+
+    @Override
+    public void cancelPassiveLocationUpdates(PendingIntent pendingIntent) {
+        alarmManager.cancel(pendingIntent);
+    }
 }

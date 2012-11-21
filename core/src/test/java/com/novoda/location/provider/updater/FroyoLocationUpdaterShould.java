@@ -66,4 +66,18 @@ public class FroyoLocationUpdaterShould {
 
         verify(locationManager).requestLocationUpdates(eq(LocationManager.PASSIVE_PROVIDER), eq(passiveTime), eq(passiveDistance), eq(pendingIntent));
     }
+
+    @Test
+    public void cancel_active_location_updates(){
+        updater.cancelActiveLocationUpdates(pendingIntent);
+
+        verify(locationManager).removeUpdates(pendingIntent);
+    }
+
+    @Test
+    public void cancel_passive_location_updates(){
+        updater.cancelPassiveLocationUpdates(pendingIntent);
+
+        verify(locationManager).removeUpdates(pendingIntent);
+    }
 }

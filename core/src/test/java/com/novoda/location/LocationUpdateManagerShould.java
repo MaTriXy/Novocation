@@ -29,7 +29,7 @@ public class LocationUpdateManagerShould {
     final Criteria criteria = mock(Criteria.class);
     final LocationManager locationManager = mock(LocationManager.class);
     final LocationUpdaterFactory locationUpdaterFactory = mock(LocationUpdaterFactory.class);
-    final LocationUpdater updater = mock(LocationUpdater.class);
+    final LocationUpdater locationUpdater = mock(LocationUpdater.class);
     final PendingIntent activeUpdate = mock(PendingIntent.class);
     final PendingIntent passiveUpdate = mock(PendingIntent.class);
     final LastLocationFinder lastLocationFinder = mock(LastLocationFinder.class);
@@ -42,7 +42,7 @@ public class LocationUpdateManagerShould {
         LocationUpdatesIntentFactory updatesIntentFactory = mock(LocationUpdatesIntentFactory.class);
         when(updatesIntentFactory.buildActive()).thenReturn(activeUpdate);
         when(updatesIntentFactory.buildPassive()).thenReturn(passiveUpdate);
-        when(locationUpdaterFactory.getLocationUpdater(eq(locationManager))).thenReturn(updater);
+        when(locationUpdaterFactory.getLocationUpdater(eq(locationManager))).thenReturn(locationUpdater);
         LocatorFactory.setLocator(locator);
         settings.setUpdatesDistance(UPDATES_DISTANCE);
         settings.setUpdatesInterval(UPDATES_INTERVAL);
@@ -58,28 +58,28 @@ public class LocationUpdateManagerShould {
     public void request_active_locations_from_an_update_requester() throws Exception {
         locationUpdateManager.startActiveLocationUpdates(criteria);
 
-        verify(updater).startActiveLocationUpdates(eq(settings), eq(criteria), eq(activeUpdate));
+        verify(locationUpdater).startActiveLocationUpdates(eq(settings), eq(criteria), eq(activeUpdate));
     }
 
     @Test(expected = NoProviderAvailable.class)
     public void throw_an_exception_if_no_provider_is_available() throws Exception {
-        doThrow(IllegalArgumentException.class).when(updater).startActiveLocationUpdates(eq(settings), eq(criteria), eq(activeUpdate));
+        doThrow(IllegalArgumentException.class).when(locationUpdater).startActiveLocationUpdates(eq(settings), eq(criteria), eq(activeUpdate));
 
         locationUpdateManager.startActiveLocationUpdates(criteria);
     }
 
     @Test
-    public void remove_updates() throws Exception {
+    public void remove_active_updates() throws Exception {
         locationUpdateManager.removeActiveLocationUpdates();
 
-        verify(locationManager).removeUpdates(eq(activeUpdate));
+        verify(locationUpdater).cancelActiveLocationUpdates(eq(activeUpdate));
     }
 
     @Test
     public void remove_passive_updates() throws Exception {
         locationUpdateManager.removePassiveLocationUpdates();
 
-        verify(locationManager).removeUpdates(eq(passiveUpdate));
+        verify(locationUpdater).cancelPassiveLocationUpdates(eq(passiveUpdate));
     }
 
     @Test
