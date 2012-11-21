@@ -43,11 +43,10 @@ public class LocationUpdateManagerShould {
         when(updatesIntentFactory.buildActive()).thenReturn(activeUpdate);
         when(updatesIntentFactory.buildPassive()).thenReturn(passiveUpdate);
         when(locationProviderFactory.getLocationUpdater(eq(locationManager))).thenReturn(updater);
-        when(locationProviderFactory.getLastLocationFinder(eq(locationManager))).thenReturn(lastLocationFinder);
         LocatorFactory.setLocator(locator);
         settings.setUpdatesDistance(UPDATES_DISTANCE);
         settings.setUpdatesInterval(UPDATES_INTERVAL);
-        locationUpdateManager = new LocationUpdateManager(settings, locationManager, locationProviderFactory, updatesIntentFactory);
+        locationUpdateManager = new LocationUpdateManager(settings, locationManager, locationProviderFactory, updatesIntentFactory, lastLocationFinder);
     }
 
     @After

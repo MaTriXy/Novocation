@@ -28,6 +28,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import com.novoda.location.exception.NoProviderAvailable;
+import com.novoda.location.provider.LastLocationFinder;
 import com.novoda.location.provider.updater.LocationProviderFactory;
 import com.novoda.location.util.LocationAccuracy;
 
@@ -75,7 +76,7 @@ class DefaultLocator implements Locator {
         locationAccuracy = new LocationAccuracy(settings);
         LocationProviderFactory providerFactory = new LocationProviderFactory();
         LocationUpdatesIntentFactory updatesIntentFactory = new LocationUpdatesIntentFactory(context);
-        locationUpdateManager = new LocationUpdateManager(settings, locationManager, providerFactory, updatesIntentFactory);
+        locationUpdateManager = new LocationUpdateManager(settings, locationManager, providerFactory, updatesIntentFactory, new LastLocationFinder(locationManager));
     }
 
     @Override

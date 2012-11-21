@@ -27,21 +27,22 @@ import com.novoda.location.util.ApiLevelDetector;
 
 class LocationUpdateManager {
 
-    private final LocationProviderFactory locationProviderFactory;
     private final LocatorSettings settings;
     private final LocationManager locationManager;
     private final LocationUpdater locationUpdater;
     private final PendingIntent activeLocationUpdate;
     private final PendingIntent passiveLocationUpdate;
+    private final LastLocationFinder locationFinder;
 
     LocationUpdateManager(LocatorSettings settings,
                           LocationManager locationManager,
                           LocationProviderFactory locationProviderFactory,
-                          LocationUpdatesIntentFactory updatesIntentFactory) {
+                          LocationUpdatesIntentFactory updatesIntentFactory,
+                          LastLocationFinder locationFinder) {
 
         this.settings = settings;
-        this.locationProviderFactory = locationProviderFactory;
         this.locationManager = locationManager;
+        this.locationFinder = locationFinder;
         activeLocationUpdate = updatesIntentFactory.buildActive();
         passiveLocationUpdate = updatesIntentFactory.buildPassive();
         locationUpdater = locationProviderFactory.getLocationUpdater(locationManager);
@@ -70,10 +71,9 @@ class LocationUpdateManager {
     }
 
     void fetchLastKnownLocation() {
-        LastLocationFinder finder = locationProviderFactory.getLastLocationFinder(locationManager);
         long locationUpdateInterval = settings.getUpdatesInterval();
         long minimumTime = System.currentTimeMillis() - locationUpdateInterval;
-        Location lastKnownLocation = finder.getLastBestLocation(minimumTime);
+        Location lastKnownLocation = locationFinder.getLastBestLocation(minimumTime);
         if (lastKnownLocation != null) {
             LocatorFactory.setLocation(lastKnownLocation);
         }

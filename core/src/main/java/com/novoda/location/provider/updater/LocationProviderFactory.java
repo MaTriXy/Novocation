@@ -18,16 +18,11 @@
 package com.novoda.location.provider.updater;
 
 import android.location.LocationManager;
-import com.novoda.location.provider.LastLocationFinder;
 import com.novoda.location.provider.store.SettingsDao;
 import com.novoda.location.provider.store.SharedPreferenceSettingsDao;
 import com.novoda.location.util.ApiLevelDetector;
 
 public class LocationProviderFactory {
-
-    public LastLocationFinder getLastLocationFinder(LocationManager locationManager) {
-        return new LastLocationFinder(locationManager);
-    }
 
     public LocationUpdater getLocationUpdater(LocationManager locationManager) {
     	if(ApiLevelDetector.supportsGingerbread()) {
