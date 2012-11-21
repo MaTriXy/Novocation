@@ -118,7 +118,6 @@ class DefaultLocator implements Locator {
         }
         Intent broadcast = new Intent();
         broadcast.setAction(settings.getUpdateAction());
-        broadcast.setPackage(settings.getPackageName());
         context.sendBroadcast(broadcast);
     }
 
