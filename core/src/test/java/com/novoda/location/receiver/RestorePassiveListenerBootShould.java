@@ -7,7 +7,7 @@ import android.location.LocationManager;
 import com.novoda.location.Locator;
 import com.novoda.location.LocatorFactory;
 import com.novoda.location.LocatorSettings;
-import com.novoda.location.provider.updater.LocationProviderFactory;
+import com.novoda.location.provider.updater.LocationUpdaterFactory;
 import com.novoda.location.provider.store.SettingsDao;
 import com.xtremelabs.robolectric.Robolectric;
 import org.junit.After;
@@ -27,7 +27,7 @@ public class RestorePassiveListenerBootShould {
     static final Intent UNIMPORTANT_INTENT = null;
     final LocationManager locationManager = mock(LocationManager.class);
     final Context context = spy(Robolectric.getShadowApplication().getApplicationContext());
-    final SettingsDao settingsDao = new LocationProviderFactory().getSettingsDao();
+    final SettingsDao settingsDao = new LocationUpdaterFactory().getSettingsDao();
     final LocatorSettings settings = new LocatorSettings("");
     final RestorePassiveListenerBoot restorePassiveListenerBoot = new RestorePassiveListenerBoot();
 

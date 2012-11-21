@@ -22,7 +22,7 @@ import com.novoda.location.provider.store.SettingsDao;
 import com.novoda.location.provider.store.SharedPreferenceSettingsDao;
 import com.novoda.location.util.ApiLevelDetector;
 
-public class LocationProviderFactory {
+public class LocationUpdaterFactory {
 
     public LocationUpdater getLocationUpdater(LocationManager locationManager) {
     	if(ApiLevelDetector.supportsGingerbread()) {

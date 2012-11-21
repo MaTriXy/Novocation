@@ -29,7 +29,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.location.provider.LastLocationFinder;
-import com.novoda.location.provider.updater.LocationProviderFactory;
+import com.novoda.location.provider.updater.LocationUpdaterFactory;
 import com.novoda.location.util.LocationAccuracy;
 
 class DefaultLocator implements Locator {
@@ -74,9 +74,9 @@ class DefaultLocator implements Locator {
         context = c;
         locationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
         locationAccuracy = new LocationAccuracy(settings);
-        LocationProviderFactory providerFactory = new LocationProviderFactory();
+        LocationUpdaterFactory updaterFactory = new LocationUpdaterFactory();
         LocationUpdatesIntentFactory updatesIntentFactory = new LocationUpdatesIntentFactory(context);
-        locationUpdateManager = new LocationUpdateManager(settings, locationManager, providerFactory, updatesIntentFactory, new LastLocationFinder(locationManager));
+        locationUpdateManager = new LocationUpdateManager(settings, locationManager, updaterFactory, updatesIntentFactory, new LastLocationFinder(locationManager));
     }
 
     @Override
@@ -102,7 +102,7 @@ class DefaultLocator implements Locator {
     }
 
     private void persistSettingsToPreferences() {
-        new LocationProviderFactory().getSettingsDao().persistSettingsToPreferences(context, settings);
+        new LocationUpdaterFactory().getSettingsDao().persistSettingsToPreferences(context, settings);
     }
 
     private void sendFirstAvailableLocation() {

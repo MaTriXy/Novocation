@@ -6,7 +6,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.location.provider.LastLocationFinder;
-import com.novoda.location.provider.updater.LocationProviderFactory;
+import com.novoda.location.provider.updater.LocationUpdaterFactory;
 import com.novoda.location.provider.updater.LocationUpdater;
 import org.junit.After;
 import org.junit.Before;
@@ -28,7 +28,7 @@ public class LocationUpdateManagerShould {
     final LocatorSettings settings = new LocatorSettings("");
     final Criteria criteria = mock(Criteria.class);
     final LocationManager locationManager = mock(LocationManager.class);
-    final LocationProviderFactory locationProviderFactory = mock(LocationProviderFactory.class);
+    final LocationUpdaterFactory locationUpdaterFactory = mock(LocationUpdaterFactory.class);
     final LocationUpdater updater = mock(LocationUpdater.class);
     final PendingIntent activeUpdate = mock(PendingIntent.class);
     final PendingIntent passiveUpdate = mock(PendingIntent.class);
@@ -42,11 +42,11 @@ public class LocationUpdateManagerShould {
         LocationUpdatesIntentFactory updatesIntentFactory = mock(LocationUpdatesIntentFactory.class);
         when(updatesIntentFactory.buildActive()).thenReturn(activeUpdate);
         when(updatesIntentFactory.buildPassive()).thenReturn(passiveUpdate);
-        when(locationProviderFactory.getLocationUpdater(eq(locationManager))).thenReturn(updater);
+        when(locationUpdaterFactory.getLocationUpdater(eq(locationManager))).thenReturn(updater);
         LocatorFactory.setLocator(locator);
         settings.setUpdatesDistance(UPDATES_DISTANCE);
         settings.setUpdatesInterval(UPDATES_INTERVAL);
-        locationUpdateManager = new LocationUpdateManager(settings, locationManager, locationProviderFactory, updatesIntentFactory, lastLocationFinder);
+        locationUpdateManager = new LocationUpdateManager(settings, locationManager, locationUpdaterFactory, updatesIntentFactory, lastLocationFinder);
     }
 
     @After
