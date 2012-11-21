@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.novoda.location</groupId>
     <artifactId>novocation-parent</artifactId>
-    <version>2.0-ALPHA</version>
+    <version>2.0-SNAPSHOT-ALPHA</version>
   </parent>
 
   <artifactId>novocation-simple</artifactId>
@@ -25,7 +25,7 @@
     <dependency>
       <groupId>com.novoda.location</groupId>
       <artifactId>novocation-core</artifactId>
-      <version>2.0-ALPHA</version>
+      <version>2.0-SNAPSHOT-ALPHA</version>
     </dependency>
   </dependencies>
 
