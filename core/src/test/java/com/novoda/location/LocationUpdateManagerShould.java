@@ -25,7 +25,7 @@ public class LocationUpdateManagerShould {
     static final float UPDATES_DISTANCE = 200;
     static final long UPDATES_INTERVAL = 3 * 60 * 1000;
 
-    final LocatorSettings settings = new LocatorSettings("", "");
+    final LocatorSettings settings = new LocatorSettings("");
     final Criteria criteria = mock(Criteria.class);
     final LocationManager locationManager = mock(LocationManager.class);
     final LocationProviderFactory locationProviderFactory = mock(LocationProviderFactory.class);

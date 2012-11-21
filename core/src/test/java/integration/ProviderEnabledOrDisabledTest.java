@@ -23,7 +23,7 @@ public class ProviderEnabledOrDisabledTest {
 
     final Context context = spy(Robolectric.getShadowApplication().getApplicationContext());
     final LocationManager locationManager = mock(LocationManager.class);
-    final LocatorSettings settings = new LocatorSettings("com.example", "com.example.update");
+    final LocatorSettings settings = new LocatorSettings("com.example.update");
     final Locator locator = LocatorFactory.getInstance();
 
     @Before

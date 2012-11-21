@@ -25,7 +25,7 @@ public class LocationAccuracyShould {
     private static final long ONE_SECOND_AGO = NOW - ONE_SECOND;
     private static final long OUTDATED = NOW - (LOCATION_EXPIRY_TIME + 1L);
 
-    LocatorSettings settings = new LocatorSettings(NOT_IMPORTANT, NOT_IMPORTANT);
+    LocatorSettings settings = new LocatorSettings(NOT_IMPORTANT);
     LocationAccuracy locationAccuracy = new LocationAccuracy(settings);
     Location newLocation = new Location(NOT_IMPORTANT);
     Location currentLocation = new Location(NOT_IMPORTANT);

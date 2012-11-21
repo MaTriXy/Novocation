@@ -9,11 +9,9 @@ import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 
 class LocationUpdatesIntentFactory {
 
-    private final LocatorSettings settings;
     private final Context context;
 
-    LocationUpdatesIntentFactory(LocatorSettings settings, Context context) {
-        this.settings = settings;
+    LocationUpdatesIntentFactory(Context context) {
         this.context = context;
     }
 

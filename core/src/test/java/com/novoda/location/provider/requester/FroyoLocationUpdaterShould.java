@@ -26,7 +26,7 @@ public class FroyoLocationUpdaterShould {
 
     final LocationManager locationManager = mock(LocationManager.class);
     final FroyoLocationUpdater updater = new FroyoLocationUpdater(locationManager);
-    final LocatorSettings settings = new LocatorSettings("", "");
+    final LocatorSettings settings = new LocatorSettings("");
     final Criteria criteria = mock(Criteria.class);
     final PendingIntent pendingIntent = mock(PendingIntent.class);
 

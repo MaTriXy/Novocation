@@ -74,7 +74,7 @@ class DefaultLocator implements Locator {
         locationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
         locationAccuracy = new LocationAccuracy(settings);
         LocationProviderFactory providerFactory = new LocationProviderFactory();
-        LocationUpdatesIntentFactory updatesIntentFactory = new LocationUpdatesIntentFactory(settings, context);
+        LocationUpdatesIntentFactory updatesIntentFactory = new LocationUpdatesIntentFactory(context);
         locationUpdateManager = new LocationUpdateManager(settings, locationManager, providerFactory, updatesIntentFactory);
     }
 

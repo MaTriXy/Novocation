@@ -19,7 +19,7 @@ public class LegacyLocationUpdaterShould {
 
     final LocationManager locationManager = mock(LocationManager.class);
     final AlarmManager alarmManager = mock(AlarmManager.class);
-    final LocatorSettings locatorSettings = new LocatorSettings("", "");
+    final LocatorSettings locatorSettings = new LocatorSettings("");
     final LegacyLocationUpdater updater = new LegacyLocationUpdater(locationManager, alarmManager);
     final PendingIntent pendingIntent = mock(PendingIntent.class);
 

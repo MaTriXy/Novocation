@@ -40,7 +40,7 @@ public class LocationDemo extends RoboApplication {
         //==================================================
         // TODO
         // Connect the location finder with relevant settings.
-        LocatorSettings settings = new LocatorSettings(PACKAGE_NAME, LOCATION_UPDATE_ACTION);
+        LocatorSettings settings = new LocatorSettings(LOCATION_UPDATE_ACTION);
         settings.setUpdatesInterval(3 * 60 * 1000);
         settings.setUpdatesDistance(50);
         locator = LocatorFactory.getInstance();

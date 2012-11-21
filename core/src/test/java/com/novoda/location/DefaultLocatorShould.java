@@ -22,12 +22,11 @@ public class DefaultLocatorShould {
 
     public static final String PROVIDER = "test provider";
     public static final String UPDATE_ACTION = "action.location_updated";
-    public static final String PACKAGE_NAME = "com.example";
     public static final Location INVALID_LOCATION = null;
 
     final DefaultLocator locator = new DefaultLocator();
     final Context context = spy(Robolectric.getShadowApplication().getApplicationContext());
-    final LocatorSettings settings = new LocatorSettings(PACKAGE_NAME, UPDATE_ACTION);
+    final LocatorSettings settings = new LocatorSettings(UPDATE_ACTION);
     final Location worstLocation = new Location(PROVIDER);
     final Location betterLocation = new Location(PROVIDER);
     final LocationManager locationManager = mock(LocationManager.class);
@@ -59,12 +58,11 @@ public class DefaultLocatorShould {
     }
 
     @Test
-    public void broadcast_when_a_location_is_updated_and_the_broadcast_should_use_the_settings_action_and_package_name() throws Exception {
+    public void broadcast_when_a_location_is_updated_with_the_update_action_from_settings() throws Exception {
         locator.setLocation(betterLocation);
 
         Intent locationUpdated = new Intent();
         locationUpdated.setAction(UPDATE_ACTION);
-        locationUpdated.setPackage(PACKAGE_NAME);
 
         verify(context).sendBroadcast(eq(locationUpdated));
     }
@@ -86,7 +84,6 @@ public class DefaultLocatorShould {
 
         Intent locationUpdated = new Intent();
         locationUpdated.setAction(UPDATE_ACTION);
-        locationUpdated.setPackage(PACKAGE_NAME);
 
         //2 broadcasts occur as setting a location will also broadcast
         verify(context, times(2)).sendBroadcast(eq(locationUpdated));

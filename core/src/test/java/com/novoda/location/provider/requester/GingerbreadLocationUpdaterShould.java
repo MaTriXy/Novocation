@@ -18,7 +18,7 @@ public class GingerbreadLocationUpdaterShould {
 
     LocationManager locationManager = mock(LocationManager.class);
     GingerbreadLocationUpdater updater = new GingerbreadLocationUpdater(locationManager);
-    LocatorSettings settings = new LocatorSettings("", "");
+    LocatorSettings settings = new LocatorSettings("");
 
     long time = 1000 * 60;
     float distance = 300.50F;

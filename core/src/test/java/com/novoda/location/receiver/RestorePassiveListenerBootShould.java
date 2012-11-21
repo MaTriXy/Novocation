@@ -28,7 +28,7 @@ public class RestorePassiveListenerBootShould {
     final LocationManager locationManager = mock(LocationManager.class);
     final Context context = spy(Robolectric.getShadowApplication().getApplicationContext());
     final SettingsDao settingsDao = new LocationProviderFactory().getSettingsDao();
-    final LocatorSettings settings = new LocatorSettings("", "");
+    final LocatorSettings settings = new LocatorSettings("");
     final RestorePassiveListenerBoot restorePassiveListenerBoot = new RestorePassiveListenerBoot();
 
     @Before
