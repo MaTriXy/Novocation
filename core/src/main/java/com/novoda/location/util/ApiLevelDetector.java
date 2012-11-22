@@ -19,8 +19,8 @@ import android.os.Build;
 
 public class ApiLevelDetector {
 
-	private final boolean supportsGingerbread = Build.VERSION.SDK_INT >= 9;
-	private final boolean supportsFroyo = Build.VERSION.SDK_INT >= 8;
+	private final boolean supportsGingerbread = Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD;
+	private final boolean supportsFroyo = Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO;
 
 	public boolean supportsGingerbread() {
 		return supportsGingerbread;
