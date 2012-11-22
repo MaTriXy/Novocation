@@ -38,13 +38,13 @@ public class PassiveLocationChanged extends BroadcastReceiver {
         new PassiveLocationChangedHandler(getLastLocationFinder(context)).onNewChange(intent);
     }
 
-    protected LastLocationFinder getLastLocationFinder(Context context) {
-        if (lastLocationFinder != null) {
-            return lastLocationFinder;
-        } else {
-            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            return new LastLocationFinder(locationManager);
-        }
+    private LastLocationFinder getLastLocationFinder(Context context) {
+        return lastLocationFinder != null ? lastLocationFinder : createLastLocationFinder(context);
+    }
+
+    private LastLocationFinder createLastLocationFinder(Context context) {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        return new LastLocationFinder(locationManager);
     }
 
 }
