@@ -33,7 +33,6 @@ import com.novoda.location.provider.LastLocationFinder;
 import com.novoda.location.provider.updater.LocationUpdaterFactory;
 import com.novoda.location.util.ApiLevelDetector;
 import com.novoda.location.util.LocationAccuracy;
-import com.novoda.location.util.SettingsPersister;
 
 class DefaultLocator implements Locator {
 
@@ -91,7 +90,6 @@ class DefaultLocator implements Locator {
     @Override
     public void startLocationUpdates() throws NoProviderAvailable {
         createActiveUpdateCriteria();
-        persistSettingsToPreferences();
         sendFirstAvailableLocation();
         startListeningForLocationUpdates();
     }
@@ -103,10 +101,6 @@ class DefaultLocator implements Locator {
         } else {
             criteria.setPowerRequirement(Criteria.POWER_LOW);
         }
-    }
-
-    private void persistSettingsToPreferences() {
-        new SettingsPersister().persistSettingsToPreferences(context, settings);
     }
 
     private void sendFirstAvailableLocation() {

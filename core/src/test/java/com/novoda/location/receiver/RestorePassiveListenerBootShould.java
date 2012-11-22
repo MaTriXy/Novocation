@@ -8,7 +8,6 @@ import com.novoda.location.Locator;
 import com.novoda.location.LocatorFactory;
 import com.novoda.location.LocatorSettings;
 import com.novoda.location.util.ApiLevelDetector;
-import com.novoda.location.util.SettingsPersister;
 import com.xtremelabs.robolectric.Robolectric;
 import org.junit.After;
 import org.junit.Before;
@@ -16,8 +15,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import robolectricsetup.NovocationTestRunner;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -30,7 +27,6 @@ public class RestorePassiveListenerBootShould {
     final LocatorSettings settings = new LocatorSettings("");
     final ApiLevelDetector apiLevelDetector = mock(ApiLevelDetector.class);
     final RestorePassiveListenerBoot restorePassiveListenerBoot = new RestorePassiveListenerBoot(apiLevelDetector);
-    final SettingsPersister settingsPersister = new SettingsPersister();
 
     @Before
     public void setUp() throws Exception {
@@ -50,8 +46,6 @@ public class RestorePassiveListenerBootShould {
     public void request_passive_location_updates_if_the_app_has_run_once_and_passive_update_settings_are_enabled() throws Exception {
         settings.setEnablePassiveUpdates(true);
 
-        settingsPersister.persistSettingsToPreferences(context, settings);
-
         restorePassiveListenerBoot.onReceive(context, UNIMPORTANT_INTENT);
 
         verify(locationManager).requestLocationUpdates(eq(LocationManager.PASSIVE_PROVIDER), anyLong(), anyFloat(), any(PendingIntent.class));
@@ -60,8 +54,6 @@ public class RestorePassiveListenerBootShould {
     @Test
     public void NOT_request_for_passive_updates_if_its_enabled_in_the_settings() throws Exception {
         settings.setEnablePassiveUpdates(false);
-
-        settingsPersister.persistSettingsToPreferences(context, settings);
 
         restorePassiveListenerBoot.onReceive(context, UNIMPORTANT_INTENT);
 
