@@ -27,8 +27,6 @@ public class LocationAccuracyShould {
     private static final long ONE_SECOND_AGO = NOW - ONE_SECOND;
     private static final long OUTDATED = NOW - (LOCATION_EXPIRY_TIME + 1L);
 
-
-
     Location newLocation = new Location(NOT_IMPORTANT);
     Location currentLocation = new Location(NOT_IMPORTANT);
 
