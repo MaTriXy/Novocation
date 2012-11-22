@@ -42,7 +42,7 @@ public class LocationUpdateManagerShould {
         LocationUpdatesIntentFactory updatesIntentFactory = mock(LocationUpdatesIntentFactory.class);
         when(updatesIntentFactory.buildActive()).thenReturn(activeUpdate);
         when(updatesIntentFactory.buildPassive()).thenReturn(passiveUpdate);
-        when(locationUpdaterFactory.getLocationUpdater(eq(locationManager))).thenReturn(locationUpdater);
+        when(locationUpdaterFactory.getLocationUpdater()).thenReturn(locationUpdater);
         LocatorFactory.setLocator(locator);
         settings.setUpdatesDistance(UPDATES_DISTANCE);
         settings.setUpdatesInterval(UPDATES_INTERVAL);

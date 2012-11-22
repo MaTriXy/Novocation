@@ -19,10 +19,11 @@ import com.novoda.location.exception.NoProviderAvailable;
 
 import android.content.Context;
 import android.location.Location;
+import com.novoda.location.util.ApiLevelDetector;
 
 public interface Locator {
 
-	void prepare(Context c, LocatorSettings settings);
+	void prepare(Context c, LocatorSettings settings, ApiLevelDetector apiLevelDetector);
 
 	Location getLocation();
 

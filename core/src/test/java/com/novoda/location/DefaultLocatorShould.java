@@ -6,6 +6,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import com.novoda.location.util.ApiLevelDetector;
 import com.xtremelabs.robolectric.Robolectric;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,11 +32,12 @@ public class DefaultLocatorShould {
     final Location betterLocation = new Location(PROVIDER);
     final LocationManager locationManager = mock(LocationManager.class);
     final LocationUpdateManager updateManager = mock(LocationUpdateManager.class);
+    final ApiLevelDetector apiLevelDetector = mock(ApiLevelDetector.class);
 
     @Before
     public void setUp() throws Exception {
         doReturn(locationManager).when(context).getSystemService(eq(Context.LOCATION_SERVICE));
-        locator.prepare(context, settings);
+        locator.prepare(context, settings, apiLevelDetector);
         worstLocation.setTime(0);
         betterLocation.setTime(System.currentTimeMillis());
         locator.setLocationUpdateManager(updateManager);

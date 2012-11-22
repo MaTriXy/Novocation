@@ -10,6 +10,7 @@ import com.novoda.location.LocatorFactory;
 import com.novoda.location.LocatorSettings;
 import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.location.receiver.LocationChanged;
+import com.novoda.location.util.ApiLevelDetector;
 import com.xtremelabs.robolectric.Robolectric;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,12 +26,14 @@ public class ProviderEnabledOrDisabledTest {
     final LocationManager locationManager = mock(LocationManager.class);
     final LocatorSettings settings = new LocatorSettings("com.example.update");
     final Locator locator = LocatorFactory.getInstance();
+    private ApiLevelDetector apiLevelDetector = mock(ApiLevelDetector.class);
 
     @Before
     public void setUp() throws Exception {
         doReturn(LocationManager.GPS_PROVIDER).when(locationManager).getBestProvider(any(Criteria.class), anyBoolean());
         doReturn(locationManager).when(context).getSystemService(eq(Context.LOCATION_SERVICE));
-        locator.prepare(context, settings);
+        when(apiLevelDetector.supportsFroyo()).thenReturn(true);
+        locator.prepare(context, settings, apiLevelDetector);
     }
 
     private void changeProviderStateTo(boolean enabled) {

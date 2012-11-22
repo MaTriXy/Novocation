@@ -20,6 +20,7 @@
  */
 package com.novoda.location;
 
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Criteria;
@@ -30,7 +31,9 @@ import android.os.Bundle;
 import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.location.provider.LastLocationFinder;
 import com.novoda.location.provider.updater.LocationUpdaterFactory;
+import com.novoda.location.util.ApiLevelDetector;
 import com.novoda.location.util.LocationAccuracy;
+import com.novoda.location.util.SettingsDaoUtil;
 
 class DefaultLocator implements Locator {
 
@@ -67,14 +70,15 @@ class DefaultLocator implements Locator {
     };
 
     private boolean listeningForActiveLocationUpdates;
+    private LocationUpdaterFactory updaterFactory;
 
     @Override
-    public void prepare(Context c, LocatorSettings settings) {
+    public void prepare(Context c, LocatorSettings settings, ApiLevelDetector apiLevelDetector) {
         this.settings = settings;
         context = c;
         locationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
         locationAccuracy = new LocationAccuracy(settings);
-        LocationUpdaterFactory updaterFactory = new LocationUpdaterFactory();
+        updaterFactory = new LocationUpdaterFactory(locationManager, apiLevelDetector, (AlarmManager)context.getSystemService(Context.ALARM_SERVICE));
         LocationUpdatesIntentFactory updatesIntentFactory = new LocationUpdatesIntentFactory(context);
         locationUpdateManager = new LocationUpdateManager(settings, locationManager, updaterFactory, updatesIntentFactory, new LastLocationFinder(locationManager));
     }
@@ -102,7 +106,7 @@ class DefaultLocator implements Locator {
     }
 
     private void persistSettingsToPreferences() {
-        new LocationUpdaterFactory().getSettingsDao().persistSettingsToPreferences(context, settings);
+        new SettingsDaoUtil().getSettingsDao().persistSettingsToPreferences(context, settings);
     }
 
     private void sendFirstAvailableLocation() {

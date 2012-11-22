@@ -21,9 +21,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.location.provider.LastLocationFinder;
-import com.novoda.location.provider.updater.LocationUpdaterFactory;
 import com.novoda.location.provider.updater.LocationUpdater;
-import com.novoda.location.util.ApiLevelDetector;
+import com.novoda.location.provider.updater.LocationUpdaterFactory;
 
 class LocationUpdateManager {
 
@@ -43,7 +42,7 @@ class LocationUpdateManager {
         this.locationFinder = locationFinder;
         activeLocationUpdate = updatesIntentFactory.buildActive();
         passiveLocationUpdate = updatesIntentFactory.buildPassive();
-        locationUpdater = locationUpdaterFactory.getLocationUpdater(locationManager);
+        locationUpdater = locationUpdaterFactory.getLocationUpdater();
     }
 
     void startActiveLocationUpdates(Criteria criteria) throws NoProviderAvailable {
@@ -55,7 +54,7 @@ class LocationUpdateManager {
     }
 
     void startPassiveLocationUpdates() {
-        if (ApiLevelDetector.supportsFroyo() && settings.shouldEnablePassiveUpdates()) {
+        if (settings.shouldEnablePassiveUpdates()) {
             locationUpdater.startPassiveLocationUpdates(settings, passiveLocationUpdate);
         }
     }

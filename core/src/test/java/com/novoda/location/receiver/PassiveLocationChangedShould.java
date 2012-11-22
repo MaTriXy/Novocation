@@ -7,8 +7,8 @@ import android.location.LocationManager;
 import com.novoda.location.Locator;
 import com.novoda.location.LocatorFactory;
 import com.novoda.location.provider.LastLocationFinder;
-import com.novoda.location.provider.updater.LocationUpdaterFactory;
 import com.novoda.location.provider.store.SettingsDao;
+import com.novoda.location.util.SettingsDaoUtil;
 import com.xtremelabs.robolectric.Robolectric;
 import org.junit.After;
 import org.junit.Before;
@@ -16,7 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import robolectricsetup.NovocationTestRunner;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -33,7 +32,7 @@ public class PassiveLocationChangedShould {
     final PassiveLocationChanged passiveLocationChanged = spy(new PassiveLocationChanged());
     final Locator locator = mock(Locator.class);
     final Context context = Robolectric.getShadowApplication().getApplicationContext();
-    final SettingsDao settingsDao = new LocationUpdaterFactory().getSettingsDao();
+    final SettingsDao settingsDao = new SettingsDaoUtil().getSettingsDao();
     final long outdated = now - settingsDao.getPassiveLocationInterval(context);
 
     @Before

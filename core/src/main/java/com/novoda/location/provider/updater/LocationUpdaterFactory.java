@@ -17,25 +17,30 @@
  */
 package com.novoda.location.provider.updater;
 
+import android.app.AlarmManager;
 import android.location.LocationManager;
-import com.novoda.location.provider.store.SettingsDao;
-import com.novoda.location.provider.store.SharedPreferenceSettingsDao;
 import com.novoda.location.util.ApiLevelDetector;
 
 public class LocationUpdaterFactory {
 
-    public LocationUpdater getLocationUpdater(LocationManager locationManager) {
+    private final LocationManager locationManager;
+    private final ApiLevelDetector apiLevelDetector;
+    private final AlarmManager alarmManager;
 
-        //TODO include legacy updater
-    	if(ApiLevelDetector.supportsGingerbread()) {
-            return new GingerbreadLocationUpdater(locationManager);
-    	}
-        return new FroyoLocationUpdater(locationManager);
+    public LocationUpdaterFactory(LocationManager locationManager, ApiLevelDetector apiLevelDetector, AlarmManager alarmManager) {
+        this.locationManager = locationManager;
+        this.apiLevelDetector = apiLevelDetector;
+        this.alarmManager = alarmManager;
     }
 
-    //TODO remove this from here
-    public SettingsDao getSettingsDao() {
-    	return new SharedPreferenceSettingsDao();
+    public LocationUpdater getLocationUpdater() {
+        if (apiLevelDetector.supportsGingerbread()) {
+            return new GingerbreadLocationUpdater(locationManager);
+        }
+        if (apiLevelDetector.supportsFroyo()) {
+            return new FroyoLocationUpdater(locationManager);
+        }
+        return new LegacyLocationUpdater(locationManager, alarmManager);
     }
 
 }
