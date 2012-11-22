@@ -35,7 +35,7 @@ public class PassiveLocationChanged extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        new PassiveLocationChangedHandler(getLastLocationFinder(context)).onNewChange(context, intent);
+        new PassiveLocationChangedHandler(getLastLocationFinder(context)).onNewChange(intent);
     }
 
     protected LastLocationFinder getLastLocationFinder(Context context) {
