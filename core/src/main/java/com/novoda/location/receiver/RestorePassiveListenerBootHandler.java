@@ -13,7 +13,7 @@ import com.novoda.location.util.ApiLevelDetector;
 
 public class RestorePassiveListenerBootHandler {
 
-    final ApiLevelDetector apiLevelDetector;
+    private final ApiLevelDetector apiLevelDetector;
 
     public RestorePassiveListenerBootHandler(ApiLevelDetector apiLevelDetector) {
         this.apiLevelDetector = apiLevelDetector;

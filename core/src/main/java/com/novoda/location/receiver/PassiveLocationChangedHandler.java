@@ -9,7 +9,7 @@ import com.novoda.location.provider.LastLocationFinder;
 
 class PassiveLocationChangedHandler {
 
-    final LastLocationFinder lastLocationFinder;
+    private final LastLocationFinder lastLocationFinder;
 
     public PassiveLocationChangedHandler(LastLocationFinder locationFinder) {
         this.lastLocationFinder = locationFinder;
