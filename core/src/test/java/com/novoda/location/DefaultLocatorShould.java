@@ -73,7 +73,7 @@ public class DefaultLocatorShould {
     public void find_the_last_known_location_when_starting_location_updates_if_its_currently_location_is_invalid() throws Exception {
         locator.setLocation(INVALID_LOCATION);
 
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         verify(updateManager).fetchLastKnownLocation();
     }
@@ -82,7 +82,7 @@ public class DefaultLocatorShould {
     public void broadcast_that_the_location_is_updated_when_starting_location_updates_and_its_current_location_is_valid() throws Exception {
         locator.setLocation(new Location(PROVIDER));
 
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         Intent locationUpdated = new Intent();
         locationUpdated.setAction(UPDATE_ACTION);
@@ -95,7 +95,7 @@ public class DefaultLocatorShould {
     public void use_criteria_for_fine_accuracy_when_chosen_to_use_gps_in_the_settings() throws Exception {
         settings.setUseGps(true);
 
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
@@ -107,7 +107,7 @@ public class DefaultLocatorShould {
     public void use_criteria_fow_low_power_when_chosen_NOT_to_use_gps_in_the_settings() throws Exception {
         settings.setUseGps(false);
 
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         Criteria criteria = new Criteria();
         criteria.setPowerRequirement(Criteria.POWER_LOW);
@@ -120,7 +120,7 @@ public class DefaultLocatorShould {
         when(locationManager.getBestProvider(any(Criteria.class), anyBoolean())).thenReturn(LocationManager.GPS_PROVIDER);
         when(locationManager.isProviderEnabled(eq(LocationManager.NETWORK_PROVIDER))).thenReturn(true);
 
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         verify(locationManager).requestLocationUpdates(eq(LocationManager.NETWORK_PROVIDER), anyLong(), anyFloat(), any(LocationListener.class));
     }
@@ -130,7 +130,7 @@ public class DefaultLocatorShould {
         when(locationManager.getBestProvider(any(Criteria.class), anyBoolean())).thenReturn(LocationManager.GPS_PROVIDER);
         when(locationManager.isProviderEnabled(eq(LocationManager.NETWORK_PROVIDER))).thenReturn(false);
 
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         verify(locationManager, never()).requestLocationUpdates(eq(LocationManager.NETWORK_PROVIDER), anyLong(), anyFloat(), any(LocationListener.class));
     }
@@ -139,7 +139,7 @@ public class DefaultLocatorShould {
     public void remove_a_network_location_listener_if_GPS_is_the_best_provider_when_starting_a_location_update() throws Exception {
         when(locationManager.getBestProvider(any(Criteria.class), anyBoolean())).thenReturn(LocationManager.GPS_PROVIDER);
 
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         verify(locationManager).removeUpdates(any(LocationListener.class));
     }
@@ -148,7 +148,7 @@ public class DefaultLocatorShould {
     public void NOT_remove_a_network_location_listener_if_NETWORK_is_the_best_provider_when_starting_a_location_update() throws Exception {
         when(locationManager.getBestProvider(any(Criteria.class), anyBoolean())).thenReturn(LocationManager.NETWORK_PROVIDER);
 
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         verify(locationManager, never()).removeUpdates(any(LocationListener.class));
     }
@@ -157,14 +157,14 @@ public class DefaultLocatorShould {
     public void NOT_remove_a_network_location_listener_if_no_provider_is_enabled_when_starting_a_location_update() throws Exception {
         when(locationManager.getBestProvider(any(Criteria.class), anyBoolean())).thenReturn(null);
 
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         verify(locationManager, never()).removeUpdates(any(LocationListener.class));
     }
 
     @Test
     public void remove_active_location_updates_when_a_provider_status_has_changed() throws Exception {
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         locator.providerStatusChanged();
 
@@ -173,7 +173,7 @@ public class DefaultLocatorShould {
 
     @Test
     public void request_active_location_updates_when_a_provider_status_has_changed() throws Exception {
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         locator.providerStatusChanged();
 
@@ -215,7 +215,7 @@ public class DefaultLocatorShould {
     public void respect_the_location_updates_settings_when_starting_location_updates() throws Exception {
         settings.setUpdateOnLocationChange(false);
 
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         verify(updateManager, never()).startActiveLocationUpdates(any(Criteria.class));
     }

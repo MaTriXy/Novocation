@@ -31,7 +31,7 @@ public class UnregisterPassiveListenerOnLostConnectivity extends BroadcastReceiv
 	
     @Override
     public void onReceive(Context c, Intent intent) {
-        if (isNotConnected(c)) {
+        if (!isConnected(c)) {
         	return;
         }
 
@@ -41,16 +41,16 @@ public class UnregisterPassiveListenerOnLostConnectivity extends BroadcastReceiv
         changeStateToComponent(c, PassiveLocationChanged.class);
     }
 
-	private boolean isNotConnected(Context context) {
+	private boolean isConnected(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 		if(activeNetwork == null) {
-			return true;
-		}
-		if(activeNetwork.isConnectedOrConnecting()) {
 			return false;
 		}
-		return true;
+		if(activeNetwork.isConnectedOrConnecting()) {
+			return true;
+		}
+		return false;
 	}
 
     private void changeStateToComponent(Context context, Class<? extends BroadcastReceiver> clazz) {

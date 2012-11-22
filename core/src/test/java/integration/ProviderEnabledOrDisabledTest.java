@@ -49,7 +49,7 @@ public class ProviderEnabledOrDisabledTest {
 
     @Test
     public void locator_should_restart_location_updates_when_a_provider_is_enabled() throws NoProviderAvailable {
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         enableProvider();
 
@@ -58,7 +58,7 @@ public class ProviderEnabledOrDisabledTest {
 
     @Test
     public void locator_should_disable_location_updates_when_a_provider_is_enabled() throws NoProviderAvailable {
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         enableProvider();
 
@@ -71,7 +71,7 @@ public class ProviderEnabledOrDisabledTest {
 
     @Test
     public void locator_should_restart_location_updates_when_a_provider_is_disabled() throws NoProviderAvailable {
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         disableProvider();
 
@@ -80,7 +80,7 @@ public class ProviderEnabledOrDisabledTest {
 
     @Test
     public void locator_should_disable_location_updates_when_a_provider_is_disabled() throws NoProviderAvailable {
-        locator.startLocationUpdates();
+        locator.startActiveLocationUpdates();
 
         disableProvider();
 

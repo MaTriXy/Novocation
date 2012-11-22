@@ -88,7 +88,7 @@ class DefaultLocator implements Locator {
     }
 
     @Override
-    public void startLocationUpdates() throws NoProviderAvailable {
+    public void startActiveLocationUpdates() throws NoProviderAvailable {
         createActiveUpdateCriteria();
         sendFirstAvailableLocation();
         startListeningForLocationUpdates();

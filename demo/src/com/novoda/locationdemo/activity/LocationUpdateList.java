@@ -111,7 +111,7 @@ public class LocationUpdateList extends RoboMapActivity {
         registerReceiver(freshLocationReceiver, f);
         
         try {
-        	locator.startLocationUpdates();
+        	locator.startActiveLocationUpdates();
         } catch (NoProviderAvailable npa) {
         	analytics.trackNoProviderAvailable();
         	Toast.makeText(this, "No provider available", Toast.LENGTH_LONG).show();

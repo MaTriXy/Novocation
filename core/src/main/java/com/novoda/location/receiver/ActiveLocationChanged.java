@@ -23,7 +23,6 @@ import android.content.Intent;
 import com.novoda.location.Locator;
 import com.novoda.location.LocatorFactory;
 
-// TODO rename to ActiveLocationChanged
 public class ActiveLocationChanged extends BroadcastReceiver {
 
     @Override

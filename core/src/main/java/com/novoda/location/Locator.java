@@ -31,8 +31,7 @@ public interface Locator {
 
 	LocatorSettings getSettings();
 
-    //TODO should be startActiveLocationUpdates
-	void startLocationUpdates() throws NoProviderAvailable;
+	void startActiveLocationUpdates() throws NoProviderAvailable;
 
     //void stopActiveLocationUpdates();
 

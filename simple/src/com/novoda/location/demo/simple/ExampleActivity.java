@@ -58,7 +58,7 @@ public class ExampleActivity extends Activity {
         registerReceiver(freshLocationReceiver, f);
 
         try {
-            locator.startLocationUpdates();
+            locator.startActiveLocationUpdates();
         } catch (NoProviderAvailable npa) {
             Toast.makeText(this, "No provider available", Toast.LENGTH_LONG).show();
         }
