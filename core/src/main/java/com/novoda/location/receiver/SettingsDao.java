@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.novoda.location.provider.store;
-
-import com.novoda.location.LocatorSettings;
+package com.novoda.location.receiver;
 
 import android.content.Context;
 
@@ -24,8 +22,6 @@ public interface SettingsDao {
 	long getPassiveLocationInterval(Context context);
 
 	float getPassiveLocationDistance(Context context);
-
-	void persistSettingsToPreferences(Context context, LocatorSettings settings);
 
 	boolean hasApplicationRunOnce(Context context);
 

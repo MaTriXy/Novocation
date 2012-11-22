@@ -16,6 +16,7 @@ class LocationUpdatesIntentFactory {
     }
 
     PendingIntent buildActive() {
+        //TODO make this broadcast target the ActiveLocationChanged receiver
         Intent activeIntent = new Intent(Constants.ACTIVE_LOCATION_UPDATE_ACTION);
         return PendingIntent.getBroadcast(context, 0, activeIntent, FLAG_UPDATE_CURRENT);
     }

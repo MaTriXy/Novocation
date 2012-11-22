@@ -33,7 +33,7 @@ import com.novoda.location.provider.LastLocationFinder;
 import com.novoda.location.provider.updater.LocationUpdaterFactory;
 import com.novoda.location.util.ApiLevelDetector;
 import com.novoda.location.util.LocationAccuracy;
-import com.novoda.location.util.SettingsDaoUtil;
+import com.novoda.location.util.SettingsPersister;
 
 class DefaultLocator implements Locator {
 
@@ -106,7 +106,7 @@ class DefaultLocator implements Locator {
     }
 
     private void persistSettingsToPreferences() {
-        new SettingsDaoUtil().getSettingsDao().persistSettingsToPreferences(context, settings);
+        new SettingsPersister().persistSettingsToPreferences(context, settings);
     }
 
     private void sendFirstAvailableLocation() {

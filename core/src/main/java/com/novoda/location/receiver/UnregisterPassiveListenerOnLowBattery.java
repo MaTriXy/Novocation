@@ -21,7 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
-//TODO rename this class
+//TODO rename this class  - StopPassiveLocationUpdatesReceiver
 //TODO should the LocationChanged and PassiveLocation listeners be registered / unregistered as well?
 
 public class UnregisterPassiveListenerOnLowBattery extends BroadcastReceiver {

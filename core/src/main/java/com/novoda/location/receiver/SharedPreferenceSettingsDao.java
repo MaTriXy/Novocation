@@ -15,32 +15,19 @@
  * 
  * Sections copyright Matthias Kaeppler 2009-2011 based on Ignition-Support.
  */
-package com.novoda.location.provider.store;
+package com.novoda.location.receiver;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-
 import com.novoda.location.Constants;
-import com.novoda.location.LocatorSettings;
 
-public class SharedPreferenceSettingsDao implements SettingsDao {
+class SharedPreferenceSettingsDao implements SettingsDao {
     
     private static final String SHARED_PREFERENCE_FILE = "novocation_prefs";
     private static final String SP_KEY_RUN_ONCE = "sp_key_run_once";
     private static final String SP_KEY_PASSIVE_LOCATION_CHANGES = "sp_key_follow_location_changes";
     private static final String SP_KEY_PASSIVE_LOCATION_UPDATES_DISTANCE_DIFF = "sp_passive_location_updates_distance_diff";
     private static final String SP_KEY_PASSIVE_LOCATION_UPDATES_INTERVAL = "sp_key_passive_location_updates_interval";
-    
-    @Override
-    public void persistSettingsToPreferences(Context context, LocatorSettings settings) {
-        Editor editor = getSharedPrefs(context).edit();
-        editor.putBoolean(SP_KEY_PASSIVE_LOCATION_CHANGES, settings.shouldEnablePassiveUpdates());
-        editor.putFloat(SP_KEY_PASSIVE_LOCATION_UPDATES_DISTANCE_DIFF, settings.getPassiveUpdatesDistance());
-        editor.putLong(SP_KEY_PASSIVE_LOCATION_UPDATES_INTERVAL, settings.getPassiveUpdatesInterval());
-        editor.putBoolean(SP_KEY_RUN_ONCE, true);
-        editor.commit();
-    }
 
 	@Override
     public long getPassiveLocationInterval(Context context) {

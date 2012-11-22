@@ -24,8 +24,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import com.novoda.location.LocatorFactory;
 import com.novoda.location.provider.LastLocationFinder;
-import com.novoda.location.provider.store.SettingsDao;
-import com.novoda.location.util.SettingsDaoUtil;
 
 //TODO this logic needs to be extracted to a java object with the dependencies injected through the constructor
 public class PassiveLocationChanged extends BroadcastReceiver {
@@ -43,7 +41,7 @@ public class PassiveLocationChanged extends BroadcastReceiver {
             // location we used.
 
             //TODO this shouldn't be using the settingsDAO but the LocatorSettings
-            SettingsDao settings = new SettingsDaoUtil().getSettingsDao();
+            SettingsDao settings = new SharedPreferenceSettingsDao();
             long locationUpdateInterval = settings.getPassiveLocationInterval(context);
             float locationUpdateDistanceDiff = settings.getPassiveLocationDistance(context);
 
