@@ -3,6 +3,7 @@ package com.novoda.location;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import com.novoda.location.receiver.ActiveLocationChanged;
 import com.novoda.location.receiver.PassiveLocationChanged;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
@@ -16,8 +17,7 @@ class LocationUpdatesIntentFactory {
     }
 
     PendingIntent buildActive() {
-        //TODO make this broadcast target the ActiveLocationChanged receiver
-        Intent activeIntent = new Intent(Constants.ACTIVE_LOCATION_UPDATE_ACTION);
+        Intent activeIntent = new Intent(context, ActiveLocationChanged.class);
         return PendingIntent.getBroadcast(context, 0, activeIntent, FLAG_UPDATE_CURRENT);
     }
 
