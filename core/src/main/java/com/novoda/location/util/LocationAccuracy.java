@@ -21,8 +21,6 @@ import com.novoda.location.LocatorSettings;
 
 public class LocationAccuracy {
 
-    //TODO this should be part of the settings
-    static final int BAD_ACCURACY_THRESHOLD = 200;
     private final LocatorSettings settings;
 
     public LocationAccuracy(LocatorSettings settings) {
@@ -53,7 +51,7 @@ public class LocationAccuracy {
 
     private boolean isABadButAcceptableLocation(long timeDelta, int accuracyDelta, Location newLocation, Location currentLocation) {
         boolean isNewer = timeDelta > 0;
-        boolean isBellowBadAccuracyThreshold = accuracyDelta < BAD_ACCURACY_THRESHOLD;
+        boolean isBellowBadAccuracyThreshold = accuracyDelta < settings.getBadAccuracyThreshold();
         boolean isFromSameProvider = isSameProvider(newLocation.getProvider(), currentLocation.getProvider());
 
         return isNewer && isBellowBadAccuracyThreshold && isFromSameProvider;

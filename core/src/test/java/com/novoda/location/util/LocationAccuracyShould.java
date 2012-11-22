@@ -13,11 +13,13 @@ import static org.junit.Assert.fail;
 @RunWith(NovocationTestRunner.class)
 public class LocationAccuracyShould {
 
+    final LocatorSettings settings = new LocatorSettings(NOT_IMPORTANT);
+    final LocationAccuracy locationAccuracy = new LocationAccuracy(settings);
+
     private static final String NOT_IMPORTANT = "";
     private static final Location INVALID_LOCATION = null;
     private static final String INVALID_PROVIDER = null;
     private static final int BETTER_ACCURACY = 50;
-    private static final long ACCURACY_BELOW_THRESHOLD = LocationAccuracy.BAD_ACCURACY_THRESHOLD - 1;
     private static final int WORST_ACCURACY = 600;
     private static final long ONE_SECOND = 1000L;
     private static final long LOCATION_EXPIRY_TIME = ONE_SECOND * 60 * 4;
@@ -25,8 +27,8 @@ public class LocationAccuracyShould {
     private static final long ONE_SECOND_AGO = NOW - ONE_SECOND;
     private static final long OUTDATED = NOW - (LOCATION_EXPIRY_TIME + 1L);
 
-    LocatorSettings settings = new LocatorSettings(NOT_IMPORTANT);
-    LocationAccuracy locationAccuracy = new LocationAccuracy(settings);
+
+
     Location newLocation = new Location(NOT_IMPORTANT);
     Location currentLocation = new Location(NOT_IMPORTANT);
 
@@ -160,7 +162,8 @@ public class LocationAccuracyShould {
     }
 
     private void newLocationIsLessAccurateButBelowThreshold() {
-        newLocation.setAccuracy(ACCURACY_BELOW_THRESHOLD);
+        int accuracyBelowThreshold = settings.getBadAccuracyThreshold() - 1;
+        newLocation.setAccuracy(accuracyBelowThreshold);
         currentLocation.setAccuracy(BETTER_ACCURACY);
     }
 

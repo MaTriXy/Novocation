@@ -17,6 +17,8 @@ package com.novoda.location;
 
 public class LocatorSettings {
 
+    private static final int BAD_ACCURACY_THRESHOLD = 200;
+
     private final String updateAction;
 
     private boolean useGps = Constants.USE_GPS;
@@ -91,4 +93,7 @@ public class LocatorSettings {
         this.passiveUpdatesDistance = passiveUpdatesDistance;
     }
 
+    public int getBadAccuracyThreshold() {
+        return BAD_ACCURACY_THRESHOLD;
+    }
 }
