@@ -4,16 +4,19 @@ import android.app.AlarmManager;
 import android.location.LocationManager;
 import com.novoda.location.util.ApiLevelDetector;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import robolectricsetup.NovocationTestRunner;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(NovocationTestRunner.class)
 public class UpdaterFactoryShould {
 
     ApiLevelDetector apiLevelDetector = mock(ApiLevelDetector.class);
-    AlarmManager alarmManager = null;
-    LocationManager locationManager = null;
+    AlarmManager alarmManager = mock(AlarmManager.class);
+    LocationManager locationManager = mock(LocationManager.class);
 
     @Test
     public void return_a_legacy_instance_when_running_eclair_or_older() {

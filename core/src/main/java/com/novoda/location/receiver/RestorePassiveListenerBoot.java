@@ -34,13 +34,10 @@ import com.novoda.location.util.SettingsDaoUtil;
 //TODO extract the logic out of this receiver
 public class RestorePassiveListenerBoot extends BroadcastReceiver {
 
-    private LocationUpdaterFactory locationUpdaterFactory;
     private ApiLevelDetector apiLevelDetector;
 
     @Override
     public void onReceive(Context c, Intent intent) {
-        LocationManager lm = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
-        locationUpdaterFactory = new LocationUpdaterFactory(lm, getApiLevelDetector(), (AlarmManager) c.getSystemService(Context.ALARM_SERVICE));
         SettingsDao settingsDao = new SettingsDaoUtil().getSettingsDao();
         if (settingsDao.hasApplicationRunOnce(c) && settingsDao.isPassiveLocationChanges(c)) {
             startPassiveLocationUpdates(c);
@@ -48,9 +45,18 @@ public class RestorePassiveListenerBoot extends BroadcastReceiver {
     }
 
     private void startPassiveLocationUpdates(Context context) {
-        LocationUpdater locationUpdater = locationUpdaterFactory.getLocationUpdater();
-        LocatorSettings settings = LocatorFactory.getInstance().getSettings();
-        locationUpdater.startPassiveLocationUpdates(settings, createPendingIntent(context));
+        LocationUpdater locationUpdater = getLocationUpdater(context);
+        locationUpdater.startPassiveLocationUpdates(getSettings(), createPendingIntent(context));
+    }
+
+    private LocationUpdater getLocationUpdater(Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        LocationUpdaterFactory locationUpdaterFactory = new LocationUpdaterFactory(lm, getApiLevelDetector(), (AlarmManager) context.getSystemService(Context.ALARM_SERVICE));
+        return locationUpdaterFactory.getLocationUpdater();
+    }
+
+    private LocatorSettings getSettings() {
+        return LocatorFactory.getInstance().getSettings();
     }
 
     private PendingIntent createPendingIntent(Context context) {
