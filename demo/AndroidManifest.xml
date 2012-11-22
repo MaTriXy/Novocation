@@ -28,13 +28,13 @@
 
     <receiver android:name="com.novoda.location.receiver.PassiveLocationChanged"/>
 
-    <receiver android:name="com.novoda.location.receiver.UnregisterPassiveListenerOnLostConnectivity" enabled="false">
+    <receiver android:name="com.novoda.location.receiver.RestorePassiveListenerOnRestoredConnectivity" enabled="false">
       <intent-filter>
         <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
       </intent-filter>
     </receiver>
 
-    <receiver android:name="com.novoda.location.receiver.UnregisterPassiveListenerOnLowBattery">
+    <receiver android:name="com.novoda.location.receiver.StopPassiveLocationUpdatesOnLowBattery">
       <intent-filter>
         <action android:name="android.intent.action.BATTERY_LOW"/>
         <action android:name="android.intent.action.BATTERY_OKAY"/>

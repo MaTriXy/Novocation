@@ -16,15 +16,14 @@
 package com.novoda.location.receiver;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import com.novoda.location.util.StateComponentizer;
 
-//TODO rename this class  - StopPassiveLocationUpdatesReceiver
 //TODO should the ActiveLocationChanged and PassiveLocation listeners be registered / unregistered as well?
 
-public class UnregisterPassiveListenerOnLowBattery extends BroadcastReceiver {
+public class StopPassiveLocationUpdatesOnLowBattery extends BroadcastReceiver {
     
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -32,7 +31,7 @@ public class UnregisterPassiveListenerOnLowBattery extends BroadcastReceiver {
         if(isBatteryLow(intent)) {
         	state = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
         }
-        changeStateToComponent(context, state);
+        StateComponentizer.changeStateToComponent(context, state);
     }
     
 	private boolean isBatteryLow(Intent intent) {
@@ -42,10 +41,4 @@ public class UnregisterPassiveListenerOnLowBattery extends BroadcastReceiver {
 		return Intent.ACTION_BATTERY_LOW.equals(intent.getAction());
 	}
 
-    //TODO extract this to a separate class
-	private void changeStateToComponent(Context c, int state) {
-		PackageManager pm = c.getPackageManager();
-		ComponentName cr = new ComponentName(c, PassiveLocationChanged.class);
-        pm.setComponentEnabledSetting(cr, state, PackageManager.DONT_KILL_APP);
-	}
 }

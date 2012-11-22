@@ -18,16 +18,14 @@
 package com.novoda.location.receiver;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import com.novoda.location.util.StateComponentizer;
 
-//TODO rename this class - its misleading. Its enabling, not unregistering, only when connectivity changes to connected, and its not only the Passive Listener
 //TODO should this disable on lost connectivity?
-public class UnregisterPassiveListenerOnLostConnectivity extends BroadcastReceiver {
+public class RestorePassiveListenerOnRestoredConnectivity extends BroadcastReceiver {
 	
     @Override
     public void onReceive(Context c, Intent intent) {
@@ -36,9 +34,7 @@ public class UnregisterPassiveListenerOnLostConnectivity extends BroadcastReceiv
         }
 
         //TODO is there a point in enabling itself?
-        changeStateToComponent(c, UnregisterPassiveListenerOnLostConnectivity.class);
-        changeStateToComponent(c, ActiveLocationChanged.class);
-        changeStateToComponent(c, PassiveLocationChanged.class);
+        setComponentStates(c);
     }
 
 	private boolean isConnected(Context context) {
@@ -53,10 +49,10 @@ public class UnregisterPassiveListenerOnLostConnectivity extends BroadcastReceiv
 		return false;
 	}
 
-    private void changeStateToComponent(Context context, Class<? extends BroadcastReceiver> clazz) {
-        PackageManager pm = context.getPackageManager();
-        ComponentName cr = new ComponentName(context, clazz);
-        pm.setComponentEnabledSetting(cr, PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
-                PackageManager.DONT_KILL_APP);
+    private void setComponentStates(Context c) {
+        StateComponentizer.changeStateToComponent(c, RestorePassiveListenerOnRestoredConnectivity.class);
+        StateComponentizer.changeStateToComponent(c, ActiveLocationChanged.class);
+        StateComponentizer.changeStateToComponent(c, PassiveLocationChanged.class);
     }
+
 }

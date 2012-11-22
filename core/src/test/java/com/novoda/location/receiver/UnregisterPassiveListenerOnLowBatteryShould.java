@@ -33,7 +33,7 @@ public class UnregisterPassiveListenerOnLowBatteryShould {
     public void enable_the_passive_listener_if_the_battery_is_not_low() throws Exception {
         Intent intent = new Intent(Intent.ACTION_BATTERY_OKAY);
 
-        new UnregisterPassiveListenerOnLowBattery().onReceive(context, intent);
+        new StopPassiveLocationUpdatesOnLowBattery().onReceive(context, intent);
 
         verifyPassiveListenerIsEnabled();
     }
@@ -42,7 +42,7 @@ public class UnregisterPassiveListenerOnLowBatteryShould {
     public void enable_the_passive_listener_if_the_intent_is_invalid() throws Exception {
         Intent intent = INVALID_INTENT;
 
-        new UnregisterPassiveListenerOnLowBattery().onReceive(context, intent);
+        new StopPassiveLocationUpdatesOnLowBattery().onReceive(context, intent);
 
         verifyPassiveListenerIsEnabled();
     }
@@ -55,7 +55,7 @@ public class UnregisterPassiveListenerOnLowBatteryShould {
     public void disable_the_passive_listener_if_the_battery_is_low() throws Exception {
         Intent intent = new Intent(Intent.ACTION_BATTERY_LOW);
 
-        new UnregisterPassiveListenerOnLowBattery().onReceive(context, intent);
+        new StopPassiveLocationUpdatesOnLowBattery().onReceive(context, intent);
 
         verifyPassiveListenerIsDisabled();
     }

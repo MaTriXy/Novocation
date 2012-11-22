@@ -50,7 +50,7 @@ public class UnregisterPassiveListenerOnLostConnectivityShould {
     }
 
     private void onConnectivityChanged() {
-        UnregisterPassiveListenerOnLostConnectivity unregisterPassiveListenerOnLostConnectivity = new UnregisterPassiveListenerOnLostConnectivity();
+        RestorePassiveListenerOnRestoredConnectivity unregisterPassiveListenerOnLostConnectivity = new RestorePassiveListenerOnRestoredConnectivity();
         unregisterPassiveListenerOnLostConnectivity.onReceive(context, new Intent());
     }
 
@@ -78,7 +78,7 @@ public class UnregisterPassiveListenerOnLostConnectivityShould {
 
         onConnectivityChanged();
 
-        verifyReceiverHasBeenEnabled(UnregisterPassiveListenerOnLostConnectivity.class);
+        verifyReceiverHasBeenEnabled(RestorePassiveListenerOnRestoredConnectivity.class);
     }
 
     @Test
