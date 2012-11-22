@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import com.novoda.location.Constants;
 import com.novoda.location.Locator;
 import com.novoda.location.LocatorFactory;
+import com.novoda.location.LocatorSettings;
 import com.novoda.location.provider.LastLocationFinder;
 import com.xtremelabs.robolectric.Robolectric;
 import org.junit.After;
@@ -30,11 +32,14 @@ public class PassiveLocationChangedShould {
     final PassiveLocationChanged passiveLocationChanged = spy(new PassiveLocationChanged());
     final Locator locator = mock(Locator.class);
     final Context context = Robolectric.getShadowApplication().getApplicationContext();
-    final SettingsDao settingsDao = new SharedPreferenceSettingsDao();
-    final long outdated = now - settingsDao.getPassiveLocationInterval(context);
+    final LocatorSettings settings = mock(LocatorSettings.class);
+    final long outdated = now - Constants.UPDATES_MAX_TIME;
 
     @Before
     public void setUp() throws Exception {
+        when(settings.getPassiveUpdatesInterval()).thenReturn(Constants.UPDATES_MAX_TIME);
+        when(settings.getPassiveUpdatesDistance()).thenReturn(Constants.UPDATES_MAX_DISTANCE);
+        when(locator.getSettings()).thenReturn(settings);
         LocatorFactory.setLocator(locator);
     }
 

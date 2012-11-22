@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import com.novoda.location.LocatorFactory;
+import com.novoda.location.LocatorSettings;
 import com.novoda.location.provider.LastLocationFinder;
 
 //TODO this logic needs to be extracted to a java object with the dependencies injected through the constructor
@@ -40,10 +41,9 @@ public class PassiveLocationChanged extends BroadcastReceiver {
             // there has been a more recent Location received than the last
             // location we used.
 
-            //TODO this shouldn't be using the settingsDAO but the LocatorSettings
-            SettingsDao settings = new SharedPreferenceSettingsDao();
-            long locationUpdateInterval = settings.getPassiveLocationInterval(context);
-            float locationUpdateDistanceDiff = settings.getPassiveLocationDistance(context);
+            LocatorSettings settings = getSettings();
+            long locationUpdateInterval = settings.getPassiveUpdatesInterval();
+            float locationUpdateDistanceDiff = settings.getPassiveUpdatesDistance();
 
             // Get the best last location detected from the providers.
             long delta = System.currentTimeMillis() - locationUpdateInterval;
@@ -78,5 +78,9 @@ public class PassiveLocationChanged extends BroadcastReceiver {
             return;
         }
         LocatorFactory.setLocation(location);
+    }
+
+    private LocatorSettings getSettings() {
+        return LocatorFactory.getInstance().getSettings();
     }
 }

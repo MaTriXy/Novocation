@@ -35,7 +35,7 @@ import com.novoda.location.util.ApiLevelDetector;
 import com.novoda.location.util.LocationAccuracy;
 import com.novoda.location.util.SettingsPersister;
 
-class DefaultLocator implements Locator {
+public class DefaultLocator implements Locator {
 
     private volatile Location currentLocation;
     private LocationAccuracy locationAccuracy;

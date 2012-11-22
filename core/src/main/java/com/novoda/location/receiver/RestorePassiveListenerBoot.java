@@ -20,6 +20,8 @@ package com.novoda.location.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import com.novoda.location.LocatorFactory;
+import com.novoda.location.LocatorSettings;
 import com.novoda.location.util.ApiLevelDetector;
 
 //TODO extract the logic out of this receiver
@@ -35,8 +37,7 @@ public class RestorePassiveListenerBoot extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context c, Intent intent) {
-        SettingsDao settingsDao = new SharedPreferenceSettingsDao();
-        if (settingsDao.isPassiveLocationChanges(c)) {
+        if (getSettings().shouldEnablePassiveUpdates()) {
             startPassiveLocationUpdates(c);
         }
     }
@@ -47,6 +48,10 @@ public class RestorePassiveListenerBoot extends BroadcastReceiver {
 
     private ApiLevelDetector getApiLevelDetector() {
         return apiLevelDetector != null ? apiLevelDetector : new ApiLevelDetector();
+    }
+
+    private LocatorSettings getSettings() {
+        return LocatorFactory.getInstance().getSettings();
     }
 
 }
