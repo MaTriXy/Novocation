@@ -79,7 +79,7 @@ class DefaultLocator implements Locator {
         locationAccuracy = new LocationAccuracy(settings);
         updaterFactory = new LocationUpdaterFactory(locationManager, apiLevelDetector, (AlarmManager)context.getSystemService(Context.ALARM_SERVICE));
         LocationUpdatesIntentFactory updatesIntentFactory = new LocationUpdatesIntentFactory(context);
-        locationUpdateManager = new LocationUpdateManager(settings, locationManager, updaterFactory, updatesIntentFactory, new LastLocationFinder(locationManager));
+        locationUpdateManager = new LocationUpdateManager(settings, updaterFactory, updatesIntentFactory, new LastLocationFinder(locationManager));
     }
 
     @Override

@@ -18,7 +18,6 @@ package com.novoda.location;
 import android.app.PendingIntent;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.location.provider.LastLocationFinder;
 import com.novoda.location.provider.updater.LocationUpdater;
@@ -33,7 +32,6 @@ class LocationUpdateManager {
     private final LastLocationFinder locationFinder;
 
     LocationUpdateManager(LocatorSettings settings,
-                          LocationManager locationManager,
                           LocationUpdaterFactory locationUpdaterFactory,
                           LocationUpdatesIntentFactory updatesIntentFactory,
                           LastLocationFinder locationFinder) {

@@ -46,7 +46,7 @@ public class LocationUpdateManagerShould {
         LocatorFactory.setLocator(locator);
         settings.setUpdatesDistance(UPDATES_DISTANCE);
         settings.setUpdatesInterval(UPDATES_INTERVAL);
-        locationUpdateManager = new LocationUpdateManager(settings, locationManager, locationUpdaterFactory, updatesIntentFactory, lastLocationFinder);
+        locationUpdateManager = new LocationUpdateManager(settings, locationUpdaterFactory, updatesIntentFactory, lastLocationFinder);
     }
 
     @After
