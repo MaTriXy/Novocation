@@ -5,6 +5,7 @@ import android.app.Application;
 import com.novoda.location.Locator;
 import com.novoda.location.LocatorFactory;
 import com.novoda.location.LocatorSettings;
+import com.novoda.location.util.ApiLevelDetector;
 
 public class ExampleApplication extends Application {
     
@@ -21,7 +22,7 @@ public class ExampleApplication extends Application {
         settings.setUpdatesInterval(3 * 60 * 1000);
         settings.setUpdatesDistance(50);
         locator = LocatorFactory.getInstance();
-        locator.prepare(getApplicationContext(), settings);
+        locator.prepare(getApplicationContext(), settings, new ApiLevelDetector());
     }
 
     public Locator getLocator() {
