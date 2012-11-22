@@ -9,7 +9,7 @@ import com.novoda.location.Locator;
 import com.novoda.location.LocatorFactory;
 import com.novoda.location.LocatorSettings;
 import com.novoda.location.exception.NoProviderAvailable;
-import com.novoda.location.receiver.LocationChanged;
+import com.novoda.location.receiver.ActiveLocationChanged;
 import com.novoda.location.util.ApiLevelDetector;
 import com.xtremelabs.robolectric.Robolectric;
 import org.junit.Before;
@@ -37,10 +37,10 @@ public class ProviderEnabledOrDisabledTest {
     }
 
     private void changeProviderStateTo(boolean enabled) {
-        LocationChanged locationChanged = new LocationChanged();
+        ActiveLocationChanged activeLocationChanged = new ActiveLocationChanged();
         Intent intent = new Intent();
         intent.putExtra(LocationManager.KEY_PROVIDER_ENABLED, enabled);
-        locationChanged.onReceive(context, intent);
+        activeLocationChanged.onReceive(context, intent);
     }
 
     private void enableProvider() {

@@ -24,12 +24,12 @@ import com.novoda.location.Locator;
 import com.novoda.location.LocatorFactory;
 
 // TODO rename to ActiveLocationChanged
-public class LocationChanged extends BroadcastReceiver {
+public class ActiveLocationChanged extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent i) {
         Locator locator = LocatorFactory.getInstance();
-        new LocationChangedHandler(locator).onNewChange(i);
+        new ActiveLocationChangedHandler(locator).onNewChange(i);
     }
 
 }

@@ -22,11 +22,11 @@ import android.location.Location;
 import android.location.LocationManager;
 import com.novoda.location.Locator;
 
-class LocationChangedHandler {
+class ActiveLocationChangedHandler {
 
     private final Locator locator;
 
-    LocationChangedHandler(Locator locator) {
+    ActiveLocationChangedHandler(Locator locator) {
         this.locator = locator;
     }
 

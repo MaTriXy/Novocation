@@ -96,7 +96,7 @@ public BroadcastReceiver freshLocationReceiver = new BroadcastReceiver() {
 h3. Manifest
 
 <pre><code>
-<receiver android:name="com.novoda.location.receiver.LocationChanged">
+<receiver android:name="com.novoda.location.receiver.ActiveLocationChanged">
   <intent-filter>
     <action android:name="com.novoda.location.ACTIVE_LOCATION_UPDATE_ACTION"/>
   </intent-filter>

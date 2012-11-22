@@ -25,7 +25,9 @@ import com.novoda.location.util.ApiLevelDetector;
 //TODO extract the logic out of this receiver
 public class RestorePassiveListenerBoot extends BroadcastReceiver {
 
-    final ApiLevelDetector apiLevelDetector;
+    private ApiLevelDetector apiLevelDetector;
+
+    public RestorePassiveListenerBoot() {}
 
     public RestorePassiveListenerBoot(ApiLevelDetector apiLevelDetector) {
         this.apiLevelDetector = apiLevelDetector;

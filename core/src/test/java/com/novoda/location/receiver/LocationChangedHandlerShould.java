@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 public class LocationChangedHandlerShould {
 
     final Locator locator = mock(Locator.class);
-    final LocationChangedHandler locationChanged = new LocationChangedHandler(locator);
+    final ActiveLocationChangedHandler activeLocationChanged = new ActiveLocationChangedHandler(locator);
 
     @Before
     public void setUp() throws Exception {
@@ -35,7 +35,7 @@ public class LocationChangedHandlerShould {
     @Test
     public void fail_gracefully_if_values_are_invalid() throws Exception {
         try {
-            locationChanged.onNewChange(null);
+            activeLocationChanged.onNewChange(null);
         } catch (Exception e) {
             fail("This exception shouldn't have been propagated");
         }
@@ -47,14 +47,14 @@ public class LocationChangedHandlerShould {
         Location newLocation = new Location("random provider");
         intent.putExtra(LocationManager.KEY_LOCATION_CHANGED, newLocation);
 
-        locationChanged.onNewChange(intent);
+        activeLocationChanged.onNewChange(intent);
 
         verify(locator).setLocation(eq(newLocation));
     }
 
     @Test
     public void NOT_update_the_current_location_if_a_new_location_is_not_received() throws Exception {
-        locationChanged.onNewChange(new Intent());
+        activeLocationChanged.onNewChange(new Intent());
 
         verify(locator, never()).setLocation(any(Location.class));
     }
@@ -64,7 +64,7 @@ public class LocationChangedHandlerShould {
         Intent intent = new Intent();
         intent.putExtra(LocationManager.KEY_PROVIDER_ENABLED, true);
 
-        locationChanged.onNewChange(intent);
+        activeLocationChanged.onNewChange(intent);
 
         verify(locator).providerStatusChanged();
     }
@@ -74,14 +74,14 @@ public class LocationChangedHandlerShould {
         Intent intent = new Intent();
         intent.putExtra(LocationManager.KEY_PROVIDER_ENABLED, false);
 
-        locationChanged.onNewChange(intent);
+        activeLocationChanged.onNewChange(intent);
 
         verify(locator).providerStatusChanged();
     }
 
     @Test
     public void NOT_broadcast_if_a_provider_status_has_not_changed() throws Exception {
-        locationChanged.onNewChange(new Intent());
+        activeLocationChanged.onNewChange(new Intent());
 
         verify(mock(Context.class), never()).sendBroadcast(any(Intent.class));
     }

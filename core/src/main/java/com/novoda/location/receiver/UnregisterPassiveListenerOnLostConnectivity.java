@@ -37,7 +37,7 @@ public class UnregisterPassiveListenerOnLostConnectivity extends BroadcastReceiv
 
         //TODO is there a point in enabling itself?
         changeStateToComponent(c, UnregisterPassiveListenerOnLostConnectivity.class);
-        changeStateToComponent(c, LocationChanged.class);
+        changeStateToComponent(c, ActiveLocationChanged.class);
         changeStateToComponent(c, PassiveLocationChanged.class);
     }
 

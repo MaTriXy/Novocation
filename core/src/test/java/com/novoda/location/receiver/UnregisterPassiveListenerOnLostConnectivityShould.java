@@ -87,7 +87,7 @@ public class UnregisterPassiveListenerOnLostConnectivityShould {
 
         onConnectivityChanged();
 
-        verifyReceiverHasBeenEnabled(LocationChanged.class);
+        verifyReceiverHasBeenEnabled(ActiveLocationChanged.class);
     }
 
     @Test
