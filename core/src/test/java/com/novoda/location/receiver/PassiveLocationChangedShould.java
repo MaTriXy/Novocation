@@ -29,7 +29,8 @@ public class PassiveLocationChangedShould {
     public static final String PROVIDER_ONE = "provider one";
 
     final long now = System.currentTimeMillis();
-    final PassiveLocationChanged passiveLocationChanged = spy(new PassiveLocationChanged());
+    final LastLocationFinder lastLocationFinder = mock(LastLocationFinder.class);
+    final PassiveLocationChanged passiveLocationChanged = spy(new PassiveLocationChanged(lastLocationFinder));
     final Locator locator = mock(Locator.class);
     final Context context = Robolectric.getShadowApplication().getApplicationContext();
     final LocatorSettings settings = mock(LocatorSettings.class);
@@ -93,9 +94,7 @@ public class PassiveLocationChangedShould {
     }
 
     private void addLastBestLocation(Location lastBestLocation) {
-        LastLocationFinder lastLocationFinder = mock(LastLocationFinder.class);
         when(lastLocationFinder.getLastBestLocation(anyLong())).thenReturn(lastBestLocation);
-        when(passiveLocationChanged.getLastLocationFinder(any(LocationManager.class))).thenReturn(lastLocationFinder);
     }
 
     @Test
