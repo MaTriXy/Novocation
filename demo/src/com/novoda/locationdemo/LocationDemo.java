@@ -16,6 +16,7 @@
 
 package com.novoda.locationdemo;
 
+import com.novoda.location.util.ApiLevelDetector;
 import roboguice.application.RoboApplication;
 
 import com.bugsense.trace.BugSenseHandler;
@@ -44,7 +45,7 @@ public class LocationDemo extends RoboApplication {
         settings.setUpdatesInterval(3 * 60 * 1000);
         settings.setUpdatesDistance(50);
         locator = LocatorFactory.getInstance();
-        locator.prepare(getApplicationContext(), settings);
+        locator.prepare(getApplicationContext(), settings, new ApiLevelDetector());
         //==================================================
         
         BugSenseHandler.setup(this, "e3cf60f2");
