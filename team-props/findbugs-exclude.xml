@@ -1,0 +1,8 @@
+<FindBugsFilter>
+  <Match>
+    <Package name="~com\.actionbarsherlock.*" />
+  </Match>
+  <Match>
+    <Class name="~*.*R.java" />
+  </Match>
+</FindBugsFilter>
