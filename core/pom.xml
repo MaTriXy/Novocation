@@ -28,7 +28,6 @@
         <configuration>
           <test>*.java</test>
           <runOrder>random</runOrder>
-          <forkMode>always</forkMode>
         </configuration>
       </plugin>
 
