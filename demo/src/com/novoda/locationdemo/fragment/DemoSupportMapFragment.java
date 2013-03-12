@@ -19,6 +19,7 @@ public class DemoSupportMapFragment extends SupportMapFragment implements Google
     private static final double LONDON_LAT = 51.5001402;
     private static final double LONDON_LONG = -0.1261932;
     private static final int ZOOM_LEVEL = 14;
+
     private GoogleMap map;
 
     @Override
@@ -42,8 +43,8 @@ public class DemoSupportMapFragment extends SupportMapFragment implements Google
     }
 
     public void initUi() {
-        map.getUiSettings().setAllGesturesEnabled(false);
-        map.getUiSettings().setZoomControlsEnabled(false);
+        map.getUiSettings().setAllGesturesEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(true);
     }
 
     private void initListeners() {
