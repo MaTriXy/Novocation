@@ -16,15 +16,15 @@
 
 package com.novoda.locationdemo;
 
-import com.novoda.location.util.ApiLevelDetector;
-import roboguice.application.RoboApplication;
+import android.app.Application;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.novoda.location.Locator;
 import com.novoda.location.LocatorFactory;
 import com.novoda.location.LocatorSettings;
-import com.novoda.location.Locator;
+import com.novoda.location.util.ApiLevelDetector;
 
-public class LocationDemo extends RoboApplication {
+public class LocationDemo extends Application {
     
     public static final String PACKAGE_NAME = "com.novoda.locationdemo";
     public static final String LOCATION_UPDATE_ACTION = "com.novoda.locationdemo.action.ACTION_FRESH_LOCATION";
@@ -38,6 +38,7 @@ public class LocationDemo extends RoboApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
         //==================================================
         // TODO
         // Connect the location finder with relevant settings.

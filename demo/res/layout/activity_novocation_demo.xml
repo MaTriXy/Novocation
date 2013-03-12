@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Fill" >
+
+  <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/map"
+    android:layout_width="fill_parent"
+    android:layout_height="200dp"
+    android:name="com.novoda.locationdemo.fragment.DemoMap" />
+
+    <!--  android:apiKey="0W7OZSqSeGL1PGW9N4QACLMdtaIfBVzU4e5_-hg"  -->
+    
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/Fill.Width" >
+        <include layout="@layout/settings_table" />
+    </LinearLayout>
+    
+    <ScrollView
+    	style="@style/Fill.Width"
+    	android:fillViewport="true" >
+        <LinearLayout
+    		style="@style/Fill.Width" 
+    		android:id="@+id/content">
+    
+		</LinearLayout>
+	</ScrollView>
+
+</LinearLayout>
