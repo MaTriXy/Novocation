@@ -1,17 +1,42 @@
-**/target
-target
-**/.project
-.project
-**/.settings
-.settings
-**/.classpath
-.classpath
-**/bin
-bin
-project.properties
-**/libs
-*.idea/
-*.iml
-*classes/
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
 gen/
+out/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+.project
+.classpath
+.settings
+target/
+libs/
+classes/
+gen-external-apklibs/
 tmp/
+
+# IDEA Ignores
+*.iml
+*.ipr
+*.iws
+.idea/
+local.properties
+
+# MAC
+*.DS_Store
+
+# api scripts
+session.key
+response.txt
+.pt
+*.orig
