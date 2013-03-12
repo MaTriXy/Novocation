@@ -19,7 +19,7 @@ import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.locationdemo.LocationDemo;
 import com.novoda.locationdemo.R;
 import com.novoda.locationdemo.analytics.Analytics;
-import com.novoda.locationdemo.fragment.DemoMap;
+import com.novoda.locationdemo.fragment.DemoSupportMapFragment;
 
 import java.util.Date;
 
@@ -59,14 +59,14 @@ public class NovocationDemo extends RoboFragmentActivity {
     private Analytics analytics;
     private long time;
     private Location currentLocation;
-    private DemoMap map;
+    private DemoSupportMapFragment map;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_novocation_demo);
 
-        map = (DemoMap) getSupportFragmentManager().findFragmentById(R.id.map);
+        map = (DemoSupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         analytics = new Analytics(this);
 

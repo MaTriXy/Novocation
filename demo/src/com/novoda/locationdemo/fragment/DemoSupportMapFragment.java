@@ -14,7 +14,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
-public class DemoMap extends SupportMapFragment implements GoogleMap.OnInfoWindowClickListener {
+public class DemoSupportMapFragment extends SupportMapFragment implements GoogleMap.OnInfoWindowClickListener {
 
     private static final double LONDON_LAT = 51.5001402;
     private static final double LONDON_LONG = -0.1261932;

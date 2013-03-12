@@ -6,7 +6,7 @@
     android:id="@+id/map"
     android:layout_width="fill_parent"
     android:layout_height="200dp"
-    android:name="com.novoda.locationdemo.fragment.DemoMap" />
+    android:name="com.novoda.locationdemo.fragment.DemoSupportMapFragment" />
 
     <!--  android:apiKey="0W7OZSqSeGL1PGW9N4QACLMdtaIfBVzU4e5_-hg"  -->
     
