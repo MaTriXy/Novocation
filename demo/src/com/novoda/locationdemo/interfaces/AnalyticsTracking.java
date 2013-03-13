@@ -6,7 +6,7 @@ public interface AnalyticsTracking {
 	void setup();
 	void activityStart();
 	void activityStop();
-    void trackEvent(String eventName, String action, String label, long value);
     void trackPageView(String eventName);
+    void trackLocationReceived(Location location, Location currentLocation, long time);
     void trackLocationSuccessOrFailure(Location location, long time);
 }

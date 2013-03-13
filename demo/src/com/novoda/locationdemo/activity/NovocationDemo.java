@@ -18,7 +18,6 @@ import com.novoda.location.LocatorSettings;
 import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.locationdemo.LocationDemo;
 import com.novoda.locationdemo.R;
-import com.novoda.locationdemo.analytics.Analytics;
 import com.novoda.locationdemo.analytics.GoogleAnalyticsTracking;
 import com.novoda.locationdemo.fragment.DemoSupportMapFragment;
 import com.novoda.locationdemo.interfaces.AnalyticsTracking;
@@ -37,8 +36,10 @@ public class NovocationDemo extends RoboFragmentActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             currentLocation = locator.getLocation();
-            new Analytics(context).trackLocationReceived(locator.getLocation(),
+
+            getAnalyticsTracker().trackLocationReceived(locator.getLocation(),
                     currentLocation, time);
+
             displayNewLocation(locator.getLocation());
             updateMap(locator.getLocation());
         }

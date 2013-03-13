@@ -39,14 +39,44 @@ public class GoogleAnalyticsTracking implements AnalyticsTracking {
 		EasyTracker.getInstance().activityStop(activity);
 	}
 
-	@Override
-	public void trackEvent(String eventName, String action, String label, long value) {
-		EasyTracker.getTracker().trackEvent(eventName, action, label, value);
-	}
-
     @Override
     public void trackPageView(String pageView) {
         EasyTracker.getTracker().trackView(pageView);
+    }
+
+    public void trackLocationReceived(Location location, Location currentLocation, long time) {
+        long deltaTimeToGetLocation = System.currentTimeMillis() - time;
+        long deltaTimeToPreviousLocation = System.currentTimeMillis() - location.getTime();
+        float accuracy = location.getAccuracy();
+
+        String age = getAgeOfLocation(deltaTimeToPreviousLocation);
+        String accuracyIndicator = getAccuracyIndicator(accuracy);
+        String counter = isFirstOrAnother(currentLocation);
+        String in = getTimeIndicator(deltaTimeToGetLocation);
+
+        trackPageView("/" + counter + "_location_in_" + in + "_accuracy_" + accuracyIndicator + "_age_" + age);
+    }
+
+    private String getAgeOfLocation(long deltaTimeToPreviousLocation) {
+        String age = "infinity";
+        if (deltaTimeToPreviousLocation < 30000) {
+            age = "<30s";
+        } else if (deltaTimeToPreviousLocation < 60000) {
+            age = "<1m";
+        } else if (deltaTimeToPreviousLocation < 5 * 60 * 1000) {
+            age = "<5m";
+        } else if (deltaTimeToPreviousLocation < 30 * 60 * 1000) {
+            age = "<30m";
+        }
+        return age;
+    }
+
+    private String isFirstOrAnother(Location currentLocation) {
+        String counter = "another";
+        if (currentLocation == null) {
+            counter = "first";
+        }
+        return counter;
     }
 
     @Override
