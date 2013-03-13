@@ -19,7 +19,9 @@ import com.novoda.location.exception.NoProviderAvailable;
 import com.novoda.locationdemo.LocationDemo;
 import com.novoda.locationdemo.R;
 import com.novoda.locationdemo.analytics.Analytics;
+import com.novoda.locationdemo.analytics.GoogleAnalyticsTracking;
 import com.novoda.locationdemo.fragment.DemoSupportMapFragment;
+import com.novoda.locationdemo.interfaces.AnalyticsTracking;
 
 import java.util.Date;
 
@@ -41,6 +43,7 @@ public class NovocationDemo extends RoboFragmentActivity {
             updateMap(locator.getLocation());
         }
     };
+
     @InjectView(R.id.val_use_gps)
     TextView useGps;
     @InjectView(R.id.val_updates)
@@ -55,11 +58,12 @@ public class NovocationDemo extends RoboFragmentActivity {
     TextView passiveInterval;
     @InjectView(R.id.val_passive_distance)
     TextView passiveDistance;
+
     private Locator locator;
-    private Analytics analytics;
     private long time;
     private Location currentLocation;
     private DemoSupportMapFragment map;
+    private AnalyticsTracking analyticsTracking;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,11 +72,11 @@ public class NovocationDemo extends RoboFragmentActivity {
 
         map = (DemoSupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
-        analytics = new Analytics(this);
+        getAnalyticsTracker().setup();
+        getAnalyticsTracker().trackPageView(GoogleAnalyticsTracking.PageView.locationUpdateList);
 
         LocationDemo app = (LocationDemo) getApplication();
         locator = app.getLocator();
-        analytics.trackLocationUpdateList();
 
         displayLocationSettings();
     }
@@ -88,10 +92,9 @@ public class NovocationDemo extends RoboFragmentActivity {
         try {
             locator.startActiveLocationUpdates();
         } catch (NoProviderAvailable npa) {
-            analytics.trackNoProviderAvailable();
+            getAnalyticsTracker().trackPageView(GoogleAnalyticsTracking.PageView.noProviderAvailable);
             Toast.makeText(this, "No provider available", Toast.LENGTH_LONG).show();
         }
-        //========================================================
 
         time = System.currentTimeMillis();
         currentLocation = null;
@@ -102,9 +105,20 @@ public class NovocationDemo extends RoboFragmentActivity {
 
         unregisterReceiver(freshLocationReceiver);
         locator.stopLocationUpdates();
-
-        analytics.trackLocationSuccessOrFailure(currentLocation, time);
+        getAnalyticsTracker().trackLocationSuccessOrFailure(currentLocation, time);
         super.onPause();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getAnalyticsTracker().activityStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        getAnalyticsTracker().activityStop();
     }
 
     private void displayLocationSettings() {
@@ -159,6 +173,13 @@ public class NovocationDemo extends RoboFragmentActivity {
 
     private void updateMap(Location location) {
         map.updateMapCamera(location);
+    }
+
+    protected AnalyticsTracking getAnalyticsTracker() {
+        if (analyticsTracking == null) {
+            analyticsTracking = new GoogleAnalyticsTracking(this);
+        }
+        return analyticsTracking;
     }
 
 }
