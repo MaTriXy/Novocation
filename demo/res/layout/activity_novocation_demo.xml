@@ -4,12 +4,10 @@
 
   <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/map"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="200dp"
     android:name="com.novoda.locationdemo.fragment.DemoSupportMapFragment" />
 
-    <!--  android:apiKey="0W7OZSqSeGL1PGW9N4QACLMdtaIfBVzU4e5_-hg"  -->
-    
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/Fill.Width" >
