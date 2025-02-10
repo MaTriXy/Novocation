@@ -35,6 +35,10 @@ public class LocatorFactory {
 	public static Location getLocation() {
 		return getInstance().getLocation();
 	}
+	
+	public static void reset() {
+		instance = null;
+	}
 
     /**
      *
